@@ -6,12 +6,72 @@
 
     <groupId>it.ldsoftware</groupId>
     <artifactId>ldsoftware-commons</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.3.0.RELEASE</version>
+    </parent>
 
     <description>
         The project's aim is to create a comprehensive framework to aid in the
         creation of java-based management systems.
     </description>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <entities.version>0.0.1-SNAPSHOT</entities.version>
+        <lds.vaadin.version>0.0.1-SNAPSHOT</lds.vaadin.version>
+        <querydsl.version>3.7.2</querydsl.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>it.ldsoftware</groupId>
+                <artifactId>commons-entities</artifactId>
+                <version>${entities.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.ldsoftware</groupId>
+                <artifactId>commons-vaadin</artifactId>
+                <version>${lds.vaadin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mysema.querydsl</groupId>
+                <artifactId>querydsl-core</artifactId>
+                <version>${querydsl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mysema.querydsl</groupId>
+                <artifactId>querydsl-apt</artifactId>
+                <version>${querydsl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mysema.querydsl</groupId>
+                <artifactId>querydsl-codegen</artifactId>
+                <version>${querydsl.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mysema.querydsl</groupId>
+                <artifactId>querydsl-jpa</artifactId>
+                <version>${querydsl.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.mysema.querydsl</groupId>
+                    <artifactId>querydsl-maven-plugin</artifactId>
+                    <version>${querydsl.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
     <licenses>
         <license>
