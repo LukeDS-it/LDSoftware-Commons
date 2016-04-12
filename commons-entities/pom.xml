@@ -32,10 +32,6 @@
         </dependency>
         <dependency>
             <groupId>com.mysema.querydsl</groupId>
-            <artifactId>querydsl-codegen</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.mysema.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
         </dependency>
     </dependencies>
@@ -43,21 +39,19 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.mysema.querydsl</groupId>
-                <artifactId>querydsl-maven-plugin</artifactId>
+                <groupId>com.mysema.maven</groupId>
+                <artifactId>apt-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>jpa-export</goal>
+                            <goal>process</goal>
                         </goals>
-                        <configuration>
-                            <targetFolder>target/generated-sources/java</targetFolder>
-                            <packages>
-                                <package>it.ldsoftware.commons.entities</package>
-                            </packages>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <outputDirectory>target/generated-sources</outputDirectory>
+                    <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+                </configuration>
             </plugin>
         </plugins>
     </build>

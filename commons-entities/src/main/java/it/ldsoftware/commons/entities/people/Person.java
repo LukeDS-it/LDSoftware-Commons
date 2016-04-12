@@ -55,4 +55,9 @@ public class Person extends BaseEntity {
     public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", " + fullName;
+    }
 }
