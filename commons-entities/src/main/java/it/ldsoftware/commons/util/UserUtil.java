@@ -13,6 +13,48 @@ public class UserUtil {
     public static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS",
             ROLE_SUPERADMIN = "ROLE_SUPERADMIN";
 
+    private static final String EDIT = "_E", INSERT = "_I", DELETE = "_D", EXECUTE = "_X";
+
+    /**
+     * Returns the edit version of a base role
+     *
+     * @param role the base ROLE_X
+     * @return the role string with edit variant
+     */
+    public static String editVariant(String role) {
+        return role + EDIT;
+    }
+
+    /**
+     * Returns the insert version of a base role
+     *
+     * @param role the base ROLE_X
+     * @return the role string with insert variant
+     */
+    public static String insertVariant(String role) {
+        return role + INSERT;
+    }
+
+    /**
+     * Returns the delete version of a base role
+     *
+     * @param role the base ROLE_X
+     * @return the role string with delete variant
+     */
+    public static String deleteVariant(String role) {
+        return role + DELETE;
+    }
+
+    /**
+     * Returns the execute version of a base role
+     *
+     * @param role the base ROLE_X
+     * @return the role string with execute variant
+     */
+    public static String executeVariant(String role) {
+        return role + EXECUTE;
+    }
+
     /**
      * Returns the presentation object of the current user, or null if the user
      * is browsing anonymously

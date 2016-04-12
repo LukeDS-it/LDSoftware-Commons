@@ -4,10 +4,14 @@ import com.mysema.query.types.Predicate;
 import it.ldsoftware.commons.dal.base.BaseDAL;
 import it.ldsoftware.commons.dal.people.PersonDAL;
 import it.ldsoftware.commons.dal.people.UserDAL;
+import it.ldsoftware.commons.dal.security.GroupDAL;
+import it.ldsoftware.commons.dal.security.RoleDAL;
 import it.ldsoftware.commons.dto.base.BaseDTO;
 import it.ldsoftware.commons.entities.base.BaseEntity;
 import it.ldsoftware.commons.entities.people.Person;
 import it.ldsoftware.commons.entities.people.User;
+import it.ldsoftware.commons.entities.security.Group;
+import it.ldsoftware.commons.entities.security.Role;
 import it.ldsoftware.commons.services.interfaces.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -99,6 +103,11 @@ public abstract class AbstractDatabaseService implements DatabaseService {
     }
 
     @Override
+    public <E extends BaseEntity> E findOne(Class<E> eClass, Predicate predicate) {
+        return getRepository(eClass).findOne(predicate);
+    }
+
+    @Override
     public <E extends BaseEntity> E findFull(Class<E> eClass, long id) {
         return getRepository(eClass).findFull(id);
     }
@@ -125,6 +134,16 @@ public abstract class AbstractDatabaseService implements DatabaseService {
     @Autowired
     private void registerUserRepository(UserDAL dal) {
         registerRepository(User.class, dal);
+    }
+
+    @Autowired
+    private void registerRoleRepository(RoleDAL dal) {
+        registerRepository(Role.class, dal);
+    }
+
+    @Autowired
+    private void registerGroupRepository(GroupDAL dal) {
+        registerRepository(Group.class, dal);
     }
 
     private <E extends BaseEntity, D extends BaseDTO<E>> List<D> convertToDTO(Class<E> eClass, Class<D> dClass, Collection<E> entities, Locale l) {

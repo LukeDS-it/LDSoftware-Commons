@@ -103,6 +103,16 @@ public interface DatabaseService {
     <E extends BaseEntity> E findOne(Class<E> eClass, long id);
 
     /**
+     * Returns a single entity matching the given predicate
+     *
+     * @param eClass the class that represents the entity in the database
+     * @param predicate the predicate that indicates the entity
+     * @param <E> the parameter enables to return type-safe elements
+     * @return a @{link BaseEntity} of type E that matches given predicate
+     */
+    <E extends BaseEntity> E findOne(Class<E> eClass, Predicate predicate);
+
+    /**
      * Saves the given entity
      *
      * @param eClass the class that represents the entity in the database

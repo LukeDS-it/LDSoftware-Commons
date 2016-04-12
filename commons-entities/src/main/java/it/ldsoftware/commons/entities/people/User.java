@@ -1,8 +1,13 @@
 package it.ldsoftware.commons.entities.people;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import it.ldsoftware.commons.entities.security.Group;
+import it.ldsoftware.commons.entities.security.UserRole;
+import it.ldsoftware.commons.validation.groups.NewUserValidationGroup;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by luca on 11/04/16.
@@ -14,12 +19,23 @@ import javax.persistence.Transient;
 @Table(name = "sw_user")
 public class User extends Person {
 
+    @NotNull
     private String username;
 
+    @NotNull(groups = NewUserValidationGroup.class)
     private String password;
 
     @Transient
+    @NotNull(groups = NewUserValidationGroup.class)
     private String confirmPassword;
+
+    private boolean enabled;
+
+    @OneToMany
+    private Set<UserRole> userRoles = new HashSet<>();
+
+    @ManyToMany
+    private Set<Group> groups = new HashSet<>();
 
     @Override
     public String toString() {
@@ -48,5 +64,29 @@ public class User extends Person {
 
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
+
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
     }
 }

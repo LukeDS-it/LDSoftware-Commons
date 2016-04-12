@@ -1,5 +1,7 @@
 package it.ldsoftware.commons.entities.lang;
 
+import it.ldsoftware.commons.entities.base.BaseEntity;
+
 import javax.persistence.Column;
 import javax.persistence.MapKey;
 import javax.persistence.MappedSuperclass;
@@ -22,7 +24,7 @@ import static javax.persistence.FetchType.EAGER;
  * translations (even if this is not optimal DB-wise)
  */
 @MappedSuperclass
-public abstract class Translatable<T extends Translation> {
+public abstract class Translatable<T extends Translation> extends BaseEntity {
 
     @Column(length = 2)
     private String defaultLang;

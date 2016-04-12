@@ -1,9 +1,8 @@
 package it.ldsoftware.commons.entities.lang;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by luca on 12/04/16.
@@ -11,7 +10,7 @@ import javax.persistence.MappedSuperclass;
  * extend this if you need a translation with max 255 characters length
  */
 @MappedSuperclass
-public abstract class ShortTranslation {
+public abstract class ShortTranslation extends Translation {
 
     @NotNull
     @Column(nullable = false)
