@@ -23,6 +23,7 @@
         <java.version>1.8</java.version>
         <entities.version>0.0.1-SNAPSHOT</entities.version>
         <lds.vaadin.version>0.0.1-SNAPSHOT</lds.vaadin.version>
+        <lds.language.version>0.0.1-SNAPSHOT</lds.language.version>
         <querydsl.version>3.7.2</querydsl.version>
         <commons.version>3.4</commons.version>
     </properties>
@@ -38,6 +39,11 @@
                 <groupId>it.ldsoftware</groupId>
                 <artifactId>commons-vaadin</artifactId>
                 <version>${lds.vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.ldsoftware</groupId>
+                <artifactId>commons-language</artifactId>
+                <version>${lds.language.version}</version>
             </dependency>
 
             <dependency>
@@ -91,6 +97,14 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>vaadin-addons</id>
+            <url>http://maven.vaadin.com/vaadin-addons</url>
+        </repository>
+    </repositories>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -113,6 +127,7 @@
     <modules>
         <module>commons-entities</module>
         <module>commons-vaadin</module>
+        <module>commons-language</module>
     </modules>
 
     <developers>

@@ -62,16 +62,16 @@ public abstract class AbstractDatabaseService implements DatabaseService {
 
 
     @Override
-    public <E extends BaseEntity> Collection<E> findAll(Class<E> eClass) {
+    public <E extends BaseEntity> List<E> findAll(Class<E> eClass) {
         return getRepository(eClass).findAll();
     }
 
     @Override
-    public <E extends BaseEntity> Collection<E> findAll(Class<E> eClass, Predicate predicate) {
+    public <E extends BaseEntity> List<E> findAll(Class<E> eClass, Predicate predicate) {
         Iterable<E> it = getRepository(eClass).findAll(predicate);
         List<E> list = new ArrayList<>();
         it.forEach(list::add);
-        return unmodifiableCollection(list);
+        return list;
     }
 
     @Override
@@ -85,13 +85,13 @@ public abstract class AbstractDatabaseService implements DatabaseService {
     }
 
     @Override
-    public <E extends BaseEntity, D extends BaseDTO<E>> Collection<D> findAllDTO(Class<E> eClass, Class<D> dClass, Predicate predicate, Locale l) {
+    public <E extends BaseEntity, D extends BaseDTO<E>> List<D> findAllDTO(Class<E> eClass, Class<D> dClass, Predicate predicate, Locale l) {
         Collection<E> entityList = (predicate == null ? findAll(eClass) : findAll(eClass, predicate));
         return convertToDTO(eClass, dClass, entityList, l);
     }
 
     @Override
-    public <E extends BaseEntity, D extends BaseDTO<E>> Collection<D> findAllDTO(Class<E> eClass, Class<D> dClass, Predicate predicate, Pageable page, Locale l) {
+    public <E extends BaseEntity, D extends BaseDTO<E>> List<D> findAllDTO(Class<E> eClass, Class<D> dClass, Predicate predicate, Pageable page, Locale l) {
         Collection<E> entities = (predicate == null ? findAll(eClass, page).getContent()
                 : findAll(eClass, predicate, page).getContent());
         return convertToDTO(eClass, dClass, entities, l);
@@ -120,6 +120,21 @@ public abstract class AbstractDatabaseService implements DatabaseService {
     @Override
     public <E extends BaseEntity> void delete(Class<E> eClass, long id) {
         getRepository(eClass).delete(id);
+    }
+
+    @Override
+    public <T extends BaseEntity> long count(Class<T> clazz) {
+        return getRepository(clazz).count();
+    }
+
+    @Override
+    public <T extends BaseEntity> long count(Class<T> clazz, Predicate predicate) {
+        return getRepository(clazz).count(predicate);
+    }
+
+    @Override
+    public <T extends BaseEntity> int countProvider(Class<T> entityC, Predicate predicate) {
+        return (int) count(entityC, predicate);
     }
 
     /*

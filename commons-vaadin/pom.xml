@@ -16,6 +16,10 @@
             <groupId>it.ldsoftware</groupId>
             <artifactId>commons-entities</artifactId>
         </dependency>
+        <dependency>
+            <groupId>it.ldsoftware</groupId>
+            <artifactId>commons-language</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.vaadin</groupId>

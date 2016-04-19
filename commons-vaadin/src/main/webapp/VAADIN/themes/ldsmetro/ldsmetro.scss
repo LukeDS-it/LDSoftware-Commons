@@ -1,377 +1,208 @@
-/
-/
-Global variable overrides. Must be declared before importing Valo.
+// Global variable overrides. Must be declared before importing Valo.
 
-/
-/
-Defines the plaintext font size, weight and family. Font size affects general component sizing.
+// Defines the plaintext font size, weight and family. Font size affects general component sizing.
+//$v-font-size: 14px;
+//$v-font-weight: 300;
+$v-font-family: "Raleway", sans-serif;
 
-/
-/
-$
-v-font-size:
+// Defines the border used by all components.
+//$v-border: 1px solid (v-shade 0.7);
+//$v-border-radius: 0px;
 
-14
-px
+// Affects the color of some component elements, e.g Button, Panel title, etc
+//$v-background-color: hsl(0, 0%, 11%);
+// Affects the color of content areas, e.g  Panel and Window content, TextField input etc
+//$v-app-background-color: $v-background-color;
 
-;
-/
-/
-$
-v-font-weight:
+// Affects the visual appearance of all components
+//$v-gradient: v-linear 8%;
+//$v-bevel-depth: 30%;
+//$v-shadow-opacity: 5%;
 
-300
-;
-$
-v-font-family:
+// Defines colors for indicating status (focus, success, failure)
+//$v-focus-color: valo-focus-color(); // Calculates a suitable color automatically
+//$v-friendly-color: #2c9720;
+//$v-error-indicator-color: #ed473b;
 
-"Raleway"
-,
-sans-serif
-
-;
-
-/
-/
-Defines the border used by all components.
-
-/
-/
-$
-v-border:
-
-1
-px solid
-
-(
-v-shade
-
-0.7
-)
-;
-/
-/
-$
-v-border-radius:
-
-0
-px
-
-;
-
-/
-/
-Affects the color of some component elements, e.g Button, Panel title, etc
-
-/
-/
-$
-v-background-color:
-
-hsl
-(
-0
-,
-0
-%
-,
-11
-%
-)
-;
-/
-/
-Affects the color of content areas, e.g Panel and Window content, TextField input etc
-
-/
-/
-$
-v-app-background-color:
-
-$
-v-background-color
-
-;
-
-/
-/
-Affects the visual appearance of all components
-
-/
-/
-$
-v-gradient: v-linear
-
-8
-%
-;
-/
-/
-$
-v-bevel-depth:
-
-30
-%
-;
-/
-/
-$
-v-shadow-opacity:
-
-5
-%
-;
-
-/
-/
-Defines colors for indicating status
-
-(
-focus, success, failure
-
-)
-/
-/
-$
-v-focus-color:
-
-valo-focus-color
-(
-)
-;
-/
-/
-Calculates a suitable color automatically
-
-/
-/
-$
-v-friendly-color: #2c9720
-
-;
-/
-/
-$
-v-error-indicator-color: #ed473b
-
-;
-
-/
-/
-For more information, see: https:
-
-/
-/
-vaadin.com /book/
-
--
-/page/
-themes.valo.html
-
-/
-/
-Example variants can be copy
-
-/
-pasted from https:
-
-/
-/
-vaadin.com /wiki/
-
--
-/wiki/
-Main
-
-/
-Valo + Examples
+// For more information, see: https://vaadin.com/book/-/page/themes.valo.html
+// Example variants can be copy/pasted from https://vaadin.com/wiki/-/wiki/Main/Valo+Examples
 
 @import "../valo/valo.scss";
 
 @mixin tile-colored($basecolor) {
-    background-color: $ basecolor;
-    border-color: lighten($ basecolor, 20%);
+    background-color: $basecolor;
+    border-color: lighten($basecolor, 20%);
 }
 
 @mixin ldsmetro {
     @include valo;
 
-// Insert your own theme rules here
-   .dash-container {
-       background: #222222;
-       min-width: 100%;
+    // Insert your own theme rules here
 
-    .v-label-h3 {
-        color: white;
+    .dash-container {
+        background: #222222;
+        min-width: 100%;
+        .v-label-h3 {
+            color: white;
+        }
     }
-}
 
-.hover-info {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    background: white;
-    padding: 5px;
-    border-top-left-radius: 15px;
-    z-index: 1000;
-}
+    .hover-info {
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
+        background: white;
+        padding: 5px;
+        border-top-left-radius: 15px;
+        z-index: 1000;
+    }
 
-.x-scrollable {
-    width: 100%;
-    overflow-x: auto;
-}
+    .x-scrollable {
+        width: 100%;
+        overflow-x: auto;
+    }
 
-.col-4 {
-    max-width: 700px;
-}
+    .col-4 {
+        max-width: 700px;
+    }
 
-.col-3 {
-    max-width: 542px;
-}
+    .col-3 {
+        max-width: 542px;
+    }
 
-.tile-outer {
-    width: 156px;
-    height: 156px;
-    border: 3px solid transparent;
-    transition: 0.3s;
+    .tile-outer {
+        width: 156px;
+        height: 156px;
+        border: 3px solid transparent;
+        transition: 0.3s;
 
-&
-:hover {
-    border: 3px solid lighten(#373737, 20%);
-    cursor: pointer;
-}
+        &:hover {
+            border: 3px solid lighten(#373737, 20%);
+            cursor: pointer;
+        }
+    }
 
-}
+    .w-double {
+        width: 312px;
+        .tile {
+            width: 306px;
+        }
+    }
 
-.w-double {
-    width: 312px;
+    .tile {
+        width: 150px;
+        height: 150px;
+        border: 1px solid;
 
-.tile {
-    width: 306px;
-}
+        img {
+            width: 64px;
+            height: 64px;
+            margin-top: 40px;
+            margin-left: 40px;
+        }
 
-}
+        .tile-caption {
+            margin-top: 15px;
+            padding-left: 10px;
+            font-weight: 400;
+            color: white;
+            font-size: 14px;
+        }
+    }
 
-.tile {
-    width: 150px;
-    height: 150px;
-    border: 1px solid;
+    .blue {
+        @extend .tile;
+        @include tile-colored(#2D89EF);
+    }
 
-img {
-    width: 64px;
-    height: 64px;
-    margin-top: 40px;
-    margin-left: 40px;
-}
+    .dark-blue {
+        @extend .tile;
+        @include tile-colored(#16499A);
+    }
 
-.tile-caption {
-    margin-top: 15px;
-    padding-left: 10px;
-    font-weight: 400;
-    color: white;
-    font-size: 14px;
-}
+    .dark-orange {
+        @extend .tile;
+        @include tile-colored(#DA532C);
+    }
 
-}
+    .dark-purple {
+        @extend .tile;
+        @include tile-colored(#7E3878);
+    }
 
-.blue {
-@extend . tile;
-@include tile-colored(#2D89EF);
-}
+    .dark-red {
+        @extend .tile;
+        @include tile-colored(#CE352C);
+    }
 
-.dark-blue {
-@extend . tile;
-@include tile-colored(#16499A);
-}
+    .deep-blue {
+        @extend .tile;
+        @include tile-colored(#03407A);
+    }
 
-.dark-orange {
-@extend . tile;
-@include tile-colored(#DA532C);
-}
+    .green {
+        @extend .tile;
+        @include tile-colored(#00A300);
+    }
 
-.dark-purple {
-@extend . tile;
-@include tile-colored(#7E3878);
-}
+    .light-purple {
+        @extend .tile;
+        @include tile-colored(#9F00A7);
+    }
 
-.dark-red {
-@extend . tile;
-@include tile-colored(#CE352C);
-}
+    .orange {
+        @extend .tile;
+        @include tile-colored(#E3A21A);
+    }
 
-.deep-blue {
-@extend . tile;
-@include tile-colored(#03407A);
-}
+    .purple {
+        @extend .tile;
+        @include tile-colored(#603CBA);
+    }
 
-.green {
-@extend . tile;
-@include tile-colored(#00A300);
-}
+    .red {
+        @extend .tile;
+        @include tile-colored(#EE1111);
+    }
 
-.light-purple {
-@extend . tile;
-@include tile-colored(#9F00A7);
-}
+    .yellow {
+        @extend .tile;
+        @include tile-colored(#FFC40D);
+    }
 
-.orange {
-@extend . tile;
-@include tile-colored(#E3A21A);
-}
+    .v-grid-cell {
+        .gwt-Image {
+            max-width: 24px;
+            max-height: 24px;
+        }
+    }
 
-.purple {
-@extend . tile;
-@include tile-colored(#603CBA);
-}
+    .white-bg {
+        background-color: white;
+    }
 
-.red {
-@extend . tile;
-@include tile-colored(#EE1111);
-}
+    .full-buttons {
+        .v-button {
+            width: 100% !important;
+        }
+    }
 
-.yellow {
-@extend . tile;
-@include tile-colored(#FFC40D);
-}
+    .extended-panel {
+        margin: 5px;
+    }
 
-.v-grid-cell {
+    .info-container {
+        width: 100%;
+        padding: 15px;
+    }
 
-.gwt-Image {
-    max-width: 24px;
-    max-height: 24px;
-}
+    .panel-content {
+        padding: 10px;
+    }
 
-}
-
-.white-bg {
-    background-color: white;
-}
-
-.full-buttons {
-
-v-button {
-    width: 100% !important;
-}
-
-}
-
-.extended-panel {
-    margin: 5px;
-}
-
-.info-container {
-    width: 100%;
-    padding: 15px;
-}
-
-.panel-content {
-    padding: 10px;
-}
-
-.button-fix {
-    margin-top: 26px;
-}
-
+    .button-fix {
+        margin-top: 26px;
+    }
 }
 
 @media (max-width: 992px) {

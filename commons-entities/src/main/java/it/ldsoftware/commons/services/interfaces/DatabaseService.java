@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -27,7 +28,7 @@ public interface DatabaseService {
      * @param <E>    the parameter enables to return type-safe collections
      * @return a @{link Collection} of entities
      */
-    <E extends BaseEntity> Collection<E> findAll(Class<E> eClass);
+    <E extends BaseEntity> List<E> findAll(Class<E> eClass);
 
     /**
      * Returns a collection of all entities in the database that
@@ -38,7 +39,7 @@ public interface DatabaseService {
      * @param <E>       the parameter enables to return type-safe collections
      * @return a @{link Collection} of entities
      */
-    <E extends BaseEntity> Collection<E> findAll(Class<E> eClass, Predicate predicate);
+    <E extends BaseEntity> List<E> findAll(Class<E> eClass, Predicate predicate);
 
     /**
      * Returns a page of the entities in the database
@@ -75,7 +76,7 @@ public interface DatabaseService {
      * @param <D>       parameter to return type-safe collections
      * @return a list of DTO matching given entity and predicate.
      */
-    <E extends BaseEntity, D extends BaseDTO<E>> Collection<D> findAllDTO(Class<E> eClass, Class<D> dClass, Predicate predicate, Locale l);
+    <E extends BaseEntity, D extends BaseDTO<E>> List<D> findAllDTO(Class<E> eClass, Class<D> dClass, Predicate predicate, Locale l);
 
     /**
      * This function takes all the entities matching given class, predicate and page,
@@ -90,7 +91,7 @@ public interface DatabaseService {
      * @param <D>       parameter to return type-safe collections
      * @return a list of DTO matching given entity, predicate and page.
      */
-    <E extends BaseEntity, D extends BaseDTO<E>> Collection<D> findAllDTO(Class<E> eClass, Class<D> dClass, Predicate predicate, Pageable page, Locale l);
+    <E extends BaseEntity, D extends BaseDTO<E>> List<D> findAllDTO(Class<E> eClass, Class<D> dClass, Predicate predicate, Pageable page, Locale l);
 
     /**
      * Returns a single entity with the given ID
@@ -144,4 +145,32 @@ public interface DatabaseService {
      * @param <E>    the parameter enables type-safe operations
      */
     <E extends BaseEntity> void delete(Class<E> eClass, long id);
+
+    /**
+     * Counts how many elements the table has
+     *
+     * @param eClass the class that represents the entity in the database
+     * @param <E>    type-safe parameter
+     * @return long value of how many records in that table there are
+     */
+    <E extends BaseEntity> long count(Class<E> eClass);
+
+    /**
+     * Counts how many elements in the table exist for that query
+     *
+     * @param eClass    the class that represents the entity in the database
+     * @param predicate predicate that represents the filter
+     * @param <E>       type-safe parameter
+     * @return long value of how many records exist for the specified query
+     */
+    <E extends BaseEntity> long count(Class<E> eClass, Predicate predicate);
+
+    /**
+     * Runs a search on the database and returns how many records for the query exist.
+     *
+     * @param eClass    the class that represents the entity in the database
+     * @param predicate the predicate that gives the result
+     * @return an integer value
+     */
+    <E extends BaseEntity> int countProvider(Class<E> eClass, Predicate predicate);
 }
