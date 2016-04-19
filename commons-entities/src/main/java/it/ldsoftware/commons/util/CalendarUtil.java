@@ -21,7 +21,7 @@ public class CalendarUtil {
         calendar.set(MINUTE, 59);
         calendar.set(SECOND, 59);
         calendar.set(MILLISECOND, 999);
-        return null;
+        return calendar;
     }
 
     public static Calendar fromDate(Date date) {

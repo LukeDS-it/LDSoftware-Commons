@@ -1,0 +1,393 @@
+/
+/
+Global variable overrides. Must be declared before importing Valo.
+
+/
+/
+Defines the plaintext font size, weight and family. Font size affects general component sizing.
+
+/
+/
+$
+v-font-size:
+
+14
+px
+
+;
+/
+/
+$
+v-font-weight:
+
+300
+;
+$
+v-font-family:
+
+"Raleway"
+,
+sans-serif
+
+;
+
+/
+/
+Defines the border used by all components.
+
+/
+/
+$
+v-border:
+
+1
+px solid
+
+(
+v-shade
+
+0.7
+)
+;
+/
+/
+$
+v-border-radius:
+
+0
+px
+
+;
+
+/
+/
+Affects the color of some component elements, e.g Button, Panel title, etc
+
+/
+/
+$
+v-background-color:
+
+hsl
+(
+0
+,
+0
+%
+,
+11
+%
+)
+;
+/
+/
+Affects the color of content areas, e.g Panel and Window content, TextField input etc
+
+/
+/
+$
+v-app-background-color:
+
+$
+v-background-color
+
+;
+
+/
+/
+Affects the visual appearance of all components
+
+/
+/
+$
+v-gradient: v-linear
+
+8
+%
+;
+/
+/
+$
+v-bevel-depth:
+
+30
+%
+;
+/
+/
+$
+v-shadow-opacity:
+
+5
+%
+;
+
+/
+/
+Defines colors for indicating status
+
+(
+focus, success, failure
+
+)
+/
+/
+$
+v-focus-color:
+
+valo-focus-color
+(
+)
+;
+/
+/
+Calculates a suitable color automatically
+
+/
+/
+$
+v-friendly-color: #2c9720
+
+;
+/
+/
+$
+v-error-indicator-color: #ed473b
+
+;
+
+/
+/
+For more information, see: https:
+
+/
+/
+vaadin.com /book/
+
+-
+/page/
+themes.valo.html
+
+/
+/
+Example variants can be copy
+
+/
+pasted from https:
+
+/
+/
+vaadin.com /wiki/
+
+-
+/wiki/
+Main
+
+/
+Valo + Examples
+
+@import "../valo/valo.scss";
+
+@mixin tile-colored($basecolor) {
+    background-color: $ basecolor;
+    border-color: lighten($ basecolor, 20%);
+}
+
+@mixin ldsmetro {
+    @include valo;
+
+// Insert your own theme rules here
+   .dash-container {
+       background: #222222;
+       min-width: 100%;
+
+    .v-label-h3 {
+        color: white;
+    }
+}
+
+.hover-info {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    background: white;
+    padding: 5px;
+    border-top-left-radius: 15px;
+    z-index: 1000;
+}
+
+.x-scrollable {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.col-4 {
+    max-width: 700px;
+}
+
+.col-3 {
+    max-width: 542px;
+}
+
+.tile-outer {
+    width: 156px;
+    height: 156px;
+    border: 3px solid transparent;
+    transition: 0.3s;
+
+&
+:hover {
+    border: 3px solid lighten(#373737, 20%);
+    cursor: pointer;
+}
+
+}
+
+.w-double {
+    width: 312px;
+
+.tile {
+    width: 306px;
+}
+
+}
+
+.tile {
+    width: 150px;
+    height: 150px;
+    border: 1px solid;
+
+img {
+    width: 64px;
+    height: 64px;
+    margin-top: 40px;
+    margin-left: 40px;
+}
+
+.tile-caption {
+    margin-top: 15px;
+    padding-left: 10px;
+    font-weight: 400;
+    color: white;
+    font-size: 14px;
+}
+
+}
+
+.blue {
+@extend . tile;
+@include tile-colored(#2D89EF);
+}
+
+.dark-blue {
+@extend . tile;
+@include tile-colored(#16499A);
+}
+
+.dark-orange {
+@extend . tile;
+@include tile-colored(#DA532C);
+}
+
+.dark-purple {
+@extend . tile;
+@include tile-colored(#7E3878);
+}
+
+.dark-red {
+@extend . tile;
+@include tile-colored(#CE352C);
+}
+
+.deep-blue {
+@extend . tile;
+@include tile-colored(#03407A);
+}
+
+.green {
+@extend . tile;
+@include tile-colored(#00A300);
+}
+
+.light-purple {
+@extend . tile;
+@include tile-colored(#9F00A7);
+}
+
+.orange {
+@extend . tile;
+@include tile-colored(#E3A21A);
+}
+
+.purple {
+@extend . tile;
+@include tile-colored(#603CBA);
+}
+
+.red {
+@extend . tile;
+@include tile-colored(#EE1111);
+}
+
+.yellow {
+@extend . tile;
+@include tile-colored(#FFC40D);
+}
+
+.v-grid-cell {
+
+.gwt-Image {
+    max-width: 24px;
+    max-height: 24px;
+}
+
+}
+
+.white-bg {
+    background-color: white;
+}
+
+.full-buttons {
+
+v-button {
+    width: 100% !important;
+}
+
+}
+
+.extended-panel {
+    margin: 5px;
+}
+
+.info-container {
+    width: 100%;
+    padding: 15px;
+}
+
+.panel-content {
+    padding: 10px;
+}
+
+.button-fix {
+    margin-top: 26px;
+}
+
+}
+
+@media (max-width: 992px) {
+    .extended-panel {
+        max-width: 99%;
+    }
+}
+
+@media (min-width: 993px) {
+    .extended-panel {
+        max-width: 48%;
+    }
+}
+
+@media (min-width: 1001px) {
+    .extended-panel {
+        max-width: 49%;
+    }
+}

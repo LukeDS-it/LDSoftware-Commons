@@ -79,7 +79,7 @@ public interface DatabaseService {
 
     /**
      * This function takes all the entities matching given class, predicate and page,
-     * and converts them into the respective DTO tupe, initializing the DTO with given locale.
+     * and converts them into the respective DTO type, initializing the DTO with given locale.
      *
      * @param eClass    the entity class
      * @param dClass    the presentation (DTO) class

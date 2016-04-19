@@ -31,7 +31,7 @@ public abstract class Translatable<T extends Translation> extends BaseEntity {
 
     @MapKey(name = "lang")
     @OneToMany(fetch = EAGER, cascade = ALL, orphanRemoval = true)
-    private Map<String, T> translations = new HashMap<>();
+    private final Map<String, T> translations = new HashMap<>();
 
     public void addTranslation(String lang, T translation) {
         if (lang == null || lang.length() != 2)
@@ -76,7 +76,7 @@ public abstract class Translatable<T extends Translation> extends BaseEntity {
      * Gets the translation in the selected locale
      *
      * @param l the locale
-     * @return
+     * @return the translation with that locale
      */
     public T getTranslation(Locale l) {
         return getTranslation(l.getLanguage());

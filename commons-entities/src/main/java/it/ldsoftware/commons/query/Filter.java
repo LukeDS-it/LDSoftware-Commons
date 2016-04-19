@@ -7,10 +7,10 @@ import java.io.Serializable;
  * Simple filter class
  */
 public class Filter implements Serializable {
-    String property;
-    FilterOperator operator;
-    boolean negative;
-    Object value;
+    private String property;
+    private FilterOperator operator;
+    private boolean negative;
+    private Object value;
 
     public Filter(String property, Object value, boolean negative, FilterOperator operator) {
         this.property = property;

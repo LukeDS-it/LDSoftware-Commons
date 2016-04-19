@@ -24,6 +24,7 @@
         <entities.version>0.0.1-SNAPSHOT</entities.version>
         <lds.vaadin.version>0.0.1-SNAPSHOT</lds.vaadin.version>
         <querydsl.version>3.7.2</querydsl.version>
+        <commons.version>3.4</commons.version>
     </properties>
 
     <dependencyManagement>
@@ -37,6 +38,12 @@
                 <groupId>it.ldsoftware</groupId>
                 <artifactId>commons-vaadin</artifactId>
                 <version>${lds.vaadin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons.version}</version>
             </dependency>
 
             <dependency>
@@ -58,6 +65,29 @@
                 <groupId>com.mysema.querydsl</groupId>
                 <artifactId>querydsl-jpa</artifactId>
                 <version>${querydsl.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.vaadin.spring.extensions</groupId>
+                <artifactId>vaadin-spring-ext-security</artifactId>
+                <version>0.0.7.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.vaadin.spring.extensions</groupId>
+                <artifactId>vaadin-spring-ext-boot</artifactId>
+                <version>0.0.7.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.vaadin.spring.extensions</groupId>
+                <artifactId>vaadin-spring-ext-core</artifactId>
+                <version>0.0.7.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>de.datenhahn.vaadin</groupId>
+                <artifactId>componentrenderer</artifactId>
+                <version>1.0.0beta5</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

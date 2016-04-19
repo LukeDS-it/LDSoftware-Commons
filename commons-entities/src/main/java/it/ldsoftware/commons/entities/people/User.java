@@ -17,11 +17,14 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "sw_user")
+@PrimaryKeyJoinColumn(name = "id")
 public class User extends Person {
 
     @NotNull
+    @Column(nullable = false)
     private String username;
 
+    @Column(length = 60, nullable = false)
     @NotNull(groups = NewUserValidationGroup.class)
     private String password;
 

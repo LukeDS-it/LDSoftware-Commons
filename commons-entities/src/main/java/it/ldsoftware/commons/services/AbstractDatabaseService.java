@@ -34,7 +34,7 @@ public abstract class AbstractDatabaseService implements DatabaseService {
     @Autowired
     private MessageSource msg;
 
-    private Map<Class<? extends BaseEntity>, BaseDAL<? extends BaseEntity>> dalMap = new HashMap<>();
+    private final Map<Class<? extends BaseEntity>, BaseDAL<? extends BaseEntity>> dalMap = new HashMap<>();
 
     /**
      * Gets the repository that is used to manipulate entities from the specified

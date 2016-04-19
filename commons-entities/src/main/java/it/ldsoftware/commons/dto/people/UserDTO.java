@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 public class UserDTO extends BaseDTO<User> implements UserDetails {
 
     private String username, password;
-    private Set<GrantedAuthority> authorities = new HashSet<>();
+    private final Set<GrantedAuthority> authorities = new HashSet<>();
     private boolean enabled;
 
     public UserDTO(User entity, Locale locale) {

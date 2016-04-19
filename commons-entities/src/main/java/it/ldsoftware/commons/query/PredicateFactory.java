@@ -22,7 +22,7 @@ import static it.ldsoftware.commons.util.CalendarUtil.fromDate;
  * or on an example entity.
  */
 public class PredicateFactory {
-    private static Logger logger = Logger.getLogger(PredicateFactory.class);
+    private static final Logger logger = Logger.getLogger(PredicateFactory.class);
 
     /**
      * This function returns the boolean expression that corresponds to given entity and filters.
@@ -45,9 +45,9 @@ public class PredicateFactory {
                 Field f = eClass.getDeclaredField(filter.getProperty());
 
                 if (f.getType().isAssignableFrom(Collection.class)) {
-                    logger.debug("Il campo " + filter.getProperty()
-                            + " è di tipo Collection. Se si vogliono effettuare filtri su questo campo, aggiungere"
-                            + " manualmente al termine della chiamata");
+                    logger.debug("The field " + filter.getProperty()
+                            + " is of type Collection. This is not currently supported."
+                            + " Please add manually the filter on this field.");
                 } else if (f.getType().isAssignableFrom(String.class)) {
                     partial = handleString(pb, partial, filter);
                 } else if (BaseEntity.class.isAssignableFrom(f.getType())) {
@@ -63,8 +63,8 @@ public class PredicateFactory {
                     betweenParsed.add(getBetweenFieldName(fname));
 
                 } else {
-                    logger.debug("Il campo " + filter.getProperty()
-                            + " non esiste nell'entità. Ricordati di aggiungerlo manualmente al termine della chiamata.");
+                    logger.debug("The field " + filter.getProperty()
+                            + " does not exist in the entity. Remember to add any custom query after the call.");
                 }
             }
         }
@@ -181,8 +181,8 @@ public class PredicateFactory {
                     }
                 }
             } else {
-                logger.error("È stato passato un valore inatteso al campo " + filter.getProperty() + ": atteso di tipo "
-                        + field.getType().getName() + ", ricevuto " + filter.getValue().getClass().getName());
+                logger.error("An invalid value was passed to the field " + filter.getProperty() + ": expected "
+                        + field.getType().getName() + ", got " + filter.getValue().getClass().getName());
             }
         } else if (o instanceof String) {
             /*
