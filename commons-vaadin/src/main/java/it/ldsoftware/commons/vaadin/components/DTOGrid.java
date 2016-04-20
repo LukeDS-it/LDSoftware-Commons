@@ -1,22 +1,17 @@
 package it.ldsoftware.commons.vaadin.components;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Container.Filterable;
 import com.vaadin.data.Container.Indexed;
 import com.vaadin.data.Item;
-import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.GeneratedPropertyContainer;
 import com.vaadin.data.util.PropertyValueGenerator;
 import com.vaadin.data.util.filter.SimpleStringFilter;
-import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
-import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
-import com.vaadin.event.SelectionEvent;
 import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
@@ -24,7 +19,6 @@ import de.datenhahn.vaadin.componentrenderer.ComponentRenderer;
 import it.ldsoftware.commons.dto.base.BaseDTO;
 import it.ldsoftware.commons.entities.base.BaseEntity;
 import it.ldsoftware.commons.i18n.LocalizationService;
-import it.ldsoftware.commons.query.PredicateFactory;
 import it.ldsoftware.commons.query.Request;
 import it.ldsoftware.commons.services.interfaces.DatabaseService;
 import it.ldsoftware.commons.vaadin.data.FIlterableLazyListContainer;
@@ -34,10 +28,12 @@ import it.ldsoftware.commons.vaadin.listeners.EditListener;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
+import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.viritin.ListContainer;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,11 +44,10 @@ import static com.vaadin.ui.Grid.SelectionMode.MULTI;
 import static com.vaadin.ui.Grid.SelectionMode.SINGLE;
 import static com.vaadin.ui.themes.ValoTheme.BUTTON_BORDERLESS;
 import static com.vaadin.ui.themes.ValoTheme.TEXTFIELD_TINY;
-import static it.ldsoftware.commons.i18n.CommonLabels.NO;
-import static it.ldsoftware.commons.i18n.CommonLabels.TXT_FILTER;
-import static it.ldsoftware.commons.i18n.CommonLabels.YES;
+import static it.ldsoftware.commons.i18n.CommonLabels.*;
 import static it.ldsoftware.commons.query.PredicateFactory.createPredicate;
-import static it.ldsoftware.commons.vaadin.util.MetricConstants.COLUMN_XS;
+import static it.ldsoftware.commons.util.ReflectionUtil.getPropertyFromMethod;
+import static it.ldsoftware.commons.vaadin.theme.MetricConstants.COLUMN_XS;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
@@ -66,7 +61,7 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
  */
 public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
 
-    public static final int PAGESIZE = 15;
+    private static final int PAGESIZE = 15;
     public static final String COLUMN_DELETE = "delete", COLUMN_EDIT = "edit";
 
     private boolean multiSelection = false;
@@ -127,12 +122,22 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
      */
     public DTOGrid<E, D> withMessageSource(MessageSource msg) {
         locSvc = new LocalizationService(msg, UI.getCurrent().getLocale());
+        translateColumns();
+        return this;
+    }
+
+    public DTOGrid<E, D> withLocalizationService(LocalizationService svc) {
+        locSvc = svc;
+        translateColumns();
+        return this;
+    }
+
+    private void translateColumns() {
         getColumns()
                 .stream()
                 .forEach(column -> column.setHeaderCaption(
                         locSvc.translate("column_".concat(column.getPropertyId().toString())))
                 );
-        return this;
     }
 
     /**
@@ -143,6 +148,29 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
      */
     public DTOGrid<E, D> withoutColumns(Object... columns) {
         removeColumns(columns);
+        return this;
+    }
+
+    /**
+     * Appends a header row to the EditorGrid, adding default editors for
+     * strings and booleans
+     *
+     * @param dClass the DTO class, used to get the fields
+     * @return the grid itself, for use in fluent notation
+     */
+    public DTOGrid<E, D> withFilterRow(Class<D> dClass) {
+        HeaderRow filterRow = appendHeaderRow();
+
+        Method[] methods = dClass.getDeclaredMethods();
+        for (Method m : methods) {
+            if (m.getName().startsWith("get") || m.getName().startsWith("is")) {
+                String property = getPropertyFromMethod(m.getName());
+                Component filter = getColumnFilter(property, dClass);
+                filterRow.getCell(property).setComponent(filter);
+                filterRow.getCell(property).setStyleName("filter-header");
+            }
+        }
+
         return this;
     }
 
@@ -382,25 +410,20 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
 
     @SuppressWarnings("unchecked")
     private void deleteAction(D item) {
-        /*ConfirmDialog.show(getUI(), caption(TITLE_CONFIRM_DELETE), caption(MSG_CONFIRM_DELETE_SINGLE), caption(YES),
-                caption(NO), question -> {
+        ConfirmDialog.show(getUI(), locSvc.translate(TITLE_CONFIRM_DELETE),
+                locSvc.translate(MSG_CONFIRM_DELETE_SINGLE), locSvc.translate(YES),
+                locSvc.translate(NO), question -> {
                     if (question.isConfirmed()) {
-                        deleteListener.deleteItem((D) itemId);
+                        List<D> l = new ArrayList<>();
+                        l.add(item);
+                        deleteListener.performDelete(l);
                     }
-                });*/
-        List<D> l = new ArrayList<>();
-        l.add(item);
-        deleteListener.performDelete(l);
+                });
     }
 
     private void editAction(D item) {
         List<D> l = new ArrayList<>();
         l.add(item);
         editListener.performEdit(l);
-    }
-
-    public DTOGrid<E, D> withFilterRow(Class<D> dtoClass) {
-        // TODO
-        return this;
     }
 }

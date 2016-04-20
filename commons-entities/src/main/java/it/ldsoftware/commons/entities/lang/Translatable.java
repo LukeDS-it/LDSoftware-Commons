@@ -29,6 +29,10 @@ public abstract class Translatable<T extends Translation> extends BaseEntity {
     @Column(length = 2)
     private String defaultLang;
 
+    public Map<String, T> getTranslations() {
+        return translations;
+    }
+
     @MapKey(name = "lang")
     @OneToMany(fetch = EAGER, cascade = ALL, orphanRemoval = true)
     private final Map<String, T> translations = new HashMap<>();

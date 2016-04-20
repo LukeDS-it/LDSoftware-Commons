@@ -14,6 +14,7 @@ import java.util.*;
 import static it.ldsoftware.commons.query.FilterOperator.AND;
 import static it.ldsoftware.commons.util.CalendarUtil.endOfDay;
 import static it.ldsoftware.commons.util.CalendarUtil.fromDate;
+import static it.ldsoftware.commons.util.ReflectionUtil.getPropertyFromMethod;
 
 /**
  * Created by luca on 11/04/16.
@@ -102,19 +103,6 @@ public class PredicateFactory {
         if (value == null)
             return null;
         return new Filter(property, value, false, AND);
-    }
-
-    private static String getPropertyFromMethod(String methodName) {
-
-        if (methodName.startsWith("is")) {
-            methodName = methodName.substring(2);
-        }
-        if (methodName.startsWith("get")) {
-            methodName = methodName.substring(3);
-        }
-        methodName = methodName.substring(0, 1).toLowerCase().concat(methodName.substring(1));
-
-        return methodName;
     }
 
     private static BooleanExpression handleString(PathBuilder<?> pb, BooleanExpression base, Filter filter) {

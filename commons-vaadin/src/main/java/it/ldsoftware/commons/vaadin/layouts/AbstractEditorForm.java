@@ -1,9 +1,18 @@
 package it.ldsoftware.commons.vaadin.layouts;
 
 import it.ldsoftware.commons.entities.base.BaseEntity;
+import it.ldsoftware.commons.i18n.LocalizationService;
+import it.ldsoftware.commons.services.interfaces.DatabaseService;
+import org.vaadin.viritin.BeanBinder;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This class represents an abstract form for simple editing.
@@ -17,29 +26,73 @@ public abstract class AbstractEditorForm<E extends BaseEntity> extends MVertical
 
     private boolean hasNotSavedChanges = false;
     private E bean;
+    private AbstractEditor<?, ?> parentLayout;
 
-    public boolean hasNotSavedChanges() {
-        return hasNotSavedChanges;
+    private static ValidatorFactory factory;
+    private transient Validator javaxBeanValidator;
+
+    List<String> validate(Class<?>[] validationGroups) {
+        List<String> errors = new ArrayList<>();
+
+        if (factory == null) {
+            factory = Validation.buildDefaultValidatorFactory();
+        }
+        if (javaxBeanValidator == null) {
+            javaxBeanValidator = factory.getValidator();
+        }
+
+        Set<ConstraintViolation<E>> violations = javaxBeanValidator.validate(bean, validationGroups);
+
+        if (violations != null && !violations.isEmpty()) {
+            violations
+                    .stream()
+                    .map(cv -> getTranslator().getConstraintViolation(cv))
+                    .forEach(errors::add);
+        }
+
+        return errors;
     }
 
-    public void resetSaveState() {
-        hasNotSavedChanges = false;
-    }
-
-    public List<String> validate(Class<?>[] validationGroups) {
-        // TODO
-        return null;
-    }
-
-    public void setBean(E bean) {
-        // TODO
+    void setBean(E bean) {
         this.bean = bean;
+        BeanBinder.bind(bean, this);
     }
 
-    public E getBean() {
+    E getBean() {
         return bean;
     }
 
-    public abstract void selectFirstField();
+    abstract void selectFirstField();
 
+    public void signalChange() {
+        hasNotSavedChanges = true;
+    }
+
+    boolean hasNotSavedChanges() {
+        return hasNotSavedChanges;
+    }
+
+    void resetSaveState() {
+        hasNotSavedChanges = false;
+    }
+
+    public DatabaseService getDatabaseService() {
+        return parentLayout.getSvc();
+    }
+
+    public LocalizationService getTranslator() {
+        return parentLayout.getTranslator();
+    }
+
+    public AbstractEditor<?, ?> getParentLayout() {
+        return parentLayout;
+    }
+
+    void setParentLayout(AbstractEditor<?, ?> parentLayout) {
+        this.parentLayout = parentLayout;
+    }
+
+    public Validator getBeanValidator() {
+        return javaxBeanValidator;
+    }
 }

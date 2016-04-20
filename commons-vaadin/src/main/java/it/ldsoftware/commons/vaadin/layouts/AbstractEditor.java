@@ -13,16 +13,16 @@ import it.ldsoftware.commons.query.Filter;
 import it.ldsoftware.commons.query.PredicateFactory;
 import it.ldsoftware.commons.services.interfaces.DatabaseService;
 import it.ldsoftware.commons.vaadin.components.DTOGrid;
-import it.ldsoftware.commons.vaadin.util.NotificationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import javax.annotation.PostConstruct;
-
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static com.vaadin.server.FontAwesome.*;
@@ -32,7 +32,13 @@ import static it.ldsoftware.commons.vaadin.util.NotificationBuilder.showNotifica
 
 /**
  * This abstract class sets the basic layout for viewing and editing a list of elements.
- * It hosts a menu bar, a grid to show data and the editor form
+ * It hosts a menu bar, a grid to show data and the editor form.
+ *
+ * The abstract editor also autowires the database service and the localization service,
+ * so its optimal use is to create classes that will be loaded at runtime in an user
+ * interface using the @UIScope annotation.
+ * For this reason try to keep the database queries at minimum during creation to avoid
+ * long waiting times.
  *
  * @param <E> the entity from the database that will parametrize the form content.
  * @param <D> the DTO that the base entity E refers to, to parametrize the grid.
@@ -104,26 +110,50 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
     }
 
     private void deleteAction(ClickEvent event) {
+        final Collection<?> coll = grid.getSelectedRows();
 
+        String message = (coll.size() == 1 ? MSG_CONFIRM_DELETE_SINGLE : MSG_CONFIRM_DELETE_MULTI);
+
+        ConfirmDialog.show(getUI(), translator.translate(TITLE_CONFIRM_DELETE),
+                translator.translate(message, coll.size()), translator.translate(YES),
+                translator.translate(NO), question -> {
+                    if (question.isConfirmed()) {
+                        coll.stream().forEach(this::tryDeletion);
+                        refreshGrid();
+                        executeNew();
+                        showNotification(translator.translate("title.delete.success"),
+                                translator.translate("msg.delete.success"),
+                                NOTIFICATION_SUCCESS);
+                    }
+                });
+    }
+
+    private void tryDeletion(Object dto) {
+        try {
+            svc.delete(getEntityClass(), (getDTOClass().cast(dto)).getId());
+        } catch (DataIntegrityViolationException dataIntegrity) {
+            showNotification(translator.translate("title.data.integrity"),
+                    translator.translate("error.data.integrity"), NOTIFICATION_FAILURE);
+        }
     }
 
     private void duplicateAction(ClickEvent event) {
-
+        // TODO find a way to duplicate entities
     }
 
     private void exportAction(ClickEvent event) {
-
+        // TODO export selected grid items
     }
 
     private void filterAction(ClickEvent event) {
-
+        // TODO show generic filtering dialog and call customise method
     }
 
     private void multiAction(ClickEvent event) {
-
+        grid.toggleMultiSelection();
     }
 
-    private void saveAction(ClickEvent event) {
+    public void saveAction(ClickEvent event) {
         List<String> validationResult = editorForm.validate(getValidationGroups());
         if (validationResult.isEmpty()) {
             try {
@@ -201,6 +231,15 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
 
     private void createEditor() {
         editorForm = getEditorInstance();
+        editorForm.setParentLayout(this);
+    }
+
+    protected final DatabaseService getSvc() {
+        return svc;
+    }
+
+    protected final LocalizationService getTranslator() {
+        return translator;
     }
 
     public Class<?>[] getValidationGroups() {

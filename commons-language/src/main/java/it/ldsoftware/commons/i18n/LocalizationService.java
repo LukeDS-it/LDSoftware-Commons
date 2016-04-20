@@ -5,6 +5,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolation;
 import java.text.MessageFormat;
 import java.util.Locale;
 
@@ -17,6 +18,8 @@ public class LocalizationService {
     @Autowired
     private MessageSource source;
     private Locale locale;
+
+    private static final String[] VARIETIES = {"txt.", "cmb.", "cal.", "sel."};
 
     public LocalizationService(MessageSource msg, Locale locale) {
         source = msg;
@@ -46,5 +49,31 @@ public class LocalizationService {
         } catch (NoSuchMessageException ex) {
             return key;
         }
+    }
+
+    public String getConstraintViolation(ConstraintViolation<?> cv) {
+        String constraintError = cv.getMessageTemplate().substring(1, cv.getMessageTemplate().length() - 1);
+        String field = getFieldVariety(cv.getPropertyPath().toString(), locale);
+        return getMessage(constraintError, field);
+    }
+
+    private String getFieldVariety(String fieldName, Object... arguments) {
+        for (String variety : VARIETIES) {
+            try {
+                return searchMessage(variety + fieldName, arguments);
+            } catch (NoSuchMessageException ignored) {
+
+            }
+        }
+        return fieldName;
+    }
+
+    private String searchMessage(String key, Object... arguments) {
+        String pattern = source.getMessage(key, arguments, locale);
+        if (pattern.matches("\\$\\{.*\\}"))
+            pattern = searchMessage(pattern.substring(2, pattern.length() - 1), arguments);
+
+        final MessageFormat format = new MessageFormat(pattern, locale);
+        return format.format(arguments);
     }
 }

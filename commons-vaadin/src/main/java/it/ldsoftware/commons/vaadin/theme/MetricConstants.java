@@ -1,4 +1,4 @@
-package it.ldsoftware.commons.vaadin.util;
+package it.ldsoftware.commons.vaadin.theme;
 
 /**
  * Created by luca on 19/04/16.
