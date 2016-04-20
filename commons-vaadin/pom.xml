@@ -62,8 +62,29 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
-
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-maven-plugin</artifactId>
+
+                <configuration>
+                    <webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile-theme</goal>
+                            <goal>update-widgetset</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

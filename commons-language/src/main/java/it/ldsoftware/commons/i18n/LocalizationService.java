@@ -1,7 +1,9 @@
 package it.ldsoftware.commons.i18n;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
+import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -10,12 +12,18 @@ import java.util.Locale;
  * Created by luca on 19/04/16.
  * This service helps to translate strings from all registered properties files
  */
+@Service
 public class LocalizationService {
+    @Autowired
     private MessageSource source;
     private Locale locale;
 
     public LocalizationService(MessageSource msg, Locale locale) {
         source = msg;
+        this.locale = locale;
+    }
+
+    public void setLocale(Locale locale) {
         this.locale = locale;
     }
 

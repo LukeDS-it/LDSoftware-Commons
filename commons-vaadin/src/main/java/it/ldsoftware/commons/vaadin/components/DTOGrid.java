@@ -399,4 +399,8 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
         editListener.performEdit(l);
     }
 
+    public DTOGrid<E, D> withFilterRow(Class<D> dtoClass) {
+        // TODO
+        return this;
+    }
 }
