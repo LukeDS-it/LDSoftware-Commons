@@ -2,9 +2,9 @@ package it.ldsoftware.commons.entities.base;
 
 import it.ldsoftware.commons.util.PropertyType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+
+import static javax.persistence.EnumType.STRING;
 
 /**
  * Created by luca on 12/04/16.
@@ -30,6 +30,7 @@ public class AppProperty extends BaseEntity {
     @Column(length = 512)
     private String stringVal;
 
+    @Enumerated(STRING)
     private PropertyType type;
 
     public String getKey() {

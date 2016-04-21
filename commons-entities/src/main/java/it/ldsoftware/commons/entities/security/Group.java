@@ -4,6 +4,7 @@ import it.ldsoftware.commons.entities.base.Lookup;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ import java.util.Set;
  * This entity represents a group of users
  */
 @Entity
+@Table(name = "sw_group")
 public class Group extends Lookup<GroupTranslation> {
 
     @OneToMany

@@ -1,8 +1,10 @@
 package it.ldsoftware.commons.entities.people;
 
+import it.ldsoftware.commons.entities.base.BaseEntity;
 import it.ldsoftware.commons.util.ContactType;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -12,7 +14,8 @@ import static javax.persistence.FetchType.LAZY;
  * Created by luca on 19/04/16.
  * defines the contact for a person
  */
-public class Contact {
+@Entity
+public class Contact extends BaseEntity {
 
     @NotNull
     @Column(nullable = false)

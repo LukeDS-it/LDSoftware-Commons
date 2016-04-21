@@ -29,13 +29,13 @@ public abstract class Translatable<T extends Translation> extends BaseEntity {
     @Column(length = 2)
     private String defaultLang;
 
-    public Map<String, T> getTranslations() {
-        return translations;
-    }
-
     @MapKey(name = "lang")
     @OneToMany(fetch = EAGER, cascade = ALL, orphanRemoval = true)
     private final Map<String, T> translations = new HashMap<>();
+
+    public Map<String, T> getTranslations() {
+        return translations;
+    }
 
     public void addTranslation(String lang, T translation) {
         if (lang == null || lang.length() != 2)
@@ -43,6 +43,7 @@ public abstract class Translatable<T extends Translation> extends BaseEntity {
         if (hasLanguage(lang))
             throw new IllegalArgumentException("warning.duplicate.translation");
 
+//        translation.setMaster(this);
         translations.put(lang, translation);
     }
 

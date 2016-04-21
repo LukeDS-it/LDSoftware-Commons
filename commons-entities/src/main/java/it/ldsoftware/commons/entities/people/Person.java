@@ -49,7 +49,7 @@ public class Person extends BaseEntity {
     private Calendar birthDate;
 
     @Enumerated(STRING)
-    private PersonType type;
+    private PersonType personType;
 
     @ManyToOne(cascade = ALL, fetch = LAZY)
     private Person parent;
@@ -108,12 +108,12 @@ public class Person extends BaseEntity {
         this.birthDate = birthDate;
     }
 
-    public PersonType getType() {
-        return type;
+    public PersonType getPersonType() {
+        return personType;
     }
 
-    public void setType(PersonType type) {
-        this.type = type;
+    public void setPersonType(PersonType personType) {
+        this.personType = personType;
     }
 
     public Person getParent() {

@@ -11,13 +11,13 @@ import java.util.List;
  * Created by luca on 12/04/16.
  * Utility class to help collect roles
  */
-public abstract class RoleCollector {
+public interface RoleCollector {
 
-    public abstract Role getRole();
+    Role getRole();
 
-    public abstract RoleModifiers getModifiers();
+    RoleModifiers getModifiers();
 
-    public Collection<String> getActualRoles() {
+    default Collection<String> getActualRoles() {
         String r = getRole().getCode();
         List<String> roles = new ArrayList<>();
         roles.add(r);

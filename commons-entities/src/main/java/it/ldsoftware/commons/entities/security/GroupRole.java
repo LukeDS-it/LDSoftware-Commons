@@ -1,5 +1,6 @@
 package it.ldsoftware.commons.entities.security;
 
+import it.ldsoftware.commons.entities.base.BaseEntity;
 import it.ldsoftware.commons.util.RoleCollector;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ import javax.persistence.*;
  */
 @Entity
 @IdClass(GroupRoleID.class)
-public class GroupRole extends RoleCollector {
+public class GroupRole implements RoleCollector {
 
     @Id
     @ManyToOne

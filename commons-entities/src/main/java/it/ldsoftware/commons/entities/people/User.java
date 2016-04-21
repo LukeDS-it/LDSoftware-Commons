@@ -40,6 +40,9 @@ public class User extends Person {
     @ManyToMany
     private Set<Group> groups = new HashSet<>();
 
+    @ElementCollection
+    private Set<String> domains = new HashSet<>();
+
     @Override
     public String toString() {
         return super.toString() + ", " + getUsername();
@@ -91,5 +94,13 @@ public class User extends Person {
 
     public void setGroups(Set<Group> groups) {
         this.groups = groups;
+    }
+
+    public Set<String> getDomains() {
+        return domains;
+    }
+
+    public void setDomains(Set<String> domains) {
+        this.domains = domains;
     }
 }

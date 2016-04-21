@@ -1,5 +1,6 @@
 package it.ldsoftware.commons.entities.security;
 
+import it.ldsoftware.commons.entities.base.BaseEntity;
 import it.ldsoftware.commons.entities.people.User;
 import it.ldsoftware.commons.util.RoleCollector;
 
@@ -13,14 +14,14 @@ import javax.persistence.*;
  */
 @Entity
 @IdClass(UserRoleID.class)
-public class UserRole extends RoleCollector {
+public class UserRole implements RoleCollector {
 
     @Id
-    @ManyToMany
+    @ManyToOne
     private User user;
 
     @Id
-    @ManyToMany
+    @ManyToOne
     private Role role;
 
     @Embedded

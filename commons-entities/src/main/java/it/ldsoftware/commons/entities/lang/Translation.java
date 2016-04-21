@@ -1,7 +1,13 @@
 package it.ldsoftware.commons.entities.lang;
 
+import it.ldsoftware.commons.entities.base.BaseEntity;
+
 import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+
+import static javax.persistence.FetchType.EAGER;
 
 /**
  * Created by luca on 12/04/16.
@@ -10,10 +16,13 @@ import javax.persistence.MappedSuperclass;
  * the actual database representation
  */
 @MappedSuperclass
-public abstract class Translation {
+public abstract class Translation extends BaseEntity {
 
     @Column(length = 2, nullable = false)
     private String lang;
+
+//    @ManyToOne(fetch = EAGER)
+//    private Translatable<?> master;
 
     public String getLang() {
         return lang;
@@ -22,4 +31,12 @@ public abstract class Translation {
     public void setLang(String lang) {
         this.lang = lang;
     }
+
+//    public Translatable getMaster() {
+//        return master;
+//    }
+//
+//    public void setMaster(Translatable master) {
+//        this.master = master;
+//    }
 }
