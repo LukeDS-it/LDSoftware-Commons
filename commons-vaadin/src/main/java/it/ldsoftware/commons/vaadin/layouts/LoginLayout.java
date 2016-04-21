@@ -136,6 +136,21 @@ public class LoginLayout extends MVerticalLayout {
         return this;
     }
 
+    public LoginLayout withGoogleSignIn() {
+        // TODO
+        return this;
+    }
+
+    public LoginLayout withFacebookSignIn() {
+        // TODO
+        return this;
+    }
+
+    public LoginLayout withTwitterSignIn() {
+        // TODO
+        return this;
+    }
+
     private void openTermsOfService(ClickEvent event) {
         new TermsOfServiceDialog(msg).popup(TITLE_TOS);
     }
