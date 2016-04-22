@@ -9,6 +9,6 @@ import javax.persistence.Entity;
  * Translation of the role entity
  */
 @Entity
-public class RoleTranslation extends LookupTranslation {
+public class RoleTranslation extends LookupTranslation<Role> {
 
 }

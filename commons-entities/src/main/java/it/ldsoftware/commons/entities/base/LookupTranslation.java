@@ -10,6 +10,6 @@ import javax.persistence.MappedSuperclass;
  * 255 characters long description
  */
 @MappedSuperclass
-public abstract class LookupTranslation extends ShortTranslation {
+public abstract class LookupTranslation<L extends Lookup> extends ShortTranslation<L> {
 
 }

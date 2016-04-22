@@ -24,13 +24,14 @@ import static javax.persistence.FetchType.EAGER;
  * translations (even if this is not optimal DB-wise)
  */
 @MappedSuperclass
+@SuppressWarnings("unchecked")
 public abstract class Translatable<T extends Translation> extends BaseEntity {
 
     @Column(length = 2)
     private String defaultLang;
 
     @MapKey(name = "lang")
-    @OneToMany(fetch = EAGER, cascade = ALL, orphanRemoval = true)
+    @OneToMany(fetch = EAGER, cascade = ALL, orphanRemoval = true, mappedBy = "master")
     private final Map<String, T> translations = new HashMap<>();
 
     public Map<String, T> getTranslations() {
@@ -43,7 +44,10 @@ public abstract class Translatable<T extends Translation> extends BaseEntity {
         if (hasLanguage(lang))
             throw new IllegalArgumentException("warning.duplicate.translation");
 
-//        translation.setMaster(this);
+        translation.setMaster(this);
+        if (translations.size() == 0 && defaultLang == null)
+            defaultLang = translation.getLang();
+
         translations.put(lang, translation);
     }
 

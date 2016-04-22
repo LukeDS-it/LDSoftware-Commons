@@ -9,5 +9,5 @@ import javax.persistence.Entity;
  * Translation of the group
  */
 @Entity
-public class GroupTranslation extends LookupTranslation {
+public class GroupTranslation extends LookupTranslation<Group> {
 }

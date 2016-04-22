@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
  * extend this if you need a translation with max 255 characters length
  */
 @MappedSuperclass
-public abstract class ShortTranslation extends Translation {
+public abstract class ShortTranslation<E extends Translatable> extends Translation<E> {
 
     @NotNull
     @Column(nullable = false)
@@ -27,5 +27,10 @@ public abstract class ShortTranslation extends Translation {
     @Override
     public String toString() {
         return getContent();
+    }
+
+    public ShortTranslation<E> withContent(String content) {
+        setContent(content);
+        return this;
     }
 }
