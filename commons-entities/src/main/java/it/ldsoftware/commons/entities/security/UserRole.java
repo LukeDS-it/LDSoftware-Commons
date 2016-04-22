@@ -24,6 +24,8 @@ public class UserRole implements RoleCollector {
     @ManyToOne
     private Role role;
 
+    private String domain;
+
     @Embedded
     RoleModifiers modifiers;
 
@@ -104,5 +106,13 @@ public class UserRole implements RoleCollector {
 
     public boolean isExecuteAllowed() {
         return getModifiers().isExecute();
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 }

@@ -31,7 +31,7 @@ public class UserForm extends AbstractPersonForm<User> implements RoleAdder, Gro
     private RolesDetailTab rolesDetailTab;
     private GroupsDetailTab groupsTab;
 
-    private TextField username;
+    private TextField username, primaryEmail;
     private PasswordField password, confirmPassword;
     private CheckBox enabled;
 
@@ -43,11 +43,15 @@ public class UserForm extends AbstractPersonForm<User> implements RoleAdder, Gro
         password = new MPasswordField(getTranslator().translate(getTextFieldName("password"))).withWidth(FIELD_WIDTH).withNullRepresentation("");
         confirmPassword = new MPasswordField(getTranslator().translate(getTextFieldName("confirmPassword"))).withWidth(FIELD_WIDTH).withNullRepresentation("");
         enabled = new CheckBox(getTranslator().translate(getCheckboxName("enabled")));
+        primaryEmail = new MTextField(getTranslator().translate(getTextFieldName("primaryEmail"))).withWidth(FIELD_WIDTH).withNullRepresentation("");
 
+        generalTab.addComponentAsFirst(primaryEmail);
         generalTab.addComponentAsFirst(confirmPassword);
         generalTab.addComponentAsFirst(password);
         generalTab.addComponentAsFirst(username);
         generalTab.addComponent(enabled);
+
+        wireEvents();
     }
 
     @Override
@@ -99,6 +103,14 @@ public class UserForm extends AbstractPersonForm<User> implements RoleAdder, Gro
     private void addGroupsTab() {
         groupsTab = new GroupsDetailTab(getTranslator(), getDatabaseService(), this);
         addTab(groupsTab, getTranslator().translate(TAB_GROUPS));
+    }
+
+    private void wireEvents() {
+        username.addValueChangeListener(l -> signalChange());
+        password.addValueChangeListener(l -> signalChange());
+        confirmPassword.addValueChangeListener(l -> signalChange());
+        enabled.addValueChangeListener(l -> signalChange());
+        primaryEmail.addValueChangeListener(l -> signalChange());
     }
 
     boolean isChangedPassword() {

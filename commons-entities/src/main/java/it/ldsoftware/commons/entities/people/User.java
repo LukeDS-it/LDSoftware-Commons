@@ -37,6 +37,10 @@ public class User extends Person {
     @NotNull(groups = NewUserValidationGroup.class)
     private String confirmPassword;
 
+    @Column(nullable = false)
+    @NotNull
+    private String primaryEmail;
+
     private boolean enabled = false;
 
     @OneToMany
@@ -107,5 +111,13 @@ public class User extends Person {
 
     public void setDomains(Set<String> domains) {
         this.domains = domains;
+    }
+
+    public String getPrimaryEmail() {
+        return primaryEmail;
+    }
+
+    public void setPrimaryEmail(String primaryEmail) {
+        this.primaryEmail = primaryEmail;
     }
 }

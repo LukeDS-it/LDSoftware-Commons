@@ -78,6 +78,18 @@ public class UserUtil {
      * @return true or false
      */
     public static boolean isCurrentUserEnabled(String role) {
+        return isCurrentUserEnabled(role, null);
+    }
+
+    /**
+     * Returns if the current user can access the function specified in the role
+     * and in that domain (if the application is spread on many domains)
+     *
+     * @param role   name of the role (with ROLE_ prefix)
+     * @param domain the name of the current domain (ex. ldsoftware.it)
+     * @return true or false
+     */
+    public static boolean isCurrentUserEnabled(String role, String domain) {
         return (role.equals(ROLE_ANONYMOUS) || containsRole(role) || isCurrentUserSuperAdmin());
     }
 
@@ -91,10 +103,15 @@ public class UserUtil {
         return containsRole(ROLE_SUPERADMIN);
     }
 
-    private static boolean containsRole(String role) {
+    private static boolean containsRole(String role, String domain) {
+        // TODO
         UserDTO user = getCurrentUser();
         return (user != null && (user.getAuthorities().size() > 0
                 && user.getAuthorities().stream().filter(r -> r.getAuthority().equals(role)).count() > 0));
+    }
+
+    private static boolean containsRole(String role) {
+        return containsRole(role, null);
     }
 
 }
