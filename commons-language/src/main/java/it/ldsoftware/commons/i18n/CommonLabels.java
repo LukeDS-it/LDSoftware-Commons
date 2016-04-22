@@ -15,7 +15,8 @@ public class CommonLabels {
             ERROR_BAD_CREDENTIALS = "error.bad.credentials", ERROR_DISABLED = "error.disabled",
             ERROR_LOGIN_ACCOUNT = "error.login.account", ERROR_LOGIN_GENERIC = "error.login.generic";
 
-    public static final String LABEL_LOGIN = "label.login";
+    public static final String LABEL_LOGIN = "label.login", LABEL_ADD_ROLE = "label.add.role",
+            LABEL_ADD_GROUP = "label.add.group";
 
     public static final String BTN_ADD = "btn.add";
 
@@ -32,6 +33,8 @@ public class CommonLabels {
             MSG_SAVE_SUCCESS = "msg.save.success",
             MSG_TERM_SERVICE = "msg.term.service", MSG_SAVE_ERROR = "msg.save.error",
             MSG_INS_ERROR = "msg.ins.error";
+
+    public static final String TAB_ROLES = "tab.roles", TAB_GROUPS = "tab.groups";
 
     public static String getTextFieldName(String field) {
         return "txt." + field;

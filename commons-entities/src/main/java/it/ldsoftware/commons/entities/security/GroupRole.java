@@ -51,4 +51,24 @@ public class GroupRole implements RoleCollector {
     public void setModifiers(RoleModifiers modifiers) {
         this.modifiers = modifiers;
     }
+
+    public String getAuthority() {
+        return getRole().getCode();
+    }
+
+    public boolean isInsertAllowed() {
+        return getModifiers().isInsert();
+    }
+
+    public boolean isEditAllowed() {
+        return getModifiers().isEdit();
+    }
+
+    public boolean isDeleteAllowed() {
+        return getModifiers().isDelete();
+    }
+
+    public boolean isExecuteAllowed() {
+        return getModifiers().isExecute();
+    }
 }

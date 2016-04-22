@@ -52,4 +52,57 @@ public class UserRole implements RoleCollector {
     public void setModifiers(RoleModifiers modifiers) {
         this.modifiers = modifiers;
     }
+
+    public UserRole withRole(Role r) {
+        setRole(r);
+        return this;
+    }
+
+    public UserRole withDeleteAllowed(boolean value) {
+        if (modifiers == null)
+            modifiers = new RoleModifiers();
+        modifiers.setDelete(value);
+        return this;
+    }
+
+    public UserRole withEditAllowed(boolean value) {
+        if (modifiers == null)
+            modifiers = new RoleModifiers();
+        modifiers.setEdit(value);
+        return this;
+    }
+
+    public UserRole withExecuteAllowed(boolean value) {
+        if (modifiers == null)
+            modifiers = new RoleModifiers();
+        modifiers.setExecute(value);
+        return this;
+    }
+
+    public UserRole withInsertAllowed(boolean value) {
+        if (modifiers == null)
+            modifiers = new RoleModifiers();
+        modifiers.setInsert(value);
+        return this;
+    }
+
+    public String getAuthority() {
+        return getRole().getCode();
+    }
+
+    public boolean isInsertAllowed() {
+        return getModifiers().isInsert();
+    }
+
+    public boolean isEditAllowed() {
+        return getModifiers().isEdit();
+    }
+
+    public boolean isDeleteAllowed() {
+        return getModifiers().isDelete();
+    }
+
+    public boolean isExecuteAllowed() {
+        return getModifiers().isExecute();
+    }
 }

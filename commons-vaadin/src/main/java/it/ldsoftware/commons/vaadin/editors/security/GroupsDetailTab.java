@@ -5,11 +5,15 @@ import it.ldsoftware.commons.dto.security.GroupDTO;
 import it.ldsoftware.commons.entities.security.Group;
 import it.ldsoftware.commons.i18n.LocalizationService;
 import it.ldsoftware.commons.services.interfaces.DatabaseService;
-import it.ldsoftware.commons.vaadin.components.DTOGrid;
+import it.ldsoftware.commons.util.UserUtil;
 import it.ldsoftware.commons.vaadin.layouts.AbstractDetailTab;
 import it.ldsoftware.commons.vaadin.util.GroupAdder;
 
 import java.util.List;
+
+import static it.ldsoftware.commons.i18n.CommonLabels.LABEL_ADD_GROUP;
+import static it.ldsoftware.commons.util.UserUtil.isCurrentUserSuperAdmin;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by luca on 22/04/16.
@@ -19,8 +23,8 @@ public class GroupsDetailTab extends AbstractDetailTab<Group, GroupDTO> {
 
     private GroupAdder father;
 
-    public GroupsDetailTab(LocalizationService localizationService, DatabaseService databaseService, String labelCaption, GroupAdder father) {
-        super(localizationService, databaseService, labelCaption);
+    public GroupsDetailTab(LocalizationService localizationService, DatabaseService databaseService, GroupAdder father) {
+        super(localizationService, databaseService, LABEL_ADD_GROUP);
         this.father = father;
     }
 
@@ -53,7 +57,12 @@ public class GroupsDetailTab extends AbstractDetailTab<Group, GroupDTO> {
 
     @Override
     public List<Group> getDetailChoice() {
-        return null;
+        // The user can assign all groups if he/she is super administrator
+        if (isCurrentUserSuperAdmin())
+            return getDatabaseService().findAll(Group.class);
+
+        // Else can assign only the groups he/she is part of
+        return UserUtil.getCurrentUser().getGroups().stream().map(dto -> getDatabaseService().findOne(Group.class, dto.getId())).collect(toList());
     }
 
     @Override

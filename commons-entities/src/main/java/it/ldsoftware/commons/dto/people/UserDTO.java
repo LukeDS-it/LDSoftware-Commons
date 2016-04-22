@@ -1,7 +1,9 @@
 package it.ldsoftware.commons.dto.people;
 
 import it.ldsoftware.commons.dto.base.BaseDTO;
+import it.ldsoftware.commons.dto.security.GroupDTO;
 import it.ldsoftware.commons.entities.people.User;
+import it.ldsoftware.commons.entities.security.Group;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,11 +24,8 @@ public class UserDTO extends BaseDTO<User> implements UserDetails {
 
     private String username, password;
     private final Set<GrantedAuthority> authorities = new HashSet<>();
+    private final Set<GroupDTO> groups = new HashSet<>();
     private boolean enabled;
-
-    public UserDTO(User entity, Locale locale) {
-        this(entity);
-    }
 
     public UserDTO(User entity) {
         super(entity);
@@ -93,5 +92,9 @@ public class UserDTO extends BaseDTO<User> implements UserDetails {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Set<GroupDTO> getGroups() {
+        return groups;
     }
 }

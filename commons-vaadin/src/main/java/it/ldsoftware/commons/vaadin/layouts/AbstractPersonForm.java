@@ -90,7 +90,7 @@ public abstract class AbstractPersonForm<T extends Person> extends TabbedForm<T>
     }
 
     @Override
-    void setBean(T bean) {
+    public void setBean(T bean) {
         super.setBean(bean);
         updateGrids(bean);
     }

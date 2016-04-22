@@ -246,6 +246,10 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
         return new Class<?>[]{};
     }
 
+    public AbstractEditorForm<E> form() {
+        return editorForm;
+    }
+
     public void preSaveAction() {
     }
 

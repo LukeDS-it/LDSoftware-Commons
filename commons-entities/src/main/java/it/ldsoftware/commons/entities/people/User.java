@@ -2,6 +2,7 @@ package it.ldsoftware.commons.entities.people;
 
 import it.ldsoftware.commons.entities.security.Group;
 import it.ldsoftware.commons.entities.security.UserRole;
+import it.ldsoftware.commons.util.PersonType;
 import it.ldsoftware.commons.validation.groups.NewUserValidationGroup;
 
 import javax.persistence.*;
@@ -20,6 +21,10 @@ import java.util.Set;
 @PrimaryKeyJoinColumn(name = "id")
 public class User extends Person {
 
+    public User() {
+        setPersonType(PersonType.REAL);
+    }
+
     @NotNull
     @Column(nullable = false)
     private String username;
@@ -32,7 +37,7 @@ public class User extends Person {
     @NotNull(groups = NewUserValidationGroup.class)
     private String confirmPassword;
 
-    private boolean enabled;
+    private boolean enabled = false;
 
     @OneToMany
     private Set<UserRole> userRoles = new HashSet<>();

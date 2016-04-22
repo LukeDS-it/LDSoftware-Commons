@@ -53,12 +53,12 @@ public abstract class AbstractEditorForm<E extends BaseEntity> extends MVertical
         return errors;
     }
 
-    void setBean(E bean) {
+    public void setBean(E bean) {
         this.bean = bean;
         BeanBinder.bind(bean, this);
     }
 
-    E getBean() {
+    public E getBean() {
         return bean;
     }
 

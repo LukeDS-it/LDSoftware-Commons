@@ -11,7 +11,6 @@ import it.ldsoftware.commons.i18n.LocalizationService;
 import it.ldsoftware.commons.services.interfaces.DatabaseService;
 import it.ldsoftware.commons.vaadin.components.DTOGrid;
 import it.ldsoftware.commons.vaadin.dialogs.SelectDialog;
-import org.h2.store.Data;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
@@ -23,9 +22,7 @@ import static com.vaadin.server.FontAwesome.ELLIPSIS_H;
 import static com.vaadin.server.FontAwesome.REFRESH;
 import static com.vaadin.server.Sizeable.Unit.PIXELS;
 import static com.vaadin.ui.AbstractSelect.ItemCaptionMode.EXPLICIT_DEFAULTS_ID;
-import static it.ldsoftware.commons.i18n.CommonLabels.BTN_ADD;
-import static it.ldsoftware.commons.i18n.CommonLabels.TITLE_SELECT_ELEMENTS;
-import static it.ldsoftware.commons.i18n.CommonLabels.TOOLTIP_REFRESH;
+import static it.ldsoftware.commons.i18n.CommonLabels.*;
 import static it.ldsoftware.commons.vaadin.theme.MetricConstants.FIELD_WIDTH;
 
 /**
@@ -40,7 +37,6 @@ import static it.ldsoftware.commons.vaadin.theme.MetricConstants.FIELD_WIDTH;
 public abstract class AbstractDetailTab<E extends BaseEntity, D extends BaseDTO<E>> extends MVerticalLayout {
 
     private DTOGrid<E, D> grid;
-    private Label label;
     private ComboBox combo;
     private Button btnRefresh, btnAdd, btnBrowse;
 
@@ -57,7 +53,7 @@ public abstract class AbstractDetailTab<E extends BaseEntity, D extends BaseDTO<
         grid.refresh(entities);
     }
 
-    public Object getDetailValue() {
+    protected Object getDetailValue() {
         return combo.getValue();
     }
 
@@ -80,7 +76,7 @@ public abstract class AbstractDetailTab<E extends BaseEntity, D extends BaseDTO<
                 .withDeleteColumn(this::removeFromMaster);
         customizeGrid(grid);
 
-        label = new Label(localizationService.translate(labelCaption));
+        Label label = new Label(localizationService.translate(labelCaption));
         combo = new ComboBox();
         combo.setWidth(FIELD_WIDTH);
 
@@ -110,11 +106,11 @@ public abstract class AbstractDetailTab<E extends BaseEntity, D extends BaseDTO<
                 .forEach(ogg -> combo.setItemCaption(ogg, getCaption(ogg)));
     }
 
-    public LocalizationService getLocalizationService() {
+    protected LocalizationService getLocalizationService() {
         return localizationService;
     }
 
-    public DatabaseService getDatabaseService() {
+    protected DatabaseService getDatabaseService() {
         return databaseService;
     }
 
@@ -123,7 +119,7 @@ public abstract class AbstractDetailTab<E extends BaseEntity, D extends BaseDTO<
      *
      * @param sd the select dialog to customize
      */
-    public void customizeSelectDialog(SelectDialog<E, D> sd) {
+    protected void customizeSelectDialog(SelectDialog<E, D> sd) {
 
     }
 
@@ -132,7 +128,7 @@ public abstract class AbstractDetailTab<E extends BaseEntity, D extends BaseDTO<
      *
      * @return a string with the title of the select dialog
      */
-    public String getDialogTitle() {
+    protected String getDialogTitle() {
         return localizationService.translate(TITLE_SELECT_ELEMENTS);
     }
 
@@ -141,7 +137,7 @@ public abstract class AbstractDetailTab<E extends BaseEntity, D extends BaseDTO<
      *
      * @param grid the grid to customize
      */
-    public void customizeGrid(DTOGrid<E, D> grid) {
+    protected void customizeGrid(DTOGrid<E, D> grid) {
 
     }
 

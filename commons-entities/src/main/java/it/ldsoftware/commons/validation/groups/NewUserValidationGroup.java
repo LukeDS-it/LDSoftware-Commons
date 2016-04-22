@@ -9,5 +9,5 @@ package it.ldsoftware.commons.validation.groups;
  * a new user, also the password and the password confirmation,
  * which must be identical.
  */
-public class NewUserValidationGroup extends PersonValidationGroup {
+public class NewUserValidationGroup extends UserValidationGroup {
 }
