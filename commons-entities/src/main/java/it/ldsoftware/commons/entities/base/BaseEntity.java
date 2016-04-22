@@ -1,5 +1,8 @@
 package it.ldsoftware.commons.entities.base;
 
+import it.ldsoftware.commons.query.Filter;
+import it.ldsoftware.commons.util.ContactType;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;

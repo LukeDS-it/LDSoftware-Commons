@@ -5,4 +5,5 @@ package it.ldsoftware.commons.util;
  * Defines the type of a contact
  */
 public enum ContactType {
+    EMAIL, MOBILE_PHONE, PHONE, CERT_EMAIL, WEBSITE, FAX
 }

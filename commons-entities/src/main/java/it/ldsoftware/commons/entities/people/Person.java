@@ -42,6 +42,8 @@ public class Person extends BaseEntity {
 
     private String uniqueId;
 
+    private String vatInfo;
+
     @Column(length = 1)
     private String sex;
 
@@ -140,8 +142,21 @@ public class Person extends BaseEntity {
         this.contacts = contacts;
     }
 
+    public String getVatInfo() {
+        return vatInfo;
+    }
+
+    public void setVatInfo(String vatInfo) {
+        this.vatInfo = vatInfo;
+    }
+
     @Override
     public String toString() {
         return super.toString() + ", " + fullName;
+    }
+
+    public void addContact(Contact c) {
+        contacts.add(c);
+        c.setPerson(this);
     }
 }

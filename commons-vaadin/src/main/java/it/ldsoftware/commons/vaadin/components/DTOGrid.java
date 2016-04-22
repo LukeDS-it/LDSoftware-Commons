@@ -8,6 +8,7 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.GeneratedPropertyContainer;
 import com.vaadin.data.util.PropertyValueGenerator;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
@@ -15,6 +16,7 @@ import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
+import com.vaadin.ui.renderers.Renderer;
 import de.datenhahn.vaadin.componentrenderer.ComponentRenderer;
 import it.ldsoftware.commons.dto.base.BaseDTO;
 import it.ldsoftware.commons.entities.base.BaseEntity;
@@ -221,6 +223,11 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
 
     public DTOGrid<E, D> withCaption(String caption) {
         setCaption(caption);
+        return this;
+    }
+
+    public <T> DTOGrid<E, D> withColumnRenderer(String column, Renderer<T> renderer, Converter<? extends T, ?> converter) {
+        getColumn(column).setRenderer(renderer, converter);
         return this;
     }
 

@@ -1,6 +1,7 @@
 package it.ldsoftware.commons.entities.people;
 
 import it.ldsoftware.commons.entities.base.BaseEntity;
+import it.ldsoftware.commons.query.Filter;
 import it.ldsoftware.commons.util.ContactType;
 
 import javax.persistence.Column;
@@ -50,5 +51,15 @@ public class Contact extends BaseEntity {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public Contact withContactType(ContactType value) {
+        setContactType(value);
+        return this;
+    }
+
+    public Contact withValue(String value) {
+        setValue(value);
+        return this;
     }
 }

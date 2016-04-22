@@ -26,6 +26,7 @@ public abstract class TabbedForm<E extends BaseEntity> extends AbstractEditorFor
 
         createGeneralTab();
         addComponent(tabs);
+        addOtherTabs();
     }
 
     private void createGeneralTab() {
@@ -40,6 +41,14 @@ public abstract class TabbedForm<E extends BaseEntity> extends AbstractEditorFor
 
     public void addToGeneral(Component component) {
         generalTab.addComponent(component);
+    }
+
+    /**
+     * Implement this method if you wish to add more tabs to the
+     * form. Call method addTab(Component, String) to effectively
+     * add the tabs.
+     */
+    public void addOtherTabs() {
     }
 
     abstract void addGeneralContent(VerticalLayout generalTab);
