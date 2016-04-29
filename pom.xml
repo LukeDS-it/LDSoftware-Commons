@@ -24,6 +24,7 @@
         <entities.version>0.0.1-SNAPSHOT</entities.version>
         <lds.vaadin.version>0.0.1-SNAPSHOT</lds.vaadin.version>
         <lds.language.version>0.0.1-SNAPSHOT</lds.language.version>
+        <lds.text.compiler.version>0.0.1-SNAPSHOT</lds.text.compiler.version>
         <querydsl.version>3.7.2</querydsl.version>
         <commons.version>3.4</commons.version>
     </properties>
@@ -133,6 +134,7 @@
         <module>commons-entities</module>
         <module>commons-vaadin</module>
         <module>commons-language</module>
+        <module>commons-text-compiler</module>
     </modules>
 
     <developers>

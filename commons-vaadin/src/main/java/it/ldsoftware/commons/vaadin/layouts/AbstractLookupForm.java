@@ -56,7 +56,7 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
     }
 
     @Override
-    void addGeneralContent(VerticalLayout generalTab) {
+    public void addGeneralContent(VerticalLayout generalTab) {
         code = new MTextField(getTranslator().translate("txt.code")).withWidth(FIELD_WIDTH);
         code.addTextChangeListener(l -> signalChange());
 
@@ -161,7 +161,7 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
     }
 
     @Override
-    void selectFirstField() {
+    public void selectFirstField() {
         code.focus();
     }
 

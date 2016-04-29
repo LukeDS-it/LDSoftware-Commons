@@ -51,5 +51,5 @@ public abstract class TabbedForm<E extends BaseEntity> extends AbstractEditorFor
     public void addOtherTabs() {
     }
 
-    abstract void addGeneralContent(VerticalLayout generalTab);
+    public abstract void addGeneralContent(VerticalLayout generalTab);
 }

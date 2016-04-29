@@ -41,7 +41,7 @@ public abstract class AbstractPersonForm<T extends Person> extends TabbedForm<T>
     private DTOGrid<Contact, ContactDTO> contacts;
 
     @Override
-    void addGeneralContent(VerticalLayout generalTab) {
+    public void addGeneralContent(VerticalLayout generalTab) {
         createFields();
         wireEvents();
 
@@ -50,7 +50,7 @@ public abstract class AbstractPersonForm<T extends Person> extends TabbedForm<T>
     }
 
     @Override
-    void selectFirstField() {
+    public void selectFirstField() {
         name.focus();
     }
 
@@ -95,7 +95,7 @@ public abstract class AbstractPersonForm<T extends Person> extends TabbedForm<T>
         updateGrids(bean);
     }
 
-    public void switchFields(PersonType personType) {
+    protected void switchFields(PersonType personType) {
         switch (personType) {
             case REAL:
                 name.setVisible(true);
@@ -136,9 +136,7 @@ public abstract class AbstractPersonForm<T extends Person> extends TabbedForm<T>
         vatInfo.addValueChangeListener(l -> signalChange());
         birthDate.addValueChangeListener(l -> signalChange());
         sex.addValueChangeListener(l -> signalChange());
-        personType.addValueChangeListener(l -> {
-            switchFields((PersonType) l.getProperty().getValue());
-        });
+        personType.addValueChangeListener(l -> switchFields((PersonType) l.getProperty().getValue()));
     }
 
     private void removeFromMaster(List<ContactDTO> dtoList) {

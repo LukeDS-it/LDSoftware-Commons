@@ -62,7 +62,7 @@ public abstract class AbstractEditorForm<E extends BaseEntity> extends MVertical
         return bean;
     }
 
-    abstract void selectFirstField();
+    public abstract void selectFirstField();
 
     public void signalChange() {
         hasNotSavedChanges = true;
