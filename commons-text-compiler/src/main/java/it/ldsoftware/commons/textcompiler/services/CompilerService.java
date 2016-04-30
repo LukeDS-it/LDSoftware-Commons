@@ -7,12 +7,15 @@ import it.ldsoftware.commons.textcompiler.entities.AbstractModelTranslation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by Luca on 28/04/2016.
+ * @author luca
  *
  * This service is used to compile models. The primary functions are made to work with any kind of object
  * other than the entities so your project is not tied to use the entity from the database to compile a model
@@ -66,29 +69,10 @@ public class CompilerService {
      * @return the string with the placeholder replaced
      */
     public String compileStringAgainst(String string, String defaultReplacement, Locale locale, Object... objects) {
-        Pattern placeholderPattern = Pattern.compile("\\$\\{(.*)\\}");
-        Matcher matcher = placeholderPattern.matcher(string);
-        while (matcher.matches()) {
-            String property = matcher.group(0);
-            String value = getPropertyOnObjects(property, objects);
-            if (value == null)
-                value = defaultReplacement;
-            string = matcher.replaceFirst(value);
-            matcher.reset();
-        }
+        string = replaceLists(string, defaultReplacement, objects);
+        string = replacePlaceholders(string, defaultReplacement, objects);
+        string = replaceModels(string, defaultReplacement, locale, objects);
 
-        Pattern listPattern = Pattern.compile("£\\{(.*)\\}"); // FIXME
-
-        Pattern modelPattern = Pattern.compile("#\\{([0-9]*)\\}");
-        matcher = modelPattern.matcher(string);
-        while (matcher.matches()) {
-            String modelNo = matcher.group(0);
-            CompiledModel cm = compileModel(svc.findOne(AbstractModel.class, Long.parseLong(modelNo)),
-                    locale, defaultReplacement, objects);
-            String replacement = cm.getBody();
-            string = matcher.replaceFirst(replacement);
-            matcher.reset();
-        }
         return string;
     }
 
@@ -111,10 +95,168 @@ public class CompilerService {
         );
     }
 
-    private String getPropertyOnObjects(String propertyName, Object... objects) {
-        String s = null;
+    /**
+     * Replace all the list placeholders in the model.
+     * List start is marked by £{ObjectClass[.subProperty].collectionProperty}.
+     * List end is marked by £{/}.
+     * Anything that is in between list start and list end is the body of the loop
+     * and will be repeated for each element in the list.
+     *
+     * @param string             the model as is
+     * @param defaultReplacement the default replacement
+     * @param objects            object list
+     * @return the model with lists replaced
+     */
+    private String replaceLists(String string, String defaultReplacement, Object... objects) {
+        Pattern listPattern = Pattern.compile("£\\{(.*)\\}");
+        Matcher matcher = listPattern.matcher(string);
+        int opened = 0;
+        while (matcher.find()) {
+            if (matcher.group(1).trim().equals("/"))
+                opened--;
+            else
+                opened++;
+            if (opened < 0)
+                throw new IllegalArgumentException("There is a list closer before a list opener.");
+        }
+        if (opened > 0)
+            throw new IllegalArgumentException("There are more list openers than list closers.");
+
         // TODO
+        return string;
+    }
+
+    /**
+     * Replace all the single placeholders in the model.
+     * Placeholder is marked as ${ClassName.property[.subProperty[...]]}.
+     * <p>
+     * Caveat: do not use before list replacement or every sub-property in the list
+     * will be substituted with the default replacement string.
+     *
+     * @param string             model
+     * @param defaultReplacement default replacement
+     * @param objects            object list
+     * @return the model with placeholders replaced.
+     */
+    private String replacePlaceholders(String string, String defaultReplacement, Object... objects) {
+        Pattern placeholderPattern = Pattern.compile("\\$\\{(.*)\\}");
+        Matcher matcher = placeholderPattern.matcher(string);
+        while (matcher.find()) {
+            String property = matcher.group(1).trim();
+            String value = getPropertyFromObjects(property, objects);
+            if (value == null)
+                value = defaultReplacement;
+            string = matcher.replaceFirst(value);
+            matcher.reset();
+        }
+        return string;
+    }
+
+    /**
+     * Replaces all the models in the model.
+     * Models are marked as #{modelNo} with modelNo as a long number
+     * that marks the model to be searched for in the database (that is
+     * why all the models must stored in the same table).
+     * <p>
+     * The function replaces the model placeholder with the CONTENT of the
+     * model.
+     *
+     * @param string             model
+     * @param defaultReplacement default replacement
+     * @param locale             locale to translate the model
+     * @param objects            object list
+     * @return the model with sub-models replaced.
+     */
+    private String replaceModels(String string, String defaultReplacement, Locale locale, Object... objects) {
+        Matcher matcher;
+        Pattern modelPattern = Pattern.compile("#\\{([0-9]*)\\}");
+        matcher = modelPattern.matcher(string);
+        while (matcher.find()) {
+            String modelNo = matcher.group(1).trim();
+            CompiledModel cm = compileModel(svc.findOne(AbstractModel.class, Long.parseLong(modelNo)),
+                    locale, defaultReplacement, objects);
+            String replacement = cm.getBody();
+            string = matcher.replaceFirst(replacement);
+            matcher.reset();
+        }
+        return string;
+    }
+
+    /**
+     * Gets the string that matches a certain property from an array of objects
+     *
+     * @param propertyName the property path (should be ClassName.property1[.property2[...]])
+     * @param objects      all the objects that might contain the property
+     * @return the string representation of that property, or null if not found.
+     */
+    private String getPropertyFromObjects(String propertyName, Object... objects) {
+        String s = null;
+
+        String[] propertyPath = propertyName.split("\\.");
+        Object match = getObjectMatching(propertyPath[0], objects);
+
+        if (match != null) {
+            for (String prop : propertyPath) {
+                boolean got = false;
+                Class<?> objClass = match.getClass();
+
+                try {
+                    Field field = objClass.getField(prop);
+                    match = field.get(match);
+                    got = true;
+                } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ignored) {
+
+                }
+
+                if (!got) {
+                    try {
+                        Method getter = objClass.getMethod("get" + prop.substring(0, 1).toUpperCase() + prop.substring(1));
+                        match = getter.invoke(match);
+                        got = true;
+                    } catch (NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException | IllegalAccessException ignored) {
+
+                    }
+                }
+
+                if (!got) {
+                    try {
+                        Method getter = objClass.getMethod("is" + prop.substring(0, 1).toUpperCase() + prop.substring(1));
+                        match = getter.invoke(match);
+                        got = true;
+                    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ignored) {
+
+                    }
+                }
+
+                if (!got) {
+                    try {
+                        Method getter = objClass.getMethod(prop);
+                        match = getter.invoke(match);
+                    } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ignored) {
+
+                    }
+                }
+            }
+
+            s = match.toString();
+        }
+
         return s;
+    }
+
+    /**
+     * Gets the object that matches a given class name from a list of objects
+     *
+     * @param className the class name
+     * @param objects   list of objects
+     * @return the object that has the same name as the class name, case ignored, or null if not found
+     */
+    private Object getObjectMatching(String className, Object... objects) {
+        for (Object o : objects) {
+            if (o.getClass().getSimpleName().equalsIgnoreCase(className))
+                return o;
+        }
+        return null;
     }
 
 }
