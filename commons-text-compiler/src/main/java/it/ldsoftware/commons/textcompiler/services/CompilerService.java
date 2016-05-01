@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -111,19 +112,54 @@ public class CompilerService {
         Pattern listPattern = Pattern.compile("£\\{(.*)\\}");
         Matcher matcher = listPattern.matcher(string);
         int opened = 0;
+
         while (matcher.find()) {
             if (matcher.group(1).trim().equals("/"))
                 opened--;
             else
                 opened++;
+
             if (opened < 0)
                 throw new IllegalArgumentException("There is a list closer before a list opener.");
         }
         if (opened > 0)
             throw new IllegalArgumentException("There are more list openers than list closers.");
 
-        // TODO
+        while (matcher.find()) {
+            Collection<?> collection = null;
+            int bodyStart = 0;
+            int listStart = 0;
+            int bodyEnd;
+            int listEnd;
+
+            if (matcher.group(1).trim().equals("/"))
+                opened--;
+            else
+                opened++;
+
+            if (opened == 1) {
+                bodyStart = matcher.end();
+                listStart = matcher.start();
+                collection = (Collection<?>) getPropertyFromObjects(matcher.group(1), objects);
+            }
+            if (opened == 0) {
+                bodyEnd = matcher.start();
+                listEnd = matcher.end();
+                String allList = string.substring(listStart, listEnd);
+                string = string.replace(allList, iterateList(string.substring(bodyStart, bodyEnd), defaultReplacement, collection));
+                matcher.reset(string);
+            }
+        }
+
         return string;
+    }
+
+    private String iterateList(String listBody, String defaultReplacement, Collection<?> elements) {
+        String tmp = "";
+        for (Object el : elements) {
+            tmp += replacePlaceholders(listBody, defaultReplacement, el);
+        }
+        return tmp;
     }
 
     /**
@@ -143,11 +179,12 @@ public class CompilerService {
         Matcher matcher = placeholderPattern.matcher(string);
         while (matcher.find()) {
             String property = matcher.group(1).trim();
-            String value = getPropertyFromObjects(property, objects);
-            if (value == null)
-                value = defaultReplacement;
-            string = matcher.replaceFirst(value);
-            matcher.reset();
+            Object value = getPropertyFromObjects(property, objects);
+            String strValue = defaultReplacement;
+            if (value != null)
+                strValue = value.toString();
+            string = matcher.replaceFirst(strValue);
+            matcher.reset(string);
         }
         return string;
     }
@@ -177,21 +214,19 @@ public class CompilerService {
                     locale, defaultReplacement, objects);
             String replacement = cm.getBody();
             string = matcher.replaceFirst(replacement);
-            matcher.reset();
+            matcher.reset(string);
         }
         return string;
     }
 
     /**
-     * Gets the string that matches a certain property from an array of objects
+     * Gets the object that matches a certain property from an array of objects
      *
      * @param propertyName the property path (should be ClassName.property1[.property2[...]])
      * @param objects      all the objects that might contain the property
-     * @return the string representation of that property, or null if not found.
+     * @return the object that responds to the property, or null if not found.
      */
-    private String getPropertyFromObjects(String propertyName, Object... objects) {
-        String s = null;
-
+    private Object getPropertyFromObjects(String propertyName, Object... objects) {
         String[] propertyPath = propertyName.split("\\.");
         Object match = getObjectMatching(propertyPath[0], objects);
 
@@ -237,11 +272,8 @@ public class CompilerService {
                     }
                 }
             }
-
-            s = match.toString();
         }
-
-        return s;
+        return match;
     }
 
     /**
