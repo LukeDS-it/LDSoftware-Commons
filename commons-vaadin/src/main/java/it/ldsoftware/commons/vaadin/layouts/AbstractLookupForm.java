@@ -140,7 +140,7 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
                 translation.focus();
                 translation.setValue("");
                 language.setValue(language.getNullSelectionItemId());
-                getParentLayout().saveAction(null);
+                getEditor().saveAction(null);
             } catch (IllegalArgumentException e) {
                 showNotification(getTranslator().translate(TITLE_GENERIC_WARNING),
                         getTranslator().translate(e.getMessage()), NOTIFICATION_WARNING);
@@ -167,7 +167,7 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
 
     private void deleteTranslation(Object itemId) {
         getBean().removeTranslation(((Translation) itemId).getLang());
-        getParentLayout().saveAction(null);
+        getEditor().saveAction(null);
     }
 
     @Override

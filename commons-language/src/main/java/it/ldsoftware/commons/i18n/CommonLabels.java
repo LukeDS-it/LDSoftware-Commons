@@ -9,11 +9,13 @@ public class CommonLabels {
             CANCEL = "cancel", USERNAME = "username", PASSWORD = "password", ADD = "add",
             DEFAULT = "default";
 
-    public static final String BTN_LOGIN = "btn.login";
+    public static final String BTN_LOGIN = "btn.login", BTN_GOOGLE_LOGIN = "btn.google.login",
+            BTN_TWITTER_LOGIN = "btn.twitter.login", BTN_FACEBOOK_LOGIN = "btn.facebook.login";
 
     public static final String ERROR_CREDENTIALS_EXPIRED = "error.credentials.expired",
             ERROR_BAD_CREDENTIALS = "error.bad.credentials", ERROR_DISABLED = "error.disabled",
-            ERROR_LOGIN_ACCOUNT = "error.login.account", ERROR_LOGIN_GENERIC = "error.login.generic";
+            ERROR_LOGIN_ACCOUNT = "error.login.account", ERROR_LOGIN_GENERIC = "error.login.generic",
+            ERROR_GOOGLE_AUTH_CONFIG = "error.google.auth.config";
 
     public static final String LABEL_LOGIN = "label.login", LABEL_ADD_ROLE = "label.add.role",
             LABEL_ADD_GROUP = "label.add.group";

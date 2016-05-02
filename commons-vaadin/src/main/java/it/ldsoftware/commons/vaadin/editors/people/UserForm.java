@@ -63,22 +63,22 @@ public class UserForm extends AbstractPersonForm<User> implements RoleAdder, Gro
 
     @Override
     public void addRoles(RoleCollector... roles) {
-        // TODO
+        getBean().addRoles(roles);
     }
 
     @Override
     public void remRoles(RoleCollector... roles) {
-        // TODO
+        getBean().remRoles(roles);
     }
 
     @Override
     public void addGroups(Group... groups) {
-        // TODO
+        getBean().addGroups(groups);
     }
 
     @Override
     public void remGroups(Group... groups) {
-        // TODO
+        getBean().remGroups(groups);
     }
 
     @Override

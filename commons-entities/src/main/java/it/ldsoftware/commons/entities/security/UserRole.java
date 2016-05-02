@@ -26,6 +26,12 @@ public class UserRole implements RoleCollector {
     @Embedded
     RoleModifiers modifiers;
 
+    public UserRole fromRoleCollector(RoleCollector rc) {
+        role = rc.getRole();
+        modifiers = rc.getModifiers();
+        return this;
+    }
+
     public User getUser() {
         return user;
     }
@@ -85,6 +91,11 @@ public class UserRole implements RoleCollector {
         return this;
     }
 
+    public UserRole withUser(User user) {
+        this.user = user;
+        return this;
+    }
+
     public String getAuthority() {
         return getRole().getCode();
     }
@@ -103,5 +114,21 @@ public class UserRole implements RoleCollector {
 
     public boolean isExecuteAllowed() {
         return getModifiers().isExecute();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserRole userRole = (UserRole) o;
+
+        return role.equals(userRole.role);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return role.hashCode();
     }
 }

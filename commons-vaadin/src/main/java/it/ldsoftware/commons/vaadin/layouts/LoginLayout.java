@@ -2,12 +2,17 @@ package it.ldsoftware.commons.vaadin.layouts;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.ValoTheme;
+import it.ldsoftware.commons.entities.base.AppProperty;
+import it.ldsoftware.commons.entities.base.QAppProperty;
 import it.ldsoftware.commons.i18n.LocalizationService;
+import it.ldsoftware.commons.services.interfaces.DatabaseService;
 import it.ldsoftware.commons.vaadin.dialogs.TermsOfServiceDialog;
 import it.ldsoftware.commons.vaadin.theme.MetricConstants;
+import it.ldsoftware.commons.vaadin.util.SecurityUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
@@ -21,7 +26,7 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import java.util.Locale;
 
 import static com.vaadin.event.ShortcutAction.KeyCode.ENTER;
-import static com.vaadin.server.FontAwesome.KEY;
+import static com.vaadin.server.FontAwesome.*;
 import static com.vaadin.ui.Alignment.MIDDLE_CENTER;
 import static com.vaadin.ui.themes.ValoTheme.*;
 import static it.ldsoftware.commons.i18n.CommonLabels.*;
@@ -34,6 +39,7 @@ import static it.ldsoftware.commons.i18n.CommonLabels.*;
 public class LoginLayout extends MVerticalLayout {
 
     private LocalizationService msg;
+    private DatabaseService service;
     private UI ui;
     private VaadinSecurity sec;
 
@@ -44,12 +50,15 @@ public class LoginLayout extends MVerticalLayout {
 
     private VerticalLayout form;
 
+    private HorizontalLayout additionalLogins;
+
     private CheckBox cb;
 
-    public LoginLayout(LocalizationService msg, UI ui, VaadinSecurity sec) {
+    public LoginLayout(LocalizationService msg, UI ui, VaadinSecurity sec, DatabaseService service) {
         this.msg = msg;
         this.ui = ui;
         this.sec = sec;
+        this.service = service;
 
         initComponents();
 
@@ -137,18 +146,65 @@ public class LoginLayout extends MVerticalLayout {
     }
 
     public LoginLayout withGoogleSignIn() {
-        // TODO
+        checkButtonLayoutExists();
+        Button btnGoogle = new MButton(msg.translate(BTN_GOOGLE_LOGIN))
+                .withStyleName(BUTTON_DANGER)
+                .withListener(this::googleLogin)
+                .withIcon(GOOGLE);
+        additionalLogins.addComponent(btnGoogle);
         return this;
     }
 
     public LoginLayout withFacebookSignIn() {
-        // TODO
+        checkButtonLayoutExists();
+        Button btnFacebook = new MButton(msg.translate(BTN_FACEBOOK_LOGIN))
+                .withStyleName(BUTTON_PRIMARY)
+                .withListener(this::facebookLogin)
+                .withIcon(FACEBOOK);
+        additionalLogins.addComponent(btnFacebook);
         return this;
     }
 
     public LoginLayout withTwitterSignIn() {
-        // TODO
+        checkButtonLayoutExists();
+        Button btnTwitter = new MButton(msg.translate(BTN_TWITTER_LOGIN))
+                .withStyleName(BUTTON_PRIMARY)
+                .withListener(this::twitterLogin)
+                .withIcon(TWITTER);
+        additionalLogins.addComponent(btnTwitter);
         return this;
+    }
+
+    private void checkButtonLayoutExists() {
+        if (additionalLogins == null) {
+            additionalLogins = new MHorizontalLayout();
+            addToForm(additionalLogins);
+        }
+    }
+
+    private void googleLogin(ClickEvent event) {
+        String callback = Page.getCurrent().getLocation() + "googleCallback";
+        String gK;
+        String gS;
+
+        try {
+            QAppProperty p = QAppProperty.appProperty;
+            gK = service.findOne(AppProperty.class, p.key.eq("google.client.id")).getStringVal();
+            gS = service.findOne(AppProperty.class, p.key.eq("google.client.secret")).getStringVal();
+
+            String redirect = SecurityUtils.getGoogleService(callback, gK, gS).getAuthorizationUrl(null);
+            ui.getPage().open(redirect, "_self");
+        } catch (NullPointerException e) {
+            errorLabel.setValue(msg.translate(ERROR_GOOGLE_AUTH_CONFIG));
+        }
+    }
+
+    private void facebookLogin(ClickEvent event) {
+        // TODO
+    }
+
+    private void twitterLogin(ClickEvent event) {
+        // TODO
     }
 
     private void openTermsOfService(ClickEvent event) {

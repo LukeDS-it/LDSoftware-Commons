@@ -81,7 +81,7 @@ public abstract class AbstractPersonForm<T extends Person> extends TabbedForm<T>
                             .withContactType((ContactType) contactType.getValue())
                             .withValue(contact.getValue());
                     getBean().addContact(c);
-                    getParentLayout().saveAction(null);
+                    getEditor().saveAction(null);
                 });
 
         VerticalLayout contactsTab = new MVerticalLayout(contacts, label, contact, contactType, btnAdd)

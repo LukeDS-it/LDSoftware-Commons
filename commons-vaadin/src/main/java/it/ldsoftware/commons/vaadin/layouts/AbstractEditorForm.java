@@ -84,7 +84,7 @@ public abstract class AbstractEditorForm<E extends BaseEntity> extends MVertical
         return parentLayout.getTranslator();
     }
 
-    public AbstractEditor<?, ?> getParentLayout() {
+    public AbstractEditor<?, ?> getEditor() {
         return parentLayout;
     }
 

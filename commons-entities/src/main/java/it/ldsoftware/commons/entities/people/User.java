@@ -3,10 +3,12 @@ package it.ldsoftware.commons.entities.people;
 import it.ldsoftware.commons.entities.security.Group;
 import it.ldsoftware.commons.entities.security.UserRole;
 import it.ldsoftware.commons.util.PersonType;
+import it.ldsoftware.commons.util.RoleCollector;
 import it.ldsoftware.commons.validation.groups.NewUserValidationGroup;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -52,6 +54,26 @@ public class User extends Person {
     @Override
     public String toString() {
         return super.toString() + ", " + getUsername();
+    }
+
+    public void addRoles(RoleCollector... roles) {
+        for (RoleCollector rc : roles) {
+            userRoles.add(new UserRole().fromRoleCollector(rc).withUser(this));
+        }
+    }
+
+    public void remRoles(RoleCollector... roles) {
+        for (RoleCollector rc : roles) {
+            userRoles.remove(new UserRole().fromRoleCollector(rc));
+        }
+    }
+
+    public void addGroups(Group... groups) {
+        Collections.addAll(this.groups, groups);
+    }
+
+    public void remGroups(Group... groups) {
+        for (Group g : groups) this.groups.remove(g);
     }
 
     public String getUsername() {

@@ -1,4 +1,4 @@
-package it.ldsoftware.commons.vaadin.editors.security;
+package it.ldsoftware.commons.vaadin.editors.people;
 
 import com.vaadin.ui.Button;
 import it.ldsoftware.commons.dto.people.PersonDTO;
