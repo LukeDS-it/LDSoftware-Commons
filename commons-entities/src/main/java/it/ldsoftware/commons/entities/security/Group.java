@@ -16,8 +16,6 @@ import java.util.Set;
 @Table(name = "sw_group")
 public class Group extends Lookup<GroupTranslation> {
 
-    private String domain;
-
     @OneToMany
     private Set<GroupRole> groupRoles = new HashSet<>();
 
@@ -29,11 +27,4 @@ public class Group extends Lookup<GroupTranslation> {
         this.groupRoles = groupRoles;
     }
 
-    public String getDomain() {
-        return domain;
-    }
-
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
 }

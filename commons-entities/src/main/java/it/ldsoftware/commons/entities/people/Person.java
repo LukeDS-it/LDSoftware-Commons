@@ -1,6 +1,7 @@
 package it.ldsoftware.commons.entities.people;
 
 import it.ldsoftware.commons.entities.base.BaseEntity;
+import it.ldsoftware.commons.util.ContactType;
 import it.ldsoftware.commons.util.PersonType;
 import it.ldsoftware.commons.validation.groups.PersonValidationGroup;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
@@ -61,6 +63,49 @@ public class Person extends BaseEntity {
 
     @OneToMany(cascade = ALL, fetch = EAGER, orphanRemoval = true, mappedBy = "person")
     private Set<Contact> contacts = new HashSet<>();
+
+    public Contact getContact(ContactType type) {
+        for (Contact c : contacts)
+            if (c.getContactType().equals(type))
+                return c;
+        return null;
+    }
+
+    public Contact getAlternativeContact(ContactType... alternatives) {
+        for (ContactType a : alternatives)
+            for (Contact c : contacts)
+                if (c.getContactType().equals(a))
+                    return c;
+
+        return null;
+    }
+
+    public void addChildren(List<Person> people) {
+        if (people != null) {
+            for (Person p : people) {
+                if (!p.equals(this)) {
+                    children.add(p);
+                    p.setParent(this);
+                }
+            }
+        }
+    }
+
+    public void remChildren(List<Person> people) {
+        if (people != null) {
+            for (Person p : people) {
+                if (!p.equals(this)) {
+                    children.remove(p);
+                    p.setParent(null);
+                }
+            }
+        }
+    }
+
+    public void addContact(Contact contact) {
+        contacts.add(contact);
+        contact.setPerson(this);
+    }
 
     public String getName() {
         return name;
@@ -153,10 +198,5 @@ public class Person extends BaseEntity {
     @Override
     public String toString() {
         return super.toString() + ", " + fullName;
-    }
-
-    public void addContact(Contact c) {
-        contacts.add(c);
-        c.setPerson(this);
     }
 }

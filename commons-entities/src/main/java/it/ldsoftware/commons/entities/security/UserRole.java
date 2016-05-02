@@ -1,6 +1,5 @@
 package it.ldsoftware.commons.entities.security;
 
-import it.ldsoftware.commons.entities.base.BaseEntity;
 import it.ldsoftware.commons.entities.people.User;
 import it.ldsoftware.commons.util.RoleCollector;
 
@@ -23,8 +22,6 @@ public class UserRole implements RoleCollector {
     @Id
     @ManyToOne
     private Role role;
-
-    private String domain;
 
     @Embedded
     RoleModifiers modifiers;
@@ -106,13 +103,5 @@ public class UserRole implements RoleCollector {
 
     public boolean isExecuteAllowed() {
         return getModifiers().isExecute();
-    }
-
-    public String getDomain() {
-        return domain;
-    }
-
-    public void setDomain(String domain) {
-        this.domain = domain;
     }
 }

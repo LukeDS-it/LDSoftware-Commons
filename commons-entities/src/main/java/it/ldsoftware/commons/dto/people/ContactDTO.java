@@ -14,10 +14,6 @@ public class ContactDTO extends BaseDTO<Contact> {
     private ContactType contactType;
     private String value;
 
-    public ContactDTO() {
-
-    }
-
     public ContactDTO(Contact entity, Locale l) {
         super(entity, l);
         contactType = entity.getContactType();
