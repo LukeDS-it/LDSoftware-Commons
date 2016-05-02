@@ -12,8 +12,6 @@ import it.ldsoftware.commons.vaadin.layouts.AbstractPersonForm;
  */
 public class PersonForm extends AbstractPersonForm<Person> {
 
-
-
     @Override
     public Person findPerson(long id) {
         return getDatabaseService().findOne(Person.class, id);

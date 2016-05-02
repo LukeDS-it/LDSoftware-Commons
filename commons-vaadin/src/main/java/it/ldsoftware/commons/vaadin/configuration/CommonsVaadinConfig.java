@@ -12,6 +12,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 /**
  * Created by luca on 21/04/16.
+ * This implements the basic configuration for a Vaadin-based application
  */
 @Configuration
 @ComponentScan(basePackages = {"it.ldsoftware.commons.vaadin.controllers"})
