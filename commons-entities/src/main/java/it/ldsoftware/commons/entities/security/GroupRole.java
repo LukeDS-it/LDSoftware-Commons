@@ -1,6 +1,5 @@
 package it.ldsoftware.commons.entities.security;
 
-import it.ldsoftware.commons.entities.base.BaseEntity;
 import it.ldsoftware.commons.util.RoleCollector;
 
 import javax.persistence.*;
@@ -41,6 +40,12 @@ public class GroupRole implements RoleCollector {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public GroupRole fromRoleCollector(RoleCollector rc) {
+        role = rc.getRole();
+        modifiers = rc.getModifiers();
+        return this;
     }
 
     @Override

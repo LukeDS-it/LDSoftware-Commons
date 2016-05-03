@@ -17,6 +17,8 @@ public class CommonLabels {
             ERROR_LOGIN_ACCOUNT = "error.login.account", ERROR_LOGIN_GENERIC = "error.login.generic",
             ERROR_GOOGLE_AUTH_CONFIG = "error.google.auth.config";
 
+    public static final String WARNING_SELECT_ITEMS = "warning.select.items";
+
     public static final String LABEL_LOGIN = "label.login", LABEL_ADD_ROLE = "label.add.role",
             LABEL_ADD_GROUP = "label.add.group";
 

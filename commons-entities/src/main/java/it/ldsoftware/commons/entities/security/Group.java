@@ -1,6 +1,7 @@
 package it.ldsoftware.commons.entities.security;
 
 import it.ldsoftware.commons.entities.base.Lookup;
+import it.ldsoftware.commons.util.RoleCollector;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -25,6 +26,14 @@ public class Group extends Lookup<GroupTranslation> {
 
     public void setGroupRoles(Set<GroupRole> groupRoles) {
         this.groupRoles = groupRoles;
+    }
+
+    public void addRole(RoleCollector roleCollector) {
+        groupRoles.add(new GroupRole().fromRoleCollector(roleCollector));
+    }
+
+    public void remRole(RoleCollector roleCollector) {
+        groupRoles.remove(new GroupRole().fromRoleCollector(roleCollector));
     }
 
 }

@@ -2,6 +2,7 @@ package it.ldsoftware.commons.vaadin.editors.people;
 
 import it.ldsoftware.commons.dto.people.PersonDTO;
 import it.ldsoftware.commons.entities.people.Person;
+import it.ldsoftware.commons.util.UserUtil;
 import it.ldsoftware.commons.vaadin.layouts.AbstractEditor;
 import it.ldsoftware.commons.vaadin.layouts.AbstractEditorForm;
 
@@ -29,5 +30,10 @@ public class PersonEditor extends AbstractEditor<Person, PersonDTO> {
     @Override
     public Person createNewObject() {
         return new Person();
+    }
+
+    @Override
+    protected String getBasePermission() {
+        return UserUtil.ROLE_PEOPLE_ADMIN;
     }
 }

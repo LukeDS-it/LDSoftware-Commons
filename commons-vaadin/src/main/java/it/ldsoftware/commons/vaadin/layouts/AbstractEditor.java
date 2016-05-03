@@ -13,6 +13,8 @@ import it.ldsoftware.commons.query.Filter;
 import it.ldsoftware.commons.query.PredicateFactory;
 import it.ldsoftware.commons.services.interfaces.DatabaseService;
 import it.ldsoftware.commons.vaadin.components.DTOGrid;
+import it.ldsoftware.commons.vaadin.controllers.ExportController;
+import it.ldsoftware.commons.vaadin.util.DownloadSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -28,6 +30,7 @@ import java.util.List;
 import static com.vaadin.server.FontAwesome.*;
 import static com.vaadin.ui.themes.ValoTheme.*;
 import static it.ldsoftware.commons.i18n.CommonLabels.*;
+import static it.ldsoftware.commons.util.UserUtil.*;
 import static it.ldsoftware.commons.vaadin.util.NotificationBuilder.showNotification;
 
 /**
@@ -50,6 +53,8 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
     private DTOGrid<E, D> grid;
     private AbstractEditorForm<E> editorForm;
     private List<Filter> filters = new ArrayList<>();
+
+    private Button btnNew, btnSave, btnDelete;
 
     @Autowired
     private DatabaseService svc;
@@ -75,16 +80,23 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
         setExpandRatio(splitPanel, 1.0f);
     }
 
+    @Override
+    public void attach() {
+        super.attach();
+        executeNew();
+        checkSecurity();
+    }
+
     private void createMenu() {
         menuBar = new MCssLayout().withStyleName(LAYOUT_COMPONENT_GROUP);
 
-        Button btnNew = new MButton(FILE_O).withListener(this::newAction);
-        Button btnDelete = new MButton(TRASH_O).withListener(this::deleteAction);
+        btnNew = new MButton(FILE_O).withListener(this::newAction);
+        btnDelete = new MButton(TRASH_O).withListener(this::deleteAction);
         Button btnDuplicate = new MButton(COPY).withListener(this::duplicateAction);
         Button btnExport = new MButton(DOWNLOAD).withListener(this::exportAction);
         Button btnFilter = new MButton(FILTER).withListener(this::filterAction);
         Button btnMulti = new MButton(CHECK_SQUARE_O).withListener(this::multiAction);
-        Button btnSave = new MButton(SAVE).withListener(this::saveAction);
+        btnSave = new MButton(SAVE).withListener(this::saveAction);
 
         menuBar.addComponents(btnNew, btnSave, btnDuplicate, btnDelete, btnFilter, btnMulti, btnExport);
         customizeMenu(menuBar);
@@ -142,7 +154,15 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
     }
 
     private void exportAction(ClickEvent event) {
-        // TODO export selected grid items
+        if (grid.getSelectedRows().size() != 0) {
+            List<D> dList = new ArrayList<>();
+            grid.getSelectedRows().stream().map(getDTOClass()::cast).forEach(dList::add);
+            String id = DownloadSession.addToQueue(dList);
+            getUI().getPage().open(ExportController.ADDRESS_EXPORT + id, "_blank");
+        } else {
+            showNotification(translator.translate(TITLE_GENERIC_WARNING), translator.translate(WARNING_SELECT_ITEMS),
+                    NOTIFICATION_WARNING);
+        }
     }
 
     private void filterAction(ClickEvent event) {
@@ -191,6 +211,46 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
             errors += "</ul>";
             showNotification(translator.translate("title.save.error"), errors, NOTIFICATION_FAILURE);
         }
+    }
+
+    private void checkSecurity() {
+        btnSave.setEnabled(isCurrentUserEnabled(getEditPermission()));
+        btnDelete.setEnabled(isCurrentUserEnabled(getDeletePermission()));
+        btnNew.setEnabled(isCurrentUserEnabled(getInsertPermission()));
+    }
+
+	/*
+     * *************************************************** Security methods that
+	 * must be overridden if needed
+	 * ***************************************************
+	 */
+
+    protected String getBasePermission() {
+        return ROLE_ANONYMOUS;
+    }
+
+    private String getEditPermission() {
+        if (getBasePermission().equals(ROLE_ANONYMOUS))
+            return getBasePermission();
+        return editVariant(getBasePermission());
+    }
+
+    private String getDeletePermission() {
+        if (getBasePermission().equals(ROLE_ANONYMOUS))
+            return getBasePermission();
+        return deleteVariant(getBasePermission());
+    }
+
+    private String getInsertPermission() {
+        if (getBasePermission().equals(ROLE_ANONYMOUS))
+            return getBasePermission();
+        return insertVariant(getBasePermission());
+    }
+
+    protected String getExecutePermission() {
+        if (getBasePermission().equals(ROLE_ANONYMOUS))
+            return getBasePermission();
+        return executeVariant(getBasePermission());
     }
 
     protected void refreshGrid() {

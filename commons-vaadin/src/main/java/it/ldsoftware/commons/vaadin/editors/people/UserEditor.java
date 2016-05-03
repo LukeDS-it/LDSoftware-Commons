@@ -9,6 +9,8 @@ import it.ldsoftware.commons.validation.groups.NewUserValidationGroup;
 import it.ldsoftware.commons.validation.groups.UserValidationGroup;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import static it.ldsoftware.commons.util.UserUtil.ROLE_USER_ADMIN;
+
 /**
  * Created by luca on 22/04/16.
  * Editor view for users
@@ -77,4 +79,8 @@ public class UserEditor extends AbstractEditor<User, UserDTO> {
         form().getBean().setConfirmPassword(oldConf);
     }
 
+    @Override
+    protected String getBasePermission() {
+        return ROLE_USER_ADMIN;
+    }
 }

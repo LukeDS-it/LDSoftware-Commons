@@ -11,7 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 public class UserUtil {
     public static final String ROLE_ANONYMOUS = "ROLE_ANONYMOUS",
-            ROLE_SUPERADMIN = "ROLE_SUPERADMIN", ROLE_DB_CONSOLE = "ROLE_DB_CONSOLE";
+            ROLE_SUPERADMIN = "ROLE_SUPERADMIN", ROLE_DB_CONSOLE = "ROLE_DB_CONSOLE",
+            ROLE_USER_ADMIN = "ROLE_USER_ADMIN", ROLE_PEOPLE_ADMIN = "ROLE_PEOPLE_ADMIN",
+            ROLE_PERMISSION_ADMIN = "ROLE_PERMISSION_ADMIN", ROLE_GROUP_ADMIN = "ROLE_GROUP_ADMIN";
 
     private static final String EDIT = "_E", INSERT = "_I", DELETE = "_D", EXECUTE = "_X";
 
