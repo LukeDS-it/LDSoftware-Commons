@@ -123,7 +123,7 @@ public interface DatabaseService {
     <E extends BaseEntity> E save(Class<E> eClass, E entity);
 
     /**
-     * Finds an entity using the defined function "findFull" of the relative DAL
+     * Finds an entity using the defined function "findFullById" of the relative DAL
      * which in turn should load the entity using a named entity graph to
      * load all the needed lazy relationships
      *
@@ -132,12 +132,12 @@ public interface DatabaseService {
      * @param <E>    the parameter enables to return type-safe entities
      * @return a {@link BaseEntity} of type E where its id == the given id, with
      * the relative named entity graph loaded if the DAL&lt;E&gt; overrides the default
-     * findFull function.
+     * findFullById function.
      */
     <E extends BaseEntity> E findFull(Class<E> eClass, long id);
 
     /**
-     * Finds an entity using the defined function "findFull" of the relative DAL
+     * Finds an entity using the defined function "findFullById" of the relative DAL
      * which in turn should load the entity using a named entity graph to
      * load all the needed lazy relationships
      *

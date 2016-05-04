@@ -32,6 +32,8 @@ import static javax.persistence.TemporalType.DATE;
 @Inheritance(strategy = JOINED)
 public class Person extends BaseEntity {
 
+    public static final String PERSON_GRAPH = "Graph.person";
+
     @NotNull(groups = PersonValidationGroup.class)
     private String name;
 

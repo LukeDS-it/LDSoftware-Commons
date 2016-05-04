@@ -108,12 +108,9 @@ public abstract class AbstractDatabaseService implements DatabaseService {
 
     @Override
     public <E extends BaseEntity> E findFull(Class<E> eClass, long id) {
-        return getRepository(eClass).findFull(id);
+        return getRepository(eClass).findFullById(id);
     }
 
-    public <E extends BaseEntity> E findFull(Class<E> eClass, Predicate predicate) {
-        return getRepository(eClass).findFull(predicate);
-    }
     @Override
     public <E extends BaseEntity> E save(Class<E> eClass, E entity) {
         return getRepository(eClass).save(entity);

@@ -1,6 +1,5 @@
 package it.ldsoftware.commons.dal.base;
 
-import com.mysema.query.types.Predicate;
 import it.ldsoftware.commons.entities.base.BaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
@@ -13,12 +12,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BaseDAL<E extends BaseEntity> extends JpaRepository<E, Long>, QueryDslPredicateExecutor<E> {
 
-    default E findFull(Long id) {
+    default E findFullById(Long id) {
         return findOne(id);
-    }
-
-    default E findFull(Predicate predicate) {
-        return findOne(predicate);
     }
 
 }
