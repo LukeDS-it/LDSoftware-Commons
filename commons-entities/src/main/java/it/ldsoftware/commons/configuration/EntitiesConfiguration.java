@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * This configuration enables jpa repositories and scans for base entities
  */
 @Configuration
-@EntityScan(basePackages = "it.ldsoftware.entities")
+@EntityScan(basePackages = "it.ldsoftware.commons.entities")
 @EnableJpaRepositories(basePackages = "it.ldsoftware.commons.dal")
 public class EntitiesConfiguration {
 
