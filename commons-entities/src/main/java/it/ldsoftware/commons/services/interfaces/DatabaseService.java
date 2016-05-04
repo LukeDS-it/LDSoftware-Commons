@@ -137,18 +137,6 @@ public interface DatabaseService {
     <E extends BaseEntity> E findFull(Class<E> eClass, long id);
 
     /**
-     * Finds an entity using the defined function "findFullById" of the relative DAL
-     * which in turn should load the entity using a named entity graph to
-     * load all the needed lazy relationships
-     *
-     * @param eClass    the class that represents the entity in the database
-     * @param predicate the predicate used to find the entity
-     * @param <E>       the parameter enables to return type-safe entities
-     * @return a {@link BaseEntity} of type E that matches given predicate
-     */
-    <E extends BaseEntity> E findFull(Class<E> eClass, Predicate predicate);
-
-    /**
      * Deletes the entity with given id
      *
      * @param eClass the class that represents the entity in the database
