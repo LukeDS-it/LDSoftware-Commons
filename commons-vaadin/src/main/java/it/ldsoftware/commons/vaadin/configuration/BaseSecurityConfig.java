@@ -59,7 +59,8 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .authorizeRequests().antMatchers("/login/**").anonymous()
+                .authorizeRequests().antMatchers("/**").anonymous()
+                .antMatchers("/login/**").anonymous()
                 .antMatchers("/vaadinServlet/UIDL/**").permitAll()
                 .antMatchers("/vaadinServlet/HEARTBEAT/**").permitAll()
                 .antMatchers(ADDRESS_DB_CONSOLE + "/*").hasAnyAuthority(ROLE_DB_CONSOLE, ROLE_SUPERADMIN)

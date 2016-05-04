@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class LoginProvider {
 
     @Autowired
+    @SuppressWarnings("SpringJavaAutowiringInspection")
     private DatabaseService svc;
 
     public Authentication getAuthentication(GoogleResponse googleResponse) {

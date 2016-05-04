@@ -15,7 +15,8 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
  * This implements the basic configuration for a Vaadin-based application
  */
 @Configuration
-@ComponentScan(basePackages = {"it.ldsoftware.commons.vaadin.controllers"})
+@ComponentScan(basePackages = {"it.ldsoftware.commons.vaadin.controllers",
+        "it.ldsoftware.commons.vaadin.security"})
 public class CommonsVaadinConfig {
     public static final String ADDRESS_DB_CONSOLE = "/db_console";
 
