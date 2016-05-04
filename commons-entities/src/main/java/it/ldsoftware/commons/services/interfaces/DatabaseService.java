@@ -6,7 +6,6 @@ import it.ldsoftware.commons.entities.base.BaseEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,7 +25,7 @@ public interface DatabaseService {
      *
      * @param eClass the class that represents the entity in the database
      * @param <E>    the parameter enables to return type-safe collections
-     * @return a @{link Collection} of entities
+     * @return a {@link List} of entities
      */
     <E extends BaseEntity> List<E> findAll(Class<E> eClass);
 
@@ -37,7 +36,7 @@ public interface DatabaseService {
      * @param eClass    the class that represents the entity in the database
      * @param predicate the predicate to filter the elements
      * @param <E>       the parameter enables to return type-safe collections
-     * @return a @{link Collection} of entities
+     * @return a {@link List} of entities
      */
     <E extends BaseEntity> List<E> findAll(Class<E> eClass, Predicate predicate);
 
@@ -48,7 +47,7 @@ public interface DatabaseService {
      * @param eClass the class that represents the entity in the database
      * @param page   the predicate to filter the elements
      * @param <E>    the parameter enables to return type-safe pages
-     * @return a @{link Page} of entries
+     * @return a {@link Page} of entries
      */
     <E extends BaseEntity> Page<E> findAll(Class<E> eClass, Pageable page);
 
@@ -60,7 +59,7 @@ public interface DatabaseService {
      * @param predicate the predicate to match entities
      * @param page      the predicate to filter the elements
      * @param <E>       the parameter enables to return type-safe pages
-     * @return a @{link Page} of entries
+     * @return a {@link Page} of entries
      */
     <E extends BaseEntity> Page<E> findAll(Class<E> eClass, Predicate predicate, Pageable page);
 
@@ -74,7 +73,7 @@ public interface DatabaseService {
      * @param l         the locale in which to translate the entities
      * @param <E>       parameter to return type-safe collections
      * @param <D>       parameter to return type-safe collections
-     * @return a list of DTO matching given entity and predicate.
+     * @return a list of {@link BaseDTO} matching given entity and predicate.
      */
     <E extends BaseEntity, D extends BaseDTO<E>> List<D> findAllDTO(Class<E> eClass, Class<D> dClass, Predicate predicate, Locale l);
 
@@ -89,7 +88,7 @@ public interface DatabaseService {
      * @param l         the locale in which to translate the entities
      * @param <E>       parameter to return type-safe collections
      * @param <D>       parameter to return type-safe collections
-     * @return a list of DTO matching given entity, predicate and page.
+     * @return a list of {@link BaseDTO} matching given entity, predicate and page.
      */
     <E extends BaseEntity, D extends BaseDTO<E>> List<D> findAllDTO(Class<E> eClass, Class<D> dClass, Predicate predicate, Pageable page, Locale l);
 
@@ -99,7 +98,7 @@ public interface DatabaseService {
      * @param eClass the class that represents the entity in the database
      * @param id     the unique identifier of that entity
      * @param <E>    the parameter enables to return type-safe elements
-     * @return a @{link BaseEntity} of type E where its id == the given id.
+     * @return a {@link BaseEntity} of type E where its id == the given id.
      */
     <E extends BaseEntity> E findOne(Class<E> eClass, long id);
 
@@ -109,7 +108,7 @@ public interface DatabaseService {
      * @param eClass the class that represents the entity in the database
      * @param predicate the predicate that indicates the entity
      * @param <E> the parameter enables to return type-safe elements
-     * @return a @{link BaseEntity} of type E that matches given predicate
+     * @return a {@link BaseEntity} of type E that matches given predicate
      */
     <E extends BaseEntity> E findOne(Class<E> eClass, Predicate predicate);
 
@@ -131,11 +130,23 @@ public interface DatabaseService {
      * @param eClass the class that represents the entity in the database
      * @param id     the id of the entity
      * @param <E>    the parameter enables to return type-safe entities
-     * @return a @{link BaseEntity} of type E where its id == the given id, with
+     * @return a {@link BaseEntity} of type E where its id == the given id, with
      * the relative named entity graph loaded if the DAL&lt;E&gt; overrides the default
      * findFull function.
      */
     <E extends BaseEntity> E findFull(Class<E> eClass, long id);
+
+    /**
+     * Finds an entity using the defined function "findFull" of the relative DAL
+     * which in turn should load the entity using a named entity graph to
+     * load all the needed lazy relationships
+     *
+     * @param eClass    the class that represents the entity in the database
+     * @param predicate the predicate used to find the entity
+     * @param <E>       the parameter enables to return type-safe entities
+     * @return a {@link BaseEntity} of type E that matches given predicate
+     */
+    <E extends BaseEntity> E findFull(Class<E> eClass, Predicate predicate);
 
     /**
      * Deletes the entity with given id

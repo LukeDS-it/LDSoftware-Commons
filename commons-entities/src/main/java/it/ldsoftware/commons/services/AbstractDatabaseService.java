@@ -20,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.*;
 
-import static java.util.Collections.unmodifiableCollection;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -112,6 +111,9 @@ public abstract class AbstractDatabaseService implements DatabaseService {
         return getRepository(eClass).findFull(id);
     }
 
+    public <E extends BaseEntity> E findFull(Class<E> eClass, Predicate predicate) {
+        return getRepository(eClass).findFull(predicate);
+    }
     @Override
     public <E extends BaseEntity> E save(Class<E> eClass, E entity) {
         return getRepository(eClass).save(entity);
