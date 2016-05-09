@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>it.ldsoftware</groupId>
-    <artifactId>ldsoftware-commons</artifactId>
+    <artifactId>primavera-framework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <parent>
@@ -33,17 +33,17 @@
         <dependencies>
             <dependency>
                 <groupId>it.ldsoftware</groupId>
-                <artifactId>commons-entities</artifactId>
+                <artifactId>primavera-entities</artifactId>
                 <version>${entities.version}</version>
             </dependency>
             <dependency>
                 <groupId>it.ldsoftware</groupId>
-                <artifactId>commons-vaadin</artifactId>
+                <artifactId>primavera-vaadin</artifactId>
                 <version>${lds.vaadin.version}</version>
             </dependency>
             <dependency>
                 <groupId>it.ldsoftware</groupId>
-                <artifactId>commons-language</artifactId>
+                <artifactId>primavera-language</artifactId>
                 <version>${lds.language.version}</version>
             </dependency>
 
@@ -143,10 +143,10 @@
         </license>
     </licenses>
     <modules>
-        <module>commons-entities</module>
-        <module>commons-vaadin</module>
-        <module>commons-language</module>
-        <module>commons-text-compiler</module>
+        <module>primavera-entities</module>
+        <module>primavera-vaadin</module>
+        <module>primavera-language</module>
+        <module>primavera-text-compiler</module>
     </modules>
 
     <developers>

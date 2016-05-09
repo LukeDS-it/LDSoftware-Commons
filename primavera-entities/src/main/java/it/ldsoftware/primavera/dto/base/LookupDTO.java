@@ -1,0 +1,37 @@
+package it.ldsoftware.primavera.dto.base;
+
+import it.ldsoftware.primavera.entities.base.Lookup;
+import it.ldsoftware.primavera.entities.base.LookupTranslation;
+
+import java.util.Locale;
+
+/**
+ * Created by luca on 12/04/16.
+ * DTO that flattens Lookups. Just extend this for your lookups and add
+ * other properties if any.
+ */
+public abstract class LookupDTO<E extends Lookup<? extends LookupTranslation>> extends BaseDTO<E> {
+    private String code, description;
+
+    public LookupDTO(E entity, Locale locale) {
+        super(entity, locale);
+        setCode(entity.getCode());
+        setDescription(entity.getTranslation(locale).getContent());
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+}
