@@ -7,7 +7,7 @@ import java.util.Locale;
 /**
  * Created by luca on 11/04/16.
  * This class represents a "view" of the base entity, effectively
- * flattening all meaningful data
+ * flattening all meaningful data.
  */
 public abstract class BaseDTO<E extends BaseEntity> {
 

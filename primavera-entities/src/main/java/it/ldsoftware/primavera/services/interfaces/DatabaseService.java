@@ -81,6 +81,16 @@ public interface DatabaseService {
      * This function takes all the entities matching given class, predicate and page,
      * and converts them into the respective DTO type, initializing the DTO with given locale.
      *
+     * @apiNote every DTO must feature at least one of the following constructors:
+     * <ul>
+     *     <li>Constructor with one parameter that extends {@link BaseEntity}</li>
+     *     <li>Constructor with two parameters, {@link BaseEntity} and {@link Locale}</li>
+     *     <li>
+     *         Constructor with three parameters, {@link BaseEntity}, {@link Locale},
+     *         {@link org.springframework.context.MessageSource}
+     *     </li>
+     * </ul>
+     *
      * @param eClass    the entity class
      * @param dClass    the presentation (DTO) class
      * @param predicate the predicate to match the entities (use null for all entities)

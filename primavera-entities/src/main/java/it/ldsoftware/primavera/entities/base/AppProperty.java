@@ -1,5 +1,7 @@
 package it.ldsoftware.primavera.entities.base;
 
+import it.ldsoftware.primavera.util.EntityWithParent;
+import it.ldsoftware.primavera.util.ParentEntity;
 import it.ldsoftware.primavera.util.PropertyType;
 
 import javax.persistence.*;
@@ -16,7 +18,7 @@ import static javax.persistence.EnumType.STRING;
  */
 @Entity
 @Table(name = "zz_properties")
-public class AppProperty extends BaseEntity {
+public class AppProperty extends BaseEntity implements EntityWithParent {
 
     private String key;
     private Long longVal;
@@ -32,6 +34,9 @@ public class AppProperty extends BaseEntity {
 
     @Enumerated(STRING)
     private PropertyType type;
+
+    @ManyToOne
+    private PropertyGroup group;
 
     public String getKey() {
         return key;
@@ -95,5 +100,23 @@ public class AppProperty extends BaseEntity {
 
     public void setType(PropertyType type) {
         this.type = type;
+    }
+
+    public PropertyGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(PropertyGroup group) {
+        this.group = group;
+    }
+
+    @Override
+    public ParentEntity getParent() {
+        return group;
+    }
+
+    @Override
+    public void setParent(ParentEntity parent) {
+        group = (PropertyGroup) parent;
     }
 }

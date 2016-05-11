@@ -1,13 +1,21 @@
 package it.ldsoftware.primavera.services;
 
 import com.mysema.query.types.Predicate;
+import it.ldsoftware.primavera.dal.base.AppPropertyDAL;
 import it.ldsoftware.primavera.dal.base.BaseDAL;
+import it.ldsoftware.primavera.dal.base.LogEntryDAL;
+import it.ldsoftware.primavera.dal.base.PropertyGroupDAL;
+import it.ldsoftware.primavera.dal.people.ContactDAL;
 import it.ldsoftware.primavera.dal.people.PersonDAL;
 import it.ldsoftware.primavera.dal.people.UserDAL;
 import it.ldsoftware.primavera.dal.security.GroupDAL;
 import it.ldsoftware.primavera.dal.security.RoleDAL;
 import it.ldsoftware.primavera.dto.base.BaseDTO;
+import it.ldsoftware.primavera.entities.base.AppProperty;
 import it.ldsoftware.primavera.entities.base.BaseEntity;
+import it.ldsoftware.primavera.entities.base.LogEntry;
+import it.ldsoftware.primavera.entities.base.PropertyGroup;
+import it.ldsoftware.primavera.entities.people.Contact;
 import it.ldsoftware.primavera.entities.people.Person;
 import it.ldsoftware.primavera.entities.people.User;
 import it.ldsoftware.primavera.entities.security.Group;
@@ -160,15 +168,31 @@ public abstract class AbstractDatabaseService implements DatabaseService {
         registerRepository(Group.class, dal);
     }
 
+    @Autowired
+    private void registerPropertyRepository(AppPropertyDAL dal) { registerRepository(AppProperty.class, dal); }
+
+    @Autowired
+    private void registerPropGroupRepository(PropertyGroupDAL dal) { registerRepository(PropertyGroup.class, dal); }
+
+    @Autowired
+    private void registerContactRepository(ContactDAL dal) { registerRepository(Contact.class, dal); }
+
+    @Autowired
+    private void registerLogRepository(LogEntryDAL dal) { registerRepository(LogEntry.class, dal); }
+
     private <E extends BaseEntity, D extends BaseDTO<E>> List<D> convertToDTO(Class<E> eClass, Class<D> dClass, Collection<E> entities, Locale l) {
         return entities.stream().map(e -> {
             try {
-                return dClass.getConstructor(eClass, Locale.class).newInstance(e, l);
-            } catch (Exception ex) {
+                return dClass.getConstructor(eClass).newInstance(e);
+            } catch (Exception e1) {
                 try {
-                    return dClass.getConstructor(eClass, Locale.class, MessageSource.class).newInstance(e, l, msg);
-                } catch (Exception e1) {
-                    return null;
+                    return dClass.getConstructor(eClass, Locale.class).newInstance(e, l);
+                } catch (Exception e2) {
+                    try {
+                        return dClass.getConstructor(eClass, Locale.class, MessageSource.class).newInstance(e, l, msg);
+                    } catch (Exception e3) {
+                        return null;
+                    }
                 }
             }
         }).collect(toList());
