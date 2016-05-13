@@ -105,6 +105,11 @@ public abstract class AbstractDatabaseService implements DatabaseService {
     }
 
     @Override
+    public <E extends BaseEntity, D extends BaseDTO<E>> D findOneDTO(Class<E> eClass, Class<D> dClass, long id, Locale locale) {
+        return convertToDTO(eClass, dClass, findOne(eClass, id), locale);
+    }
+
+    @Override
     public <E extends BaseEntity> E findOne(Class<E> eClass, long id) {
         return getRepository(eClass).findOne(id);
     }
@@ -181,20 +186,22 @@ public abstract class AbstractDatabaseService implements DatabaseService {
     private void registerLogRepository(LogEntryDAL dal) { registerRepository(LogEntry.class, dal); }
 
     private <E extends BaseEntity, D extends BaseDTO<E>> List<D> convertToDTO(Class<E> eClass, Class<D> dClass, Collection<E> entities, Locale l) {
-        return entities.stream().map(e -> {
+        return entities.stream().map(e -> convertToDTO(eClass, dClass, e, l)).collect(toList());
+    }
+
+    private <E extends BaseEntity, D extends BaseDTO<E>> D convertToDTO(Class<E> eClass, Class<D> dClass, E entity, Locale l) {
+        try {
+            return dClass.getConstructor(eClass).newInstance(entity);
+        } catch (Exception e1) {
             try {
-                return dClass.getConstructor(eClass).newInstance(e);
-            } catch (Exception e1) {
+                return dClass.getConstructor(eClass, Locale.class).newInstance(entity, l);
+            } catch (Exception e2) {
                 try {
-                    return dClass.getConstructor(eClass, Locale.class).newInstance(e, l);
-                } catch (Exception e2) {
-                    try {
-                        return dClass.getConstructor(eClass, Locale.class, MessageSource.class).newInstance(e, l, msg);
-                    } catch (Exception e3) {
-                        return null;
-                    }
+                    return dClass.getConstructor(eClass, Locale.class, MessageSource.class).newInstance(entity, l, msg);
+                } catch (Exception e3) {
+                    return null;
                 }
             }
-        }).collect(toList());
+        }
     }
 }

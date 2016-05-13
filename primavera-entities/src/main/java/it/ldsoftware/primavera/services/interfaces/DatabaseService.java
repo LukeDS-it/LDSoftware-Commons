@@ -79,7 +79,8 @@ public interface DatabaseService {
 
     /**
      * This function takes all the entities matching given class, predicate and page,
-     * and converts them into the respective DTO type, initializing the DTO with given locale.
+     * and converts them into the respective DTO type, initializing the DTO with given locale
+     * if needed
      *
      * @apiNote every DTO must feature at least one of the following constructors:
      * <ul>
@@ -95,12 +96,25 @@ public interface DatabaseService {
      * @param dClass    the presentation (DTO) class
      * @param predicate the predicate to match the entities (use null for all entities)
      * @param page      the page to fetch
-     * @param l         the locale in which to translate the entities
+     * @param l         the locale in which to translate the entities (if applicable)
      * @param <E>       parameter to return type-safe collections
      * @param <D>       parameter to return type-safe collections
      * @return a list of {@link BaseDTO} matching given entity, predicate and page.
      */
     <E extends BaseEntity, D extends BaseDTO<E>> List<D> findAllDTO(Class<E> eClass, Class<D> dClass, Predicate predicate, Pageable page, Locale l);
+
+    /**
+     * This function finds one entity and converts it into the respective DTO type, initializing the DTO
+     * with given locale if needed
+     * @param eClass the entity class
+     * @param dClass the presentation (DTO) class
+     * @param id the ID of the entity we're searching
+     * @param locale the locale in which to translate the entity (if applicable)
+     * @param <E> parameter to return type-safe collections
+     * @param <D> parameter to return type-safe collections
+     * @return
+     */
+    <E extends BaseEntity, D extends BaseDTO<E>> D findOneDTO(Class<E> eClass, Class<D> dClass, long id, Locale locale);
 
     /**
      * Returns a single entity with the given ID
