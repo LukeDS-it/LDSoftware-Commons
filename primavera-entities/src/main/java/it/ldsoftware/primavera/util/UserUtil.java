@@ -1,7 +1,10 @@
 package it.ldsoftware.primavera.util;
 
 import it.ldsoftware.primavera.dto.people.UserDTO;
+import it.ldsoftware.primavera.entities.security.Role;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.Collection;
 
 /**
  * Created by luca on 11/04/16.
@@ -82,6 +85,24 @@ public class UserUtil {
      */
     public static boolean isCurrentUserEnabled(String role) {
         return (role.equals(ROLE_ANONYMOUS) || containsRole(role) || isCurrentUserSuperAdmin());
+    }
+
+    /**
+     * Given a collection of roles, the user can access the function only
+     * if it has all the roles specified in the collection
+     * @param roles the collection of roles needed to access the element
+     * @return {@code true} or {@code false}
+     */
+    public static boolean isCurrentUserEnabled(Collection<Role> roles) {
+        if (roles == null || roles.isEmpty())
+            return true;
+        if (isCurrentUserSuperAdmin())
+            return true;
+        boolean tmp = true;
+        for (Role role: roles) {
+            tmp &= isCurrentUserEnabled(role.getCode());
+        }
+        return tmp;
     }
 
     /**
