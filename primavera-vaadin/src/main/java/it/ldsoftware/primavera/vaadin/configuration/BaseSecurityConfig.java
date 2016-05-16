@@ -54,6 +54,12 @@ public class BaseSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
 
+    /**
+     * Override this function to add custom configuration
+     * and authorizations
+     * @param http use classical {@link HttpSecurity} methods.
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
