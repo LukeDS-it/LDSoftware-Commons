@@ -25,7 +25,7 @@ public class GroupEditor extends AbstractLookupEditor<Group, GroupDTO> {
 
     @Override
     public AbstractEditorForm<Group> getEditorInstance() {
-        return new GroupForm();
+        return new GroupForm(this);
     }
 
     @Override

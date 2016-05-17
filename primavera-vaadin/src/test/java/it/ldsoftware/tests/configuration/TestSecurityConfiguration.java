@@ -1,6 +1,7 @@
 package it.ldsoftware.tests.configuration;
 
 import it.ldsoftware.primavera.vaadin.configuration.BaseSecurityConfig;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
  *
  */
 @Configuration
+@ComponentScan(basePackageClasses = TestSecurityConfiguration.class)
 public class TestSecurityConfiguration extends BaseSecurityConfig {
 
     @Override

@@ -31,6 +31,10 @@ public abstract class AbstractEditorForm<E extends BaseEntity> extends MVertical
     private static ValidatorFactory factory;
     private transient Validator javaxBeanValidator;
 
+    public AbstractEditorForm(AbstractEditor parentLayout) {
+        this.parentLayout = parentLayout;
+    }
+
     List<String> validate(Class<?>[] validationGroups) {
         List<String> errors = new ArrayList<>();
 

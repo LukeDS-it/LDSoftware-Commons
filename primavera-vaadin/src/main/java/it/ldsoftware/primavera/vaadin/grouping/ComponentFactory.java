@@ -4,6 +4,7 @@ import com.vaadin.ui.UI;
 import it.ldsoftware.primavera.i18n.LocalizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -24,12 +25,9 @@ public class ComponentFactory {
     ApplicationContext context;
 
     @Autowired
-    LocalizationService msg;
+    MessageSource source;
 
     public Collection<Gear> getGears(String group) {
-        Locale l = UI.getCurrent().getLocale();
-        msg.setLocale(l);
-
         return Arrays.stream(context.getBeanNamesForAnnotation(GuiGear.class))
                 .filter(elName -> isInGroup(elName, group))
                 .map(this::makeGroupElement)
@@ -44,8 +42,11 @@ public class ComponentFactory {
     }
 
     private Gear makeGroupElement(String element) {
+        Locale l = UI.getCurrent().getLocale();
+        LocalizationService msg = new LocalizationService(source, l);
+
         GuiGear g = context.findAnnotationOnBean(element, GuiGear.class);
-        return new Gear().withCaption(msg.translate(g.caption())).withBeanName(element)
+        return new Gear(context).withCaption(msg.translate(g.caption())).withBeanName(element)
                 .withCss(g.css()).withGroup(g.group()).withRole(g.role());
     }
 

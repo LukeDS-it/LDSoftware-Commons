@@ -1,9 +1,7 @@
 package it.ldsoftware.primavera.i18n;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
-import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import java.text.MessageFormat;
@@ -11,15 +9,22 @@ import java.util.Locale;
 
 /**
  * Created by luca on 19/04/16.
- * This service helps to translate strings from all registered properties files
+ * This class helps to translate strings from all registered properties files.
+ *
+ * Do not use as a service unless you are prepared to serve all users the same language.
+ *
  */
-@Service
 public class LocalizationService {
-    @Autowired
+
     private MessageSource source;
+
     private Locale locale;
 
     private static final String[] VARIETIES = {"txt.", "cmb.", "cal.", "sel."};
+
+    public LocalizationService() {
+
+    }
 
     public LocalizationService(MessageSource msg, Locale locale) {
         source = msg;

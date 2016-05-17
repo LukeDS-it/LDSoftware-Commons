@@ -25,7 +25,7 @@ public class RoleEditor extends AbstractLookupEditor<Role, RoleDTO> {
 
     @Override
     public AbstractEditorForm<Role> getEditorInstance() {
-        return new RoleForm();
+        return new RoleForm(this);
     }
 
     @Override

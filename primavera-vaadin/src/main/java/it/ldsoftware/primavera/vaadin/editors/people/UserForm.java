@@ -12,6 +12,7 @@ import it.ldsoftware.primavera.util.PersonType;
 import it.ldsoftware.primavera.util.RoleCollector;
 import it.ldsoftware.primavera.vaadin.editors.security.GroupsDetailTab;
 import it.ldsoftware.primavera.vaadin.editors.security.RolesDetailTab;
+import it.ldsoftware.primavera.vaadin.layouts.AbstractEditor;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractPersonForm;
 import it.ldsoftware.primavera.vaadin.util.GroupAdder;
 import it.ldsoftware.primavera.vaadin.util.RoleAdder;
@@ -34,6 +35,10 @@ public class UserForm extends AbstractPersonForm<User> implements RoleAdder, Gro
     private TextField username, primaryEmail;
     private PasswordField password, confirmPassword;
     private CheckBox enabled;
+
+    public UserForm(AbstractEditor parent) {
+        super(parent);
+    }
 
     @Override
     public void addPersonalFields(VerticalLayout generalTab) {

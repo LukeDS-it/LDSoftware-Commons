@@ -3,6 +3,7 @@ package it.ldsoftware.primavera.vaadin.editors.security;
 import it.ldsoftware.primavera.entities.security.Group;
 import it.ldsoftware.primavera.entities.security.GroupTranslation;
 import it.ldsoftware.primavera.util.RoleCollector;
+import it.ldsoftware.primavera.vaadin.layouts.AbstractEditor;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractLookupForm;
 import it.ldsoftware.primavera.vaadin.util.RoleAdder;
 
@@ -15,6 +16,10 @@ import static it.ldsoftware.primavera.i18n.CommonLabels.TAB_ROLES;
  * Form for group editing
  */
 public class GroupForm extends AbstractLookupForm<Group, GroupTranslation> implements RoleAdder {
+
+    public GroupForm(AbstractEditor parent) {
+        super(parent);
+    }
 
     @Override
     public void addOtherTabs() {

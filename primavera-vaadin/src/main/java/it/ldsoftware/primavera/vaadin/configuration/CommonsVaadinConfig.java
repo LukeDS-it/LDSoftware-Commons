@@ -16,7 +16,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
  */
 @Configuration
 @ComponentScan(basePackages = {"it.ldsoftware.primavera.vaadin.controllers",
-        "it.ldsoftware.primavera.vaadin.security"})
+        "it.ldsoftware.primavera.vaadin.security", "it.ldsoftware.primavera.vaadin.grouping"})
 public class CommonsVaadinConfig {
     public static final String ADDRESS_DB_CONSOLE = "/db_console";
 
@@ -35,11 +35,6 @@ public class CommonsVaadinConfig {
 
         return messageSource;
     }
-
-//    @Bean
-//    public GroupFinder finder() {
-//        return new GroupFinder(ctx);
-//    }
 
     @Bean
     ServletRegistrationBean h2WebConsole() {

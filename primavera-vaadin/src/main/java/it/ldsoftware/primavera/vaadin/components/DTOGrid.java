@@ -257,7 +257,7 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
 
         setColumnOrder(COLUMN_DELETE);
         getColumn(COLUMN_DELETE).setRenderer(new ComponentRenderer()).setWidth(MetricConstants.COLUMN_XS).setHeaderCaption("");
-        removeColumn("CSVFields");
+//        removeColumn("CSVFields");
         removeColumn("id");
     }
 

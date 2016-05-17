@@ -50,8 +50,8 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
     private TextField code, ownLocale;
     BeanItemContainer<T> bic;
 
-    public AbstractLookupForm() {
-        super();
+    public AbstractLookupForm(AbstractEditor parent) {
+        super(parent);
         createTranslationsTab();
     }
 

@@ -38,6 +38,10 @@ public class CommonLabels {
             MSG_TERM_SERVICE = "msg.term.service", MSG_SAVE_ERROR = "msg.save.error",
             MSG_INS_ERROR = "msg.ins.error";
 
+    public static final String EDITOR_ROLES = "editor.roles",
+    EDITOR_GROUPS = "editor.groups", EDITOR_PEOPLE = "editor.people",
+    EDITOR_USERS = "editor.user";
+
     public static final String TAB_ROLES = "tab.roles", TAB_GROUPS = "tab.groups";
 
     public static String getTextFieldName(String field) {

@@ -24,7 +24,7 @@ public class PersonEditor extends AbstractEditor<Person, PersonDTO> {
 
     @Override
     public AbstractEditorForm<Person> getEditorInstance() {
-        return null;
+        return new PersonForm(this);
     }
 
     @Override

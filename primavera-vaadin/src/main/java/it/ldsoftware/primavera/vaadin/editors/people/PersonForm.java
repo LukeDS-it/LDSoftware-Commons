@@ -3,6 +3,7 @@ package it.ldsoftware.primavera.vaadin.editors.people;
 import com.vaadin.ui.VerticalLayout;
 import it.ldsoftware.primavera.dto.people.PersonDTO;
 import it.ldsoftware.primavera.entities.people.Person;
+import it.ldsoftware.primavera.vaadin.layouts.AbstractEditor;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractPersonForm;
 import it.ldsoftware.primavera.vaadin.util.PeopleAdder;
 
@@ -17,6 +18,10 @@ import static java.util.stream.Collectors.toList;
  * to that record.
  */
 public class PersonForm extends AbstractPersonForm<Person> implements PeopleAdder {
+
+    public PersonForm(AbstractEditor parent) {
+        super(parent);
+    }
 
     @Override
     public Person findPerson(long id) {

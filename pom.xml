@@ -27,6 +27,9 @@
         <lds.text.compiler.version>0.0.1-SNAPSHOT</lds.text.compiler.version>
         <querydsl.version>3.7.2</querydsl.version>
         <commons.version>3.4</commons.version>
+        <vaadin.version>7.6.5</vaadin.version>
+        <componentrenderer.version>1.0.0rc1</componentrenderer.version>
+        <viritin.version>1.51</viritin.version>
     </properties>
 
     <dependencyManagement>
@@ -74,6 +77,26 @@
                 <version>${querydsl.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-themes</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-client</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-client-compiler</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-server</artifactId>
+                <version>${vaadin.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.vaadin.spring.extensions</groupId>
@@ -104,9 +127,14 @@
             </dependency>
 
             <dependency>
+                <groupId>org.vaadin</groupId>
+                <artifactId>viritin</artifactId>
+                <version>${viritin.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>de.datenhahn.vaadin</groupId>
                 <artifactId>componentrenderer</artifactId>
-                <version>1.0.0beta5</version>
+                <version>${componentrenderer.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -129,7 +157,7 @@
                 <plugin>
                     <groupId>com.vaadin</groupId>
                     <artifactId>vaadin-maven-plugin</artifactId>
-                    <version>7.6.0.alpha2</version>
+                    <version>${vaadin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

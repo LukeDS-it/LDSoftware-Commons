@@ -19,7 +19,8 @@ public abstract class TabbedForm<E extends BaseEntity> extends AbstractEditorFor
     private TabSheet tabs;
     private VerticalLayout generalTab;
 
-    public TabbedForm() {
+    public TabbedForm(AbstractEditor parent) {
+        super(parent);
         tabs = new TabSheet();
         tabs.setStyleName(TABSHEET_FRAMED);
         tabs.setSizeFull();

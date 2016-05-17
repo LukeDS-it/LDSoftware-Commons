@@ -1,5 +1,7 @@
 package it.ldsoftware.primavera.vaadin.grouping;
 
+import org.springframework.context.ApplicationContext;
+
 /**
  * Created by luca on 16/05/16.
  *
@@ -9,6 +11,11 @@ package it.ldsoftware.primavera.vaadin.grouping;
 public class Gear implements Comparable<Gear> {
 
     private String caption, role, css, group, beanName;
+    private ApplicationContext ctx;
+
+    public Gear(ApplicationContext ctx) {
+        this.ctx = ctx;
+    }
 
     public Gear withCaption(String caption) {
         this.caption = caption;
@@ -53,6 +60,10 @@ public class Gear implements Comparable<Gear> {
 
     public String getBeanName() {
         return beanName;
+    }
+
+    public Object getBean() {
+        return ctx.getBean(beanName);
     }
 
     @Override

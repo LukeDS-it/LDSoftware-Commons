@@ -29,7 +29,7 @@ public class UserEditor extends AbstractEditor<User, UserDTO> {
 
     @Override
     public AbstractEditorForm<User> getEditorInstance() {
-        return new UserForm();
+        return new UserForm(this);
     }
 
     @Override

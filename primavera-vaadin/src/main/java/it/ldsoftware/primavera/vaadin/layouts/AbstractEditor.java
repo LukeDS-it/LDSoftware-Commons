@@ -16,6 +16,7 @@ import it.ldsoftware.primavera.vaadin.components.DTOGrid;
 import it.ldsoftware.primavera.vaadin.controllers.ExportController;
 import it.ldsoftware.primavera.vaadin.util.DownloadSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.viritin.button.MButton;
@@ -26,6 +27,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 import static com.vaadin.server.FontAwesome.*;
 import static com.vaadin.ui.themes.ValoTheme.*;
@@ -58,13 +60,17 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
 
     @Autowired
     private DatabaseService svc;
-    @Autowired
+
     private LocalizationService translator;
+
+    @Autowired
+    private MessageSource msg;
 
     @PostConstruct
     public void init() {
         setSizeFull();
-        translator.setLocale(UI.getCurrent().getLocale());
+        Locale locale = UI.getCurrent().getLocale();
+        translator = new LocalizationService(msg, locale);
 
         createMenu();
         createGrid();
@@ -261,6 +267,7 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
 
     private void createGrid() {
         grid = new DTOGrid<>(svc, getEntityClass(), getDTOClass())
+                .withLocalizationService(translator)
                 .withFilterRow(getDTOClass())
                 .withSelectionListeners(this::onSelectItem);
         customizeGrid(grid);
@@ -291,7 +298,6 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
 
     private void createEditor() {
         editorForm = getEditorInstance();
-        editorForm.setParentLayout(this);
     }
 
     protected final DatabaseService getSvc() {

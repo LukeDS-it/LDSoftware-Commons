@@ -39,6 +39,10 @@ public abstract class AbstractPersonForm<T extends Person> extends TabbedForm<T>
 
     private DTOGrid<Contact, ContactDTO> contacts;
 
+    public AbstractPersonForm(AbstractEditor parent) {
+        super(parent);
+    }
+
     @Override
     public void addGeneralContent(VerticalLayout generalTab) {
         createFields();
