@@ -23,7 +23,7 @@ public class Contact extends BaseEntity {
 
     @NotNull
     @Column(nullable = false)
-    private String value;
+    private String contactValue;
 
     @ManyToOne(fetch = LAZY)
     private Person person;
@@ -36,12 +36,12 @@ public class Contact extends BaseEntity {
         this.contactType = contactType;
     }
 
-    public String getValue() {
-        return value;
+    public String getContactValue() {
+        return contactValue;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setContactValue(String contactValue) {
+        this.contactValue = contactValue;
     }
 
     public Person getPerson() {
@@ -58,7 +58,7 @@ public class Contact extends BaseEntity {
     }
 
     public Contact withValue(String value) {
-        setValue(value);
+        setContactValue(value);
         return this;
     }
 }

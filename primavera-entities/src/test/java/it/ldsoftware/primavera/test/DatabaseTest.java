@@ -37,8 +37,8 @@ public class DatabaseTest {
 
         Group up = svc.findOne(Group.class, 1);
         assert up.getTranslations().size() == 2;
-        assert up.getTranslation("it").getContent().equals(CAPTION_1);
-        assert up.getTranslation("en").getContent().equals(CAPTION_2);
+        assert up.getTranslation("it").getDescription().equals(CAPTION_1);
+        assert up.getTranslation("en").getDescription().equals(CAPTION_2);
     }
 
 }

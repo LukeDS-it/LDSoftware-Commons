@@ -67,6 +67,6 @@ public class GroupsDetailTab extends AbstractDetailTab<Group, GroupDTO> {
 
     @Override
     public String getCaption(Object o) {
-        return ((Group) o).getTranslation(getLocale()).getContent();
+        return ((Group) o).getTranslation(getLocale()).getDescription();
     }
 }

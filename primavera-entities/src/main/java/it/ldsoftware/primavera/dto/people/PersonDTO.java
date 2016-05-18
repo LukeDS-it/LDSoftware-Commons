@@ -6,10 +6,9 @@ import it.ldsoftware.primavera.entities.people.Person;
 import it.ldsoftware.primavera.util.ContactType;
 
 /**
- * Created by luca on 11/04/16.
+ * DTO that represents a person
  *
  * @author luca
- *         DTO that represents a person
  */
 public class PersonDTO extends BaseDTO<Person> {
     private String fullName, telephone, mobile, email, recordType;
@@ -22,9 +21,9 @@ public class PersonDTO extends BaseDTO<Person> {
         Contact mo = person.getContact(ContactType.MOBILE_PHONE);
         Contact ma = person.getContact(ContactType.EMAIL);
 
-        telephone = (ph != null ? ph.getValue() : "");
-        mobile = (mo != null ? mo.getValue() : "");
-        email = (ma != null ? ma.getValue() : "");
+        telephone = (ph != null ? ph.getContactValue() : "");
+        mobile = (mo != null ? mo.getContactValue() : "");
+        email = (ma != null ? ma.getContactValue() : "");
         switch (person.getPersonType()) {
             case REAL:
                 recordType = "J";

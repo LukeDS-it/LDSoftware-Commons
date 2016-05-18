@@ -14,23 +14,23 @@ public abstract class ShortTranslation<E extends Translatable> extends Translati
 
     @NotNull
     @Column(nullable = false)
-    private String content;
+    private String description;
 
-    public String getContent() {
-        return content;
+    public String getDescription() {
+        return description;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
-        return getContent();
+        return getDescription();
     }
 
     public ShortTranslation<E> withContent(String content) {
-        setContent(content);
+        setDescription(content);
         return this;
     }
 }

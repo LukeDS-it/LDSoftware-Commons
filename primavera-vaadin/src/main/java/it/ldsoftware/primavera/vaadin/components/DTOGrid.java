@@ -66,7 +66,8 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
 
     private static final int PAGESIZE = 15;
-    public static final String COLUMN_DELETE = "delete", COLUMN_EDIT = "edit";
+    public static final String COLUMN_DELETE = "delete", COLUMN_EDIT = "edit",
+            PREFIX_COLUMN = "column.";
 
     private boolean multiSelection = false;
 
@@ -140,7 +141,7 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
         getColumns()
                 .stream()
                 .forEach(column -> column.setHeaderCaption(
-                        locSvc.translate("column_".concat(column.getPropertyId().toString())))
+                        locSvc.translate(PREFIX_COLUMN.concat(column.getPropertyId().toString())))
                 );
     }
 

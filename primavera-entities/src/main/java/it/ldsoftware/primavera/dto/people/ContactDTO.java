@@ -4,6 +4,8 @@ import it.ldsoftware.primavera.dto.base.BaseDTO;
 import it.ldsoftware.primavera.entities.people.Contact;
 import it.ldsoftware.primavera.util.ContactType;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -11,13 +13,24 @@ import java.util.Locale;
  * Representation of a contact
  */
 public class ContactDTO extends BaseDTO<Contact> {
+
+    public static final String FIELD_CONTACT_TYPE = "contactType",
+                                FIELD_CONTACT_VALUE = "contactValue";
+
     private ContactType contactType;
-    private String value;
+    private String contactValue;
 
     public ContactDTO(Contact entity, Locale l) {
         super(entity, l);
         contactType = entity.getContactType();
-        value = entity.getValue();
+        contactValue = entity.getContactValue();
+    }
+
+    @Override
+    public List<String> _fields() {
+        List<String> tmp = super._fields();
+        tmp.addAll(Arrays.asList(FIELD_CONTACT_TYPE, FIELD_CONTACT_VALUE));
+        return tmp;
     }
 
     public ContactDTO(Contact contact) {
@@ -32,11 +45,11 @@ public class ContactDTO extends BaseDTO<Contact> {
         this.contactType = contactType;
     }
 
-    public String getValue() {
-        return value;
+    public String getContactValue() {
+        return contactValue;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setContactValue(String contactValue) {
+        this.contactValue = contactValue;
     }
 }

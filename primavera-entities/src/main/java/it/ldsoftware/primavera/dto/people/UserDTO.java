@@ -13,10 +13,9 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 /**
- * Created by luca on 11/04/16.
+ * DTO that represents an user
  *
  * @author luca
- *         DTO that represents an user
  */
 public class UserDTO extends BaseDTO<User> implements UserDetails {
 

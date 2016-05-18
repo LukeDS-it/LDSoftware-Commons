@@ -192,11 +192,11 @@
     <distributionManagement>
         <repository>
             <id>ldsoftware-releases</id>
-            <url>http://ldsoftware.it:8081/nexus/content/repositories/releases</url>
+            <url>http://ldsoftware.it:8081/nexus/description/repositories/releases</url>
         </repository>
         <snapshotRepository>
             <id>ldsoftware-snapshots</id>
-            <url>http://ldsoftware.it:8081/nexus/content/repositories/snapshots</url>
+            <url>http://ldsoftware.it:8081/nexus/description/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 </project>

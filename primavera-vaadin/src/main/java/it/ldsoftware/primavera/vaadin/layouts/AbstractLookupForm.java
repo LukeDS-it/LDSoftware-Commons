@@ -184,7 +184,7 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
             bean.addTranslation(loc.getLanguage(), desc);
         }
 
-        ownLocale.setValue(desc.getContent());
+        ownLocale.setValue(desc.getDescription());
 
         bic.removeAllItems();
         bic.addAll(bean.getTranslations().values());
@@ -202,7 +202,7 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
             bean.addTranslation(loc.getLanguage(), desc);
         }
 
-        desc.setContent(ownLocale.getValue());
+        desc.setDescription(ownLocale.getValue());
         bean.setDefaultLang(loc.getLanguage());
 
         return bean;

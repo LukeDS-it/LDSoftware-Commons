@@ -91,7 +91,7 @@ public class RolesDetailTab extends MVerticalLayout {
     }
 
     private String getCaption(Object o) {
-        return ((Role) o).getTranslation(getLocale()).getContent();
+        return ((Role) o).getTranslation(getLocale()).getDescription();
     }
 
     private void buildContent() {

@@ -18,7 +18,7 @@ public class UserRoleDTO {
 
     public UserRoleDTO(UserRole entity, Locale locale) {
         roleName = entity.getAuthority();
-        roleDesc = entity.getRole().getTranslation(locale).getContent();
+        roleDesc = entity.getRole().getTranslation(locale).getDescription();
         insertAllowed = entity.isInsertAllowed();
         editAllowed = entity.isEditAllowed();
         deleteAllowed = entity.isDeleteAllowed();
@@ -27,7 +27,7 @@ public class UserRoleDTO {
 
     public UserRoleDTO(GroupRole entity, Locale locale) {
         roleName = entity.getAuthority();
-        roleDesc = entity.getRole().getTranslation(locale).getContent();
+        roleDesc = entity.getRole().getTranslation(locale).getDescription();
         insertAllowed = entity.isInsertAllowed();
         editAllowed = entity.isEditAllowed();
         deleteAllowed = entity.isDeleteAllowed();

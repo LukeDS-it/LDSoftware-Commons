@@ -3,6 +3,8 @@ package it.ldsoftware.primavera.dto.base;
 import it.ldsoftware.primavera.entities.base.Lookup;
 import it.ldsoftware.primavera.entities.base.LookupTranslation;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -11,12 +13,21 @@ import java.util.Locale;
  * other properties if any.
  */
 public abstract class LookupDTO<E extends Lookup<? extends LookupTranslation>> extends BaseDTO<E> {
+    public static final String FIELD_CODE = "code", FIELD_DESCRIPTION = "description";
+
     private String code, description;
 
     public LookupDTO(E entity, Locale locale) {
         super(entity, locale);
         setCode(entity.getCode());
-        setDescription(entity.getTranslation(locale).getContent());
+        setDescription(entity.getTranslation(locale).getDescription());
+    }
+
+    @Override
+    public List<String> _fields() {
+        List<String> tmp = super._fields();
+        tmp.addAll(Arrays.asList(FIELD_CODE, FIELD_DESCRIPTION));
+        return tmp;
     }
 
     public String getCode() {
