@@ -42,12 +42,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import static com.vaadin.server.Sizeable.Unit.PERCENTAGE;
 import static com.vaadin.ui.AbstractSelect.ItemCaptionMode.EXPLICIT_DEFAULTS_ID;
 import static com.vaadin.ui.Grid.SelectionMode.MULTI;
 import static com.vaadin.ui.Grid.SelectionMode.SINGLE;
 import static com.vaadin.ui.themes.ValoTheme.BUTTON_BORDERLESS;
 import static com.vaadin.ui.themes.ValoTheme.TEXTFIELD_TINY;
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
+import static it.ldsoftware.primavera.i18n.CommonMessages.MSG_CONFIRM_DELETE_SINGLE;
 import static it.ldsoftware.primavera.query.PredicateFactory.createPredicate;
 import static it.ldsoftware.primavera.util.ReflectionUtil.getPropertyFromMethod;
 import static org.springframework.data.domain.Sort.Direction.ASC;
@@ -214,6 +216,10 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
     public DTOGrid<E, D> withWidth(float width, Unit unit) {
         setWidth(width, unit);
         return this;
+    }
+
+    public DTOGrid<E, D> withSizeFull() {
+        return withWidth(100, Unit.PERCENTAGE).withHeight(100, PERCENTAGE);
     }
 
     public DTOGrid<E, D> withStyleNames(String... styles) {

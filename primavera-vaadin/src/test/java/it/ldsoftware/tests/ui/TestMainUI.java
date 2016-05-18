@@ -33,6 +33,7 @@ public class TestMainUI extends UI {
     @Override
     protected void init(VaadinRequest request) {
         tabSheet = new TabSheet();
+        tabSheet.setSizeFull();
 
         VerticalLayout secGroup = new VerticalLayout();
         componentFactory.getGears(GROUP_PEOPLE).stream().map(this::createButton).forEach(secGroup::addComponent);

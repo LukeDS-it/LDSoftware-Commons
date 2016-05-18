@@ -31,6 +31,7 @@ import static com.vaadin.ui.AbstractSelect.ItemCaptionMode.EXPLICIT_DEFAULTS_ID;
 import static com.vaadin.ui.themes.ValoTheme.BUTTON_BORDERLESS;
 import static it.ldsoftware.primavera.dto.security.UserRoleDTO.*;
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
+import static it.ldsoftware.primavera.i18n.LanguageUtils.getCheckboxName;
 import static it.ldsoftware.primavera.util.UserUtil.getCurrentUser;
 import static it.ldsoftware.primavera.util.UserUtil.isCurrentUserSuperAdmin;
 import static java.util.stream.Collectors.toList;

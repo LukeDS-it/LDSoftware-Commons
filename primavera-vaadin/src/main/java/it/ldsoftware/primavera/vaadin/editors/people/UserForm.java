@@ -20,6 +20,8 @@ import org.vaadin.viritin.fields.MPasswordField;
 import org.vaadin.viritin.fields.MTextField;
 
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
+import static it.ldsoftware.primavera.i18n.LanguageUtils.getCheckboxName;
+import static it.ldsoftware.primavera.i18n.LanguageUtils.getTextFieldName;
 import static it.ldsoftware.primavera.vaadin.theme.MetricConstants.FIELD_WIDTH;
 import static java.util.stream.Collectors.toList;
 

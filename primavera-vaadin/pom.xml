@@ -84,6 +84,7 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-themes</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -95,6 +96,10 @@
 
                 <configuration>
                     <webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
+                    <modules>
+                        <module>it.ldsoftware.primavera.vaadin.widgetset.PrimaveraWidgetset</module>
+                        <module>com.vaadin.DefaultWidgetSet</module>
+                    </modules>
                 </configuration>
 
                 <executions>

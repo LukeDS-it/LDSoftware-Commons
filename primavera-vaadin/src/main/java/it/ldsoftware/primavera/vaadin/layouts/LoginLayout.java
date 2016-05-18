@@ -29,7 +29,10 @@ import static com.vaadin.event.ShortcutAction.KeyCode.ENTER;
 import static com.vaadin.server.FontAwesome.*;
 import static com.vaadin.ui.Alignment.MIDDLE_CENTER;
 import static com.vaadin.ui.themes.ValoTheme.*;
+import static it.ldsoftware.primavera.i18n.CommonButtons.*;
+import static it.ldsoftware.primavera.i18n.CommonErrors.*;
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
+import static it.ldsoftware.primavera.i18n.CommonMessages.MSG_TERM_SERVICE;
 
 /**
  * Created by luca on 20/04/16.

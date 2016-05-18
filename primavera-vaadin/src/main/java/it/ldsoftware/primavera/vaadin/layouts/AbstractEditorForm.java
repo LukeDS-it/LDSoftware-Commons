@@ -33,6 +33,8 @@ public abstract class AbstractEditorForm<E extends BaseEntity> extends MVertical
 
     public AbstractEditorForm(AbstractEditor parentLayout) {
         this.parentLayout = parentLayout;
+        setMargin(false);
+        setSizeFull();
     }
 
     List<String> validate(Class<?>[] validationGroups) {

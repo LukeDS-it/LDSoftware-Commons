@@ -25,6 +25,10 @@ public class UserDTO extends BaseDTO<User> implements UserDetails {
     private final Set<GroupDTO> groups = new HashSet<>();
     private boolean enabled;
 
+    public UserDTO() {
+
+    }
+
     public UserDTO(User entity) {
         super(entity);
         setUsername(entity.getUsername());
@@ -43,6 +47,10 @@ public class UserDTO extends BaseDTO<User> implements UserDetails {
                         .flatMap(userRole -> userRole.getActualRoles().stream()))
                 .map(SimpleGrantedAuthority::new)
                 .forEach(authorities::add);
+    }
+
+    public void addAuthority(String role) {
+        authorities.add(new SimpleGrantedAuthority(role));
     }
 
     public void setUsername(String username) {

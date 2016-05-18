@@ -24,6 +24,7 @@ import static com.vaadin.server.Sizeable.Unit.PERCENTAGE;
 import static com.vaadin.server.Sizeable.Unit.PIXELS;
 import static com.vaadin.ui.AbstractSelect.ItemCaptionMode.EXPLICIT_DEFAULTS_ID;
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
+import static it.ldsoftware.primavera.i18n.LanguageUtils.*;
 import static java.util.stream.Collectors.toList;
 
 

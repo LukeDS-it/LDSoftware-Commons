@@ -31,7 +31,9 @@ import java.util.Locale;
 
 import static com.vaadin.server.FontAwesome.*;
 import static com.vaadin.ui.themes.ValoTheme.*;
+import static it.ldsoftware.primavera.i18n.CommonErrors.WARNING_SELECT_ITEMS;
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
+import static it.ldsoftware.primavera.i18n.CommonMessages.*;
 import static it.ldsoftware.primavera.util.UserUtil.*;
 import static it.ldsoftware.primavera.vaadin.util.NotificationBuilder.showNotification;
 
@@ -269,7 +271,8 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
         grid = new DTOGrid<>(svc, getEntityClass(), getDTOClass())
                 .withLocalizationService(translator)
                 .withFilterRow(getDTOClass())
-                .withSelectionListeners(this::onSelectItem);
+                .withSelectionListeners(this::onSelectItem)
+                .withSizeFull();
         customizeGrid(grid);
     }
 

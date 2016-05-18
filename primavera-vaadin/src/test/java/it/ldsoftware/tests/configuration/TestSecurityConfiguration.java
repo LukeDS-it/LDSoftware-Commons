@@ -16,6 +16,6 @@ public class TestSecurityConfiguration extends BaseSecurityConfig {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-        http.authorizeRequests().antMatchers("/secured").authenticated();
+        http.authorizeRequests().antMatchers("/").authenticated();
     }
 }

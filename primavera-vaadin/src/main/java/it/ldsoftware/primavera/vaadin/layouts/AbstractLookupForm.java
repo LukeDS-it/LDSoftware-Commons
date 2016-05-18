@@ -33,6 +33,8 @@ import static com.vaadin.ui.themes.ValoTheme.BUTTON_BORDERLESS;
 import static com.vaadin.ui.themes.ValoTheme.NOTIFICATION_ERROR;
 import static com.vaadin.ui.themes.ValoTheme.NOTIFICATION_WARNING;
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
+import static it.ldsoftware.primavera.i18n.CommonMessages.MSG_INS_ERROR;
+import static it.ldsoftware.primavera.i18n.CommonMessages.MSG_SAVE_ERROR;
 import static it.ldsoftware.primavera.vaadin.theme.MetricConstants.COLUMN_XS;
 import static it.ldsoftware.primavera.vaadin.theme.MetricConstants.FIELD_WIDTH;
 import static it.ldsoftware.primavera.vaadin.util.NotificationBuilder.showNotification;
@@ -48,7 +50,7 @@ import static java.util.stream.Collectors.toList;
  */
 public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTranslation> extends TabbedForm<L> {
     private TextField code, ownLocale;
-    BeanItemContainer<T> bic;
+    private BeanItemContainer<T> bic;
 
     public AbstractLookupForm(AbstractEditor parent) {
         super(parent);
@@ -96,14 +98,15 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
         });
 
         tGrid.setContainerDataSource(gpc);
-        tGrid.setColumnOrder("delete", "lang", "desc");
+        tGrid.setColumnOrder("delete", "lang", "content"); // FIXME externalize strings
         tGrid.getColumn("delete").setRenderer(new ComponentRenderer()).setWidth(COLUMN_XS).setHeaderCaption("");
         tGrid.getColumn("lang").setHeaderCaption(getTranslator().translate("label.language")).setWidth(70)
                 .setRenderer(new ImageRenderer(), new FlagConverter());
 
-        tGrid.getColumn("desc").setHeaderCaption(getTranslator().translate("label.description"));
+        tGrid.getColumn("content").setHeaderCaption(getTranslator().translate("label.description"));
         tGrid.removeColumn("id");
         tGrid.removeColumn("version");
+        tGrid.removeColumn("master");
         tGrid.setCellStyleGenerator(cell -> "lang".equals(cell.getPropertyId()) ? "" : null);
 
         tTab.addComponent(tGrid);
