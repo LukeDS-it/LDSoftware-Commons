@@ -23,6 +23,8 @@ import static com.vaadin.ui.AbstractSelect.ItemCaptionMode.EXPLICIT;
 import static com.vaadin.ui.Alignment.MIDDLE_CENTER;
 import static com.vaadin.ui.themes.ValoTheme.BUTTON_PRIMARY;
 import static it.ldsoftware.primavera.i18n.CommonLabels.CANCEL;
+import static it.ldsoftware.primavera.vaadin.i18n.CommonLabels.*;
+import static it.ldsoftware.primavera.vaadin.i18n.CommonMessages.MSG_CREATE_TILE;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -46,15 +48,15 @@ public class TileConfigurator extends MVerticalLayout {
         this.svc = svc;
         Locale l = UI.getCurrent().getLocale();
 
-        mockup = new LiveTile().withCaption(svc.translate("label.dummy.tile")).withColor(previousColor)
+        mockup = new LiveTile().withCaption(svc.translate(LABEL_DUMMY_TITLE)).withColor(previousColor)
                 .withImage("../" + previousImage);
 
-        tileColor = new ListSelect(svc.translate("lst.choose.color"));
+        tileColor = new ListSelect(svc.translate(LST_CHOOSE_COLOR));
         tileColor.addItems(Arrays.stream(TileColor.values()).collect(toList()));
         tileColor.select(previousColor);
         tileColor.addValueChangeListener(this::changeTileColor);
 
-        tileImage = new ListSelect(svc.translate("lst.choose.image"));
+        tileImage = new ListSelect(svc.translate(LST_CHOOSE_IMAGE));
         PathMatchingResourcePatternResolver rpr = new PathMatchingResourcePatternResolver();
         try {
             tileImage.addItems(Arrays.stream(rpr.getResources("classpath*:VAADIN/themes/*/images/icons/*.png"))
@@ -91,7 +93,7 @@ public class TileConfigurator extends MVerticalLayout {
     }
 
     public Window popup() {
-        popup = new Window(svc.translate("msg.create.tile"), this);
+        popup = new Window(svc.translate(MSG_CREATE_TILE), this);
         popup.setModal(true);
         UI.getCurrent().addWindow(popup);
         return popup;

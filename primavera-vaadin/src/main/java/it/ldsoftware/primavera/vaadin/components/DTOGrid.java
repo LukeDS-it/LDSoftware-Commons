@@ -23,8 +23,8 @@ import it.ldsoftware.primavera.entities.base.BaseEntity;
 import it.ldsoftware.primavera.i18n.LocalizationService;
 import it.ldsoftware.primavera.query.Request;
 import it.ldsoftware.primavera.services.interfaces.DatabaseService;
-import it.ldsoftware.primavera.vaadin.data.FIlterableLazyListContainer;
 import it.ldsoftware.primavera.vaadin.data.FilterableLazyList;
+import it.ldsoftware.primavera.vaadin.data.FilterableLazyListContainer;
 import it.ldsoftware.primavera.vaadin.listeners.DeleteListener;
 import it.ldsoftware.primavera.vaadin.listeners.EditListener;
 import it.ldsoftware.primavera.vaadin.theme.MetricConstants;
@@ -48,6 +48,7 @@ import static com.vaadin.ui.Grid.SelectionMode.MULTI;
 import static com.vaadin.ui.Grid.SelectionMode.SINGLE;
 import static com.vaadin.ui.themes.ValoTheme.BUTTON_BORDERLESS;
 import static com.vaadin.ui.themes.ValoTheme.TEXTFIELD_TINY;
+import static it.ldsoftware.primavera.dto.base.BaseDTO.FIELD_ID;
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
 import static it.ldsoftware.primavera.i18n.CommonMessages.MSG_CONFIRM_DELETE_SINGLE;
 import static it.ldsoftware.primavera.query.PredicateFactory.createPredicate;
@@ -84,9 +85,8 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
         FilterableLazyList<D> entities = FilterableLazyList.of(
                 req -> svc.findAllDTO(eClass, dClass, createPredicate(eClass, req.getFilters()), l),
                 req -> svc.countProvider(eClass, createPredicate(eClass, req.getFilters())),
-                PAGESIZE
-        );
-        ListContainer<D> container = new FIlterableLazyListContainer<>(dClass, entities);
+                PAGESIZE);
+        ListContainer<D> container = new FilterableLazyListContainer<>(dClass, entities);
         initGPC(container);
         commonSettings();
     }
@@ -114,6 +114,15 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
         if (ds instanceof BeanItemContainer) {
             ((BeanItemContainer<D>) ds).removeAllItems();
             ((BeanItemContainer<D>) ds).addAll(entities);
+        }
+    }
+
+    public void refresh() {
+        GeneratedPropertyContainer cont = (GeneratedPropertyContainer) getContainerDataSource();
+        Indexed ds = cont.getWrappedContainer();
+
+        if (ds instanceof FilterableLazyListContainer) {
+            ((FilterableLazyListContainer)ds).refresh();
         }
     }
 
@@ -264,8 +273,7 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
 
         setColumnOrder(COLUMN_DELETE);
         getColumn(COLUMN_DELETE).setRenderer(new ComponentRenderer()).setWidth(MetricConstants.COLUMN_XS).setHeaderCaption("");
-//        removeColumn("CSVFields");
-        removeColumn("id");
+        removeColumn(FIELD_ID);
     }
 
     @SuppressWarnings("unchecked")
@@ -289,8 +297,7 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
 
         setColumnOrder(COLUMN_EDIT);
         getColumn(COLUMN_EDIT).setRenderer(new ComponentRenderer()).setWidth(MetricConstants.COLUMN_XS).setHeaderCaption("");
-        removeColumn("CSVFields");
-        removeColumn("id");
+        removeColumn(FIELD_ID);
 
     }
 
@@ -336,20 +343,21 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
     }
 
     private PageRequest getPageRequest(Request request, Class<E> eClass) {
-        String sortProperty = "id";
+        String sortProperty = FIELD_ID;
         try {
             eClass.getDeclaredField(request.getSort().getProperty());
             sortProperty = request.getSort().getProperty();
         } catch (NoSuchFieldException | NullPointerException ignored) {
 
         }
-        return new PageRequest(request.getFirstRow() / PAGESIZE, PAGESIZE, request.getSort().isSortAscending() ? ASC : DESC, sortProperty);
+        return new PageRequest(request.getFirstRow() / PAGESIZE, PAGESIZE,
+                request.getSort().isSortAscending() ? ASC : DESC, sortProperty);
         // TODO handle nested collection properties
     }
 
     private void commonSettings() {
         setSizeFull();
-        removeColumn("id");
+        removeColumn(FIELD_ID);
     }
 
     private void initGPC(Indexed container) {

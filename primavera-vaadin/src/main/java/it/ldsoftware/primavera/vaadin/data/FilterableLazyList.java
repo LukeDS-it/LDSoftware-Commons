@@ -25,8 +25,8 @@ public class FilterableLazyList<T> extends LazyList<T> {
     private final FilterablePagingProvider<T> pagingProvider;
     private final int pageSize;
 
-    Sort sortBy = EMPTY;
-    Set<Filter> filters = new HashSet<>();
+    private Sort sortBy = EMPTY;
+    private Set<Filter> filters = new HashSet<>();
 
     public static <T> FilterableLazyList<T> of(FilterablePagingProvider<T> p, FilterableCountProvider c, int i) {
         WrappedRemoteCountProvider w = new WrappedRemoteCountProvider(c);
@@ -47,15 +47,15 @@ public class FilterableLazyList<T> extends LazyList<T> {
         return list;
     }
 
-    public FilterableLazyList(FilterableEntityProvider<T> pagingProvider, int pageSize) {
+    private FilterableLazyList(FilterableEntityProvider<T> pagingProvider, int pageSize) {
         super(pagingProvider, pageSize);
         this.pageSize = pageSize;
         this.pagingProvider = pagingProvider;
         this.countProvider = pagingProvider;
     }
 
-    public FilterableLazyList(FilterablePagingProvider<T> pagingProvider, FilterableCountProvider countProvider,
-                              int pageSize) {
+    private FilterableLazyList(FilterablePagingProvider<T> pagingProvider, FilterableCountProvider countProvider,
+                               int pageSize) {
         super(countProvider, pageSize);
         this.pageSize = pageSize;
         this.countProvider = countProvider;

@@ -12,7 +12,10 @@ public abstract class CommonLabels {
             DEFAULT = "default";
 
     public static final String LABEL_LOGIN = "label.login", LABEL_ADD_ROLE = "label.add.role",
-            LABEL_ADD_GROUP = "label.add.group";
+            LABEL_ADD_GROUP = "label.add.group", LABEL_LANGUAGE = "label.language",
+            LABEL_DESCRIPTION = "label.description";
+
+    public static final String TXT_ADD_DESC = "txt.add.desc";
 
     public static final String BTN_ADD = "btn.add";
 

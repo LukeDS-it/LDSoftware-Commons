@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class PersonDTO extends BaseDTO<Person> {
 
-    public final static String FIELD_FULL_NAME = "fullName",
+    public final static String FIELD_NAME = "name", FIELD_SURNAME = "", FIELD_FULL_NAME = "fullName",
             FIELD_TELEPHONE = "telephone", FIELD_MOBILE = "mobile", FIELD_EMAIL = "email",
             FIELD_RECORD_TYPE = "recordType", FIELD_UNIQUE_ID = "uniqueId",
             FIELD_VAT_INFO = "vatInfo", FIELD_SEX = "sex", FIELD_BIRTH_DATE = "birthDate";

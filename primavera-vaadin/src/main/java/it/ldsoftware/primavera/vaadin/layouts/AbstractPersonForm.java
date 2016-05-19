@@ -23,8 +23,12 @@ import static com.vaadin.server.FontAwesome.PLUS;
 import static com.vaadin.server.Sizeable.Unit.PERCENTAGE;
 import static com.vaadin.server.Sizeable.Unit.PIXELS;
 import static com.vaadin.ui.AbstractSelect.ItemCaptionMode.EXPLICIT_DEFAULTS_ID;
+import static it.ldsoftware.primavera.dto.people.ContactDTO.FIELD_CONTACT_TYPE;
+import static it.ldsoftware.primavera.dto.people.PersonDTO.*;
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
 import static it.ldsoftware.primavera.i18n.LanguageUtils.*;
+import static it.ldsoftware.primavera.vaadin.i18n.CommonLabels.TAB_CONTACTS;
+import static it.ldsoftware.primavera.vaadin.i18n.CommonLabels.TXT_CONTACT;
 import static java.util.stream.Collectors.toList;
 
 
@@ -65,9 +69,9 @@ public abstract class AbstractPersonForm<T extends Person> extends TabbedForm<T>
                 .withWidth(100, PERCENTAGE)
                 .withHeight(250, PIXELS)
                 .withDeleteColumn(this::removeFromMaster)
-                .withColumnRenderer("contactType", new HtmlRenderer(), new ContactTypeConverter());
+                .withColumnRenderer(FIELD_CONTACT_TYPE, new HtmlRenderer(), new ContactTypeConverter());
 
-        Label label = new Label(getTranslator().translate("txt.contact"));
+        Label label = new Label(getTranslator().translate(TXT_CONTACT));
         TextField contact = new MTextField().withWidth(MetricConstants.FIELD_WIDTH);
         ComboBox contactType = new ComboBox();
         Collection<ContactType> types = Arrays.stream(ContactType.values()).collect(toList());
@@ -90,7 +94,7 @@ public abstract class AbstractPersonForm<T extends Person> extends TabbedForm<T>
 
         VerticalLayout contactsTab = new MVerticalLayout(contacts, label, contact, contactType, btnAdd)
                 .withFullWidth();
-        addTab(contactsTab, getTranslator().translate("tab.contacts"));
+        addTab(contactsTab, getTranslator().translate(TAB_CONTACTS));
     }
 
     @Override
@@ -117,19 +121,19 @@ public abstract class AbstractPersonForm<T extends Person> extends TabbedForm<T>
     }
 
     private void createFields() {
-        name = new MTextField(getTranslator().translate(getTextFieldName("name"))).withWidth(MetricConstants.FIELD_WIDTH);
-        surname = new MTextField(getTranslator().translate(getTextFieldName("surname"))).withWidth(MetricConstants.FIELD_WIDTH);
-        fullName = new MTextField(getTranslator().translate(getTextFieldName("fullName")));
-        uniqueId = new MTextField(getTranslator().translate(getTextFieldName("uniqueId")));
-        vatInfo = new MTextField(getTranslator().translate(getTextFieldName("vatInfo")));
+        name = new MTextField(getTranslator().translate(getTextFieldName(FIELD_NAME))).withWidth(MetricConstants.FIELD_WIDTH);
+        surname = new MTextField(getTranslator().translate(getTextFieldName(FIELD_SURNAME))).withWidth(MetricConstants.FIELD_WIDTH);
+        fullName = new MTextField(getTranslator().translate(getTextFieldName(FIELD_FULL_NAME)));
+        uniqueId = new MTextField(getTranslator().translate(getTextFieldName(FIELD_UNIQUE_ID)));
+        vatInfo = new MTextField(getTranslator().translate(getTextFieldName(FIELD_VAT_INFO)));
 
-        birthDate = new DateField(getTranslator().translate(getCalendarName("birthDate")));
+        birthDate = new DateField(getTranslator().translate(getCalendarName(FIELD_BIRTH_DATE)));
 
-        sex = new ComboBox(getTranslator().translate(getCheckboxName("sex")));
+        sex = new ComboBox(getTranslator().translate(getCheckboxName(FIELD_SEX)));
         sex.addItems("M", "F");
         sex.setItemCaption(sex.getItem("M"), getTranslator().translate("sex.m"));
         sex.setItemCaption(sex.getItem("F"), getTranslator().translate("sex.f"));
-        personType = new ComboBox(getTranslator().translate(getComboName("personType")));
+        personType = new ComboBox(getTranslator().translate(getComboName(FIELD_RECORD_TYPE)));
     }
 
     private void wireEvents() {

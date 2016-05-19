@@ -4,6 +4,8 @@ import it.ldsoftware.primavera.dto.base.LookupDTO;
 import it.ldsoftware.primavera.entities.base.Lookup;
 import it.ldsoftware.primavera.vaadin.components.DTOGrid;
 
+import static it.ldsoftware.primavera.dto.base.LookupDTO.FIELD_CODE;
+import static it.ldsoftware.primavera.dto.lang.TranslatableDTO.FIELD_LANG;
 import static it.ldsoftware.primavera.vaadin.theme.MetricConstants.COLUMN_SMALL;
 
 /**
@@ -16,7 +18,8 @@ public abstract class AbstractLookupEditor<L extends Lookup<?>, D extends Lookup
     @Override
     public void customizeGrid(DTOGrid<L, D> grid) {
         super.customizeGrid(grid);
-        grid.getColumn("code").setWidth(COLUMN_SMALL);
+        grid.getColumn(FIELD_CODE).setWidth(COLUMN_SMALL);
+        grid.removeColumn(FIELD_LANG);
     }
 
 }

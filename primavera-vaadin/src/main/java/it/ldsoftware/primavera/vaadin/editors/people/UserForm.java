@@ -19,6 +19,7 @@ import it.ldsoftware.primavera.vaadin.util.RoleAdder;
 import org.vaadin.viritin.fields.MPasswordField;
 import org.vaadin.viritin.fields.MTextField;
 
+import static it.ldsoftware.primavera.dto.people.UserDTO.*;
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
 import static it.ldsoftware.primavera.i18n.LanguageUtils.getCheckboxName;
 import static it.ldsoftware.primavera.i18n.LanguageUtils.getTextFieldName;
@@ -46,11 +47,11 @@ public class UserForm extends AbstractPersonForm<User> implements RoleAdder, Gro
     public void addPersonalFields(VerticalLayout generalTab) {
         switchFields(PersonType.REAL);
 
-        username = new MTextField(getTranslator().translate(getTextFieldName("username"))).withWidth(FIELD_WIDTH).withNullRepresentation("");
-        password = new MPasswordField(getTranslator().translate(getTextFieldName("password"))).withWidth(FIELD_WIDTH).withNullRepresentation("");
-        confirmPassword = new MPasswordField(getTranslator().translate(getTextFieldName("confirmPassword"))).withWidth(FIELD_WIDTH).withNullRepresentation("");
-        enabled = new CheckBox(getTranslator().translate(getCheckboxName("enabled")));
-        primaryEmail = new MTextField(getTranslator().translate(getTextFieldName("primaryEmail"))).withWidth(FIELD_WIDTH).withNullRepresentation("");
+        username = new MTextField(getTranslator().translate(getTextFieldName(FIELD_USERNAME))).withWidth(FIELD_WIDTH).withNullRepresentation("");
+        password = new MPasswordField(getTranslator().translate(getTextFieldName(FIELD_PASSWORD))).withWidth(FIELD_WIDTH).withNullRepresentation("");
+        confirmPassword = new MPasswordField(getTranslator().translate(getTextFieldName(FIELD_CONFIRM_PASSWORD))).withWidth(FIELD_WIDTH).withNullRepresentation("");
+        enabled = new CheckBox(getTranslator().translate(getCheckboxName(FIELD_ENABLED)));
+        primaryEmail = new MTextField(getTranslator().translate(getTextFieldName(FIELD_PRIMARY_EMAIL))).withWidth(FIELD_WIDTH).withNullRepresentation("");
 
         generalTab.addComponentAsFirst(primaryEmail);
         generalTab.addComponentAsFirst(confirmPassword);

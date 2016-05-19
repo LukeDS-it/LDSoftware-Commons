@@ -10,7 +10,6 @@ import it.ldsoftware.primavera.dto.base.BaseDTO;
 import it.ldsoftware.primavera.entities.base.BaseEntity;
 import it.ldsoftware.primavera.i18n.LocalizationService;
 import it.ldsoftware.primavera.query.Filter;
-import it.ldsoftware.primavera.query.PredicateFactory;
 import it.ldsoftware.primavera.services.interfaces.DatabaseService;
 import it.ldsoftware.primavera.vaadin.components.DTOGrid;
 import it.ldsoftware.primavera.vaadin.controllers.ExportController;
@@ -31,7 +30,7 @@ import java.util.Locale;
 
 import static com.vaadin.server.FontAwesome.*;
 import static com.vaadin.ui.themes.ValoTheme.*;
-import static it.ldsoftware.primavera.i18n.CommonErrors.WARNING_SELECT_ITEMS;
+import static it.ldsoftware.primavera.i18n.CommonErrors.*;
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
 import static it.ldsoftware.primavera.i18n.CommonMessages.*;
 import static it.ldsoftware.primavera.util.UserUtil.*;
@@ -141,8 +140,8 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
                         coll.stream().forEach(this::tryDeletion);
                         refreshGrid();
                         executeNew();
-                        showNotification(translator.translate("title.delete.success"),
-                                translator.translate("msg.delete.success"),
+                        showNotification(translator.translate(TITLE_DELETE_SUCCESS),
+                                translator.translate(MSG_DELETE_SUCCESS),
                                 NOTIFICATION_SUCCESS);
                     }
                 });
@@ -152,8 +151,8 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
         try {
             svc.delete(getEntityClass(), (getDTOClass().cast(dto)).getId());
         } catch (DataIntegrityViolationException dataIntegrity) {
-            showNotification(translator.translate("title.data.integrity"),
-                    translator.translate("error.data.integrity"), NOTIFICATION_FAILURE);
+            showNotification(translator.translate(TITLE_DATA_INTEGRITY),
+                    translator.translate(ERROR_DATA_INTEGRITY), NOTIFICATION_FAILURE);
         }
     }
 
@@ -204,20 +203,20 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
                     errors = t.getLocalizedMessage();
                     errors = errors.replaceAll("\\{", "");
                 }
-                showNotification(translator.translate("title.save.error"),
-                        translator.translate("msg.save.error", errors), NOTIFICATION_ERROR);
+                showNotification(translator.translate(TITLE_SAVE_ERROR),
+                        translator.translate(MSG_SAVE_ERROR, errors), NOTIFICATION_ERROR);
 
                 customRollback();
             }
         } else {
-            String errors = translator.translate("msg.validation.error").concat("<ul>");
+            String errors = translator.translate(MSG_VALIDATION_ERROR).concat("<ul>");
 
             for (String vr : validationResult) {
                 errors = errors.concat("<li>").concat(vr).concat("</li>");
             }
 
             errors += "</ul>";
-            showNotification(translator.translate("title.save.error"), errors, NOTIFICATION_FAILURE);
+            showNotification(translator.translate(TITLE_SAVE_ERROR), errors, NOTIFICATION_FAILURE);
         }
     }
 
@@ -228,9 +227,10 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
     }
 
 	/*
-     * *************************************************** Security methods that
+     *
+     * Security methods that
 	 * must be overridden if needed
-	 * ***************************************************
+	 *
 	 */
 
     protected String getBasePermission() {
@@ -262,9 +262,7 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
     }
 
     protected void refreshGrid() {
-        // FIXME dynamic grid refresh is needed
-        grid.refresh(svc.findAllDTO(getEntityClass(), getDTOClass(),
-                PredicateFactory.createPredicate(getEntityClass(), filters), getLocale()));
+        grid.refresh();
     }
 
     private void createGrid() {

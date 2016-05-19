@@ -7,6 +7,7 @@ import it.ldsoftware.primavera.entities.base.BaseEntity;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import static com.vaadin.ui.themes.ValoTheme.TABSHEET_FRAMED;
+import static it.ldsoftware.primavera.vaadin.i18n.CommonLabels.TAB_GENERAL;
 
 /**
  * Created by luca on 20/04/16.
@@ -33,7 +34,7 @@ public abstract class TabbedForm<E extends BaseEntity> extends AbstractEditorFor
     private void createGeneralTab() {
         generalTab = new MVerticalLayout().withMargin(true).withFullWidth();
         addGeneralContent(generalTab);
-        addTab(generalTab, getTranslator().translate("tab.general"));
+        addTab(generalTab, getTranslator().translate(TAB_GENERAL));
     }
 
     public void addTab(Component component, String caption) {

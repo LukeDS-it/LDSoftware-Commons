@@ -54,7 +54,7 @@ public class TermsOfServiceDialog extends AbstractDialog {
         }
         try {
             if (url != null) {
-                File tosFile = new File(url.getFile().replaceAll("\\%20", " "));
+                File tosFile = new File(url.getFile().replaceAll("%20", " "));
                 termsOfService = FileUtils.readFileToString(tosFile);
                 termsOfService = termsOfService.replaceAll("\r\n|\n", "<br />");
             }

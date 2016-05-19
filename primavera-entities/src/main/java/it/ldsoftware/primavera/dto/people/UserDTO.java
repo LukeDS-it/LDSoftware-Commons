@@ -18,6 +18,7 @@ import java.util.stream.Stream;
 public class UserDTO extends BaseDTO<User> implements UserDetails {
 
     public static final String FIELD_USERNAME = "username", FIELD_PASSWORD = "password",
+            FIELD_CONFIRM_PASSWORD = "confirmPassword",
             FIELD_PRIMARY_EMAIL = "primaryEmail", FIELD_AUTHORITIES = "authorities",
             FIELD_GROUPS = "groups", FIELD_ENABLED = "enabled";
 

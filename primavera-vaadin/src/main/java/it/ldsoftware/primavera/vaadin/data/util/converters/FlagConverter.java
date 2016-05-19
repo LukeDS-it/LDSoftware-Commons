@@ -6,10 +6,9 @@ import it.ldsoftware.primavera.vaadin.theme.BaseResources;
 
 import java.util.Locale;
 
-import static it.ldsoftware.primavera.vaadin.theme.BaseResources.getFlag;
-
 /**
  * Created by luca on 20/04/16.
+ * Converts a two-character locale into a flag
  */
 public class FlagConverter implements Converter<Resource, String> {
 

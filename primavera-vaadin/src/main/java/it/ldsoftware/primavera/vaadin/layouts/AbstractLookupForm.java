@@ -29,12 +29,19 @@ import static com.vaadin.server.FontAwesome.TRASH_O;
 import static com.vaadin.server.Sizeable.Unit.PERCENTAGE;
 import static com.vaadin.ui.AbstractSelect.ItemCaptionMode.PROPERTY;
 import static com.vaadin.ui.Alignment.MIDDLE_LEFT;
-import static com.vaadin.ui.themes.ValoTheme.BUTTON_BORDERLESS;
-import static com.vaadin.ui.themes.ValoTheme.NOTIFICATION_ERROR;
-import static com.vaadin.ui.themes.ValoTheme.NOTIFICATION_WARNING;
+import static com.vaadin.ui.themes.ValoTheme.*;
+import static it.ldsoftware.primavera.dto.base.BaseDTO.FIELD_ID;
+import static it.ldsoftware.primavera.dto.base.BaseDTO.FIELD_VERSION;
+import static it.ldsoftware.primavera.dto.base.LookupDTO.FIELD_CODE;
+import static it.ldsoftware.primavera.dto.base.LookupDTO.FIELD_DESCRIPTION;
+import static it.ldsoftware.primavera.dto.lang.TranslatableDTO.FIELD_LANG;
+import static it.ldsoftware.primavera.dto.lang.TranslatableDTO.FIELD_MASTER;
+import static it.ldsoftware.primavera.i18n.CommonErrors.MSG_INS_ERROR;
+import static it.ldsoftware.primavera.i18n.CommonErrors.MSG_SAVE_ERROR;
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
-import static it.ldsoftware.primavera.i18n.CommonMessages.MSG_INS_ERROR;
-import static it.ldsoftware.primavera.i18n.CommonMessages.MSG_SAVE_ERROR;
+import static it.ldsoftware.primavera.i18n.LanguageUtils.getTextFieldName;
+import static it.ldsoftware.primavera.vaadin.components.DTOGrid.COLUMN_DELETE;
+import static it.ldsoftware.primavera.vaadin.i18n.CommonLabels.TAB_TRANSLATIONS;
 import static it.ldsoftware.primavera.vaadin.theme.MetricConstants.COLUMN_XS;
 import static it.ldsoftware.primavera.vaadin.theme.MetricConstants.FIELD_WIDTH;
 import static it.ldsoftware.primavera.vaadin.util.NotificationBuilder.showNotification;
@@ -59,10 +66,12 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
 
     @Override
     public void addGeneralContent(VerticalLayout generalTab) {
-        code = new MTextField(getTranslator().translate("txt.code")).withWidth(FIELD_WIDTH);
+        code = new MTextField(getTranslator().translate(getTextFieldName(FIELD_CODE))).withWidth(FIELD_WIDTH);
         code.addTextChangeListener(l -> signalChange());
 
-        ownLocale = new MTextField(getTranslator().translate("txt.desc")).withWidth(FIELD_WIDTH);
+        ownLocale = new MTextField(getTranslator().translate(getTextFieldName(FIELD_DESCRIPTION)))
+                .withWidth(FIELD_WIDTH);
+
         ownLocale.addTextChangeListener(l -> signalChange());
         ownLocale.setRequired(true);
         ownLocale.addValidator(new NullValidator("", false));
@@ -81,7 +90,7 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
         bic = new BeanItemContainer<>(LookupTranslation.class, new ArrayList<>());
         GeneratedPropertyContainer gpc = new GeneratedPropertyContainer(bic);
 
-        gpc.addGeneratedProperty("delete", new PropertyValueGenerator<Component>() {
+        gpc.addGeneratedProperty(COLUMN_DELETE, new PropertyValueGenerator<Component>() {
 
             private static final long serialVersionUID = 1L;
 
@@ -98,20 +107,20 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
         });
 
         tGrid.setContainerDataSource(gpc);
-        tGrid.setColumnOrder("delete", "lang", "content"); // FIXME externalize strings
-        tGrid.getColumn("delete").setRenderer(new ComponentRenderer()).setWidth(COLUMN_XS).setHeaderCaption("");
-        tGrid.getColumn("lang").setHeaderCaption(getTranslator().translate("label.language")).setWidth(70)
+        tGrid.setColumnOrder(COLUMN_DELETE, FIELD_LANG, FIELD_DESCRIPTION);
+        tGrid.getColumn(COLUMN_DELETE).setRenderer(new ComponentRenderer()).setWidth(COLUMN_XS).setHeaderCaption("");
+        tGrid.getColumn(FIELD_LANG).setHeaderCaption(getTranslator().translate(LABEL_LANGUAGE)).setWidth(70)
                 .setRenderer(new ImageRenderer(), new FlagConverter());
 
-        tGrid.getColumn("content").setHeaderCaption(getTranslator().translate("label.description"));
-        tGrid.removeColumn("id");
-        tGrid.removeColumn("version");
-        tGrid.removeColumn("master");
-        tGrid.setCellStyleGenerator(cell -> "lang".equals(cell.getPropertyId()) ? "" : null);
+        tGrid.getColumn(FIELD_DESCRIPTION).setHeaderCaption(getTranslator().translate(LABEL_DESCRIPTION));
+        tGrid.removeColumn(FIELD_ID);
+        tGrid.removeColumn(FIELD_VERSION);
+        tGrid.removeColumn(FIELD_MASTER);
+        tGrid.setCellStyleGenerator(cell -> FIELD_LANG.equals(cell.getPropertyId()) ? "" : null);
 
         tTab.addComponent(tGrid);
 
-        Label label = new Label(getTranslator().translate("txt.add.desc"));
+        Label label = new Label(getTranslator().translate(TXT_ADD_DESC));
         TextField translation = new MTextField().withWidth("250px");
         ComboBox language = new ComboBox();
 
@@ -160,7 +169,7 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
 
         tTab.addComponent(insertTranslation);
 
-        addTab(tTab, getTranslator().translate("tab.translations"));
+        addTab(tTab, getTranslator().translate(TAB_TRANSLATIONS));
     }
 
     @Override

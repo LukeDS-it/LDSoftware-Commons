@@ -17,17 +17,17 @@ import static java.util.Collections.unmodifiableCollection;
  * Created by luca on 19/04/16.
  * Container for filterable lazy lists
  */
-public class FIlterableLazyListContainer<T> extends ListContainer<T> implements Filterable, Sortable {
+public class FilterableLazyListContainer<T> extends ListContainer<T> implements Filterable, Sortable {
 
     private static final long serialVersionUID = 1L;
 
     private final Set<Filter> filters = new HashSet<>();
 
-    public FIlterableLazyListContainer(FilterableLazyList<T> backingList) {
+    public FilterableLazyListContainer(FilterableLazyList<T> backingList) {
         super(backingList);
     }
 
-    public FIlterableLazyListContainer(Class<T> type, FilterableLazyList<T> backingList) {
+    public FilterableLazyListContainer(Class<T> type, FilterableLazyList<T> backingList) {
         super(type, backingList);
     }
 
@@ -60,6 +60,10 @@ public class FIlterableLazyListContainer<T> extends ListContainer<T> implements 
     @Override
     public Collection<Filter> getContainerFilters() {
         return unmodifiableCollection(filters);
+    }
+
+    public void refresh() {
+        applyFilters();
     }
 
     private void applyFilters() {

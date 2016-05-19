@@ -9,6 +9,7 @@ import it.ldsoftware.primavera.vaadin.util.PeopleAdder;
 
 import java.util.List;
 
+import static it.ldsoftware.primavera.vaadin.i18n.CommonLabels.TAB_CHILDREN;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -37,7 +38,7 @@ public class PersonForm extends AbstractPersonForm<Person> implements PeopleAdde
     public void addOtherTabs() {
         super.addOtherTabs();
         PeopleTab tab = new PeopleTab(getTranslator(), getDatabaseService(), "", this);
-        addTab(tab, getTranslator().translate("tab.children"));
+        addTab(tab, getTranslator().translate(TAB_CHILDREN));
     }
 
     @Override

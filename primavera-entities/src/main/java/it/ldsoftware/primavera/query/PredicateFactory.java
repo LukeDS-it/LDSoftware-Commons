@@ -36,6 +36,8 @@ public class PredicateFactory {
     public static <E extends BaseEntity> BooleanExpression createPredicate(Class<E> eClass, Collection<Filter> filters) {
         String entityName = eClass.getSimpleName();
         entityName = entityName.substring(0, 1).toLowerCase() + entityName.substring(1);
+        if (entityName.equals("group"))
+            entityName += "1";
         PathBuilder<E> pb = new PathBuilder<>(eClass, entityName);
         BooleanExpression partial = pb.isNotNull();
 
@@ -45,11 +47,11 @@ public class PredicateFactory {
             try {
                 Field f = eClass.getDeclaredField(filter.getProperty());
 
-                if (f.getType().isAssignableFrom(Collection.class)) {
+                if (Collection.class.isAssignableFrom(f.getType())) {
                     logger.debug("The field " + filter.getProperty()
                             + " is of type Collection. This is not currently supported."
                             + " Please add manually the filter on this field.");
-                } else if (f.getType().isAssignableFrom(String.class)) {
+                } else if (String.class.isAssignableFrom(f.getType())) {
                     partial = handleString(pb, partial, filter);
                 } else if (BaseEntity.class.isAssignableFrom(f.getType())) {
                     partial = handleEntity(pb, partial, filter, f);
@@ -63,6 +65,9 @@ public class PredicateFactory {
                         partial = handleBetween(pb, partial, filter, filters);
                     betweenParsed.add(getBetweenFieldName(fname));
 
+                } else if (fname.contains(".") && !fname.endsWith(".")) {
+                    // TODO handle subproperties
+                    // String[] subProperties = fname.split("\\.");
                 } else {
                     logger.debug("The field " + filter.getProperty()
                             + " does not exist in the entity. Remember to add any custom query after the call.");
@@ -172,12 +177,6 @@ public class PredicateFactory {
                 logger.error("An invalid value was passed to the field " + filter.getProperty() + ": expected "
                         + field.getType().getName() + ", got " + filter.getValue().getClass().getName());
             }
-        } else if (o instanceof String) {
-            /*
-			 * TODO handle a string instead of an entity.
-			 * Could be like this: string -> "property.subproperty[index]:value"
-			 * to allow querying on sub-properties
-			 */
         }
         return base;
     }

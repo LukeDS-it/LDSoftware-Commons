@@ -13,7 +13,7 @@ import java.util.Locale;
  */
 public abstract class BaseDTO<E extends BaseEntity> {
 
-    public static final String FIELD_ID = "id";
+    public static final String FIELD_ID = "id", FIELD_VERSION = "version";
 
     private long id;
 
