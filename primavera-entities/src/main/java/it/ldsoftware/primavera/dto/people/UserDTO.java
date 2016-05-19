@@ -7,9 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
@@ -19,7 +17,11 @@ import java.util.stream.Stream;
  */
 public class UserDTO extends BaseDTO<User> implements UserDetails {
 
-    private String username, password;
+    public static final String FIELD_USERNAME = "username", FIELD_PASSWORD = "password",
+            FIELD_PRIMARY_EMAIL = "primaryEmail", FIELD_AUTHORITIES = "authorities",
+            FIELD_GROUPS = "groups", FIELD_ENABLED = "enabled";
+
+    private String username, password, primaryEmail;
     private final Set<GrantedAuthority> authorities = new HashSet<>();
     private final Set<GroupDTO> groups = new HashSet<>();
     private boolean enabled;
@@ -46,6 +48,13 @@ public class UserDTO extends BaseDTO<User> implements UserDetails {
                         .flatMap(userRole -> userRole.getActualRoles().stream()))
                 .map(SimpleGrantedAuthority::new)
                 .forEach(authorities::add);
+    }
+
+    @Override
+    public List<String> _fields() {
+        List<String> tmp = super._fields();
+        tmp.addAll(Arrays.asList(FIELD_USERNAME, FIELD_PRIMARY_EMAIL, FIELD_ENABLED));
+        return tmp;
     }
 
     public void addAuthority(String role) {
@@ -101,5 +110,13 @@ public class UserDTO extends BaseDTO<User> implements UserDetails {
 
     public Set<GroupDTO> getGroups() {
         return groups;
+    }
+
+    public String getPrimaryEmail() {
+        return primaryEmail;
+    }
+
+    public void setPrimaryEmail(String primaryEmail) {
+        this.primaryEmail = primaryEmail;
     }
 }

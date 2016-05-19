@@ -5,5 +5,5 @@ package it.ldsoftware.primavera.util;
  * Defines the type of a contact
  */
 public enum ContactType {
-    EMAIL, MOBILE_PHONE, PHONE, CERT_EMAIL, WEBSITE, FAX
+    EMAIL, MOBILE_PHONE, PHONE, CERT_EMAIL, WEBSITE, FAX, TWITTER_HANDLE
 }

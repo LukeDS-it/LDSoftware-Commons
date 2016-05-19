@@ -7,6 +7,8 @@ import java.util.Locale;
 
 /**
  * Created by luca on 22/04/16.
+ * This DTO does not extend the base dto, as the user-role relationship is
+ * not a base entity.
  */
 public class UserRoleDTO {
     public static final String COLUMN_ROLE_NAME = "roleName", COLUMN_ROLE_DESC = "roleDesc",
