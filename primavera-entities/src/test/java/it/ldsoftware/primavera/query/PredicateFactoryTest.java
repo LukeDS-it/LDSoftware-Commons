@@ -1,45 +1,50 @@
 package it.ldsoftware.primavera.query;
 
 import com.mysema.query.types.Predicate;
-import it.ldsoftware.primavera.entities.people.Contact;
 import it.ldsoftware.primavera.entities.people.Person;
 import it.ldsoftware.primavera.entities.people.QPerson;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static it.ldsoftware.primavera.query.FilterOperator.AND;
-import static it.ldsoftware.primavera.util.ContactType.PHONE;
+import static java.util.Collections.singletonList;
 
 /**
  * Created by luca on 20/05/16.
- * Testing of the predicate factory
+ * This class tests the creation of the predicates only, does not perform
+ * actual search on database.
  */
 public class PredicateFactoryTest {
 
     @Test
-    public void createPredicateBasic() throws Exception {
-        Person person = new Person();
-        Contact contact = new Contact().withContactType(PHONE).withValue("123456");
-        person.addContact(contact);
+    public void testNestedPredicate() throws Exception {
+        Person parent = new Person();
+        parent.setName("Luc%");
+        parent.setSurname("Di%");
+        List<Filter> filterList = singletonList(new Filter("parent", parent, false, AND));
 
-        QPerson qPerson = QPerson.person;
-        Predicate predicate1 = qPerson.isNotNull().and(qPerson.contacts.any().eq(contact));
-        System.out.println(predicate1);
+        Predicate predicate = PredicateFactory.createPredicate(Person.class, filterList);
 
-        List<Filter> filters = new ArrayList<>();
-        filters.add(new Filter("contacts", contact, false, AND));
-        Predicate predicate2 = PredicateFactory.createPredicate(Person.class, filters);
-        System.out.println(predicate2);
+        QPerson qp = QPerson.person;
+        Predicate expected = qp.isNotNull().and(qp.parent.isNotNull()
+                .and(qp.parent.surname.startsWithIgnoreCase("Di"))
+                .and(qp.parent.name.startsWithIgnoreCase("Luc")));
 
-        Assert.assertEquals(predicate1, predicate2);
+        Assert.assertEquals(expected, predicate);
     }
 
     @Test
-    public void getFiltersByEntity() throws Exception {
+    public void testStringPredicate() {
+        List<Filter> filterList = singletonList(new Filter("name", "Luc%", false, AND));
 
+        Predicate predicate = PredicateFactory.createPredicate(Person.class, filterList);
+
+        QPerson qp = QPerson.person;
+        Predicate expected = qp.isNotNull().and(qp.name.startsWithIgnoreCase("Luc"));
+
+        Assert.assertEquals(expected, predicate);
     }
 
 }

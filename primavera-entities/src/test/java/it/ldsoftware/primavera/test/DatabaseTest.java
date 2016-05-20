@@ -3,10 +3,10 @@ package it.ldsoftware.primavera.test;
 import com.mysema.query.types.Predicate;
 import it.ldsoftware.primavera.entities.people.Contact;
 import it.ldsoftware.primavera.entities.people.Person;
-import it.ldsoftware.primavera.entities.people.QContact;
 import it.ldsoftware.primavera.entities.people.QPerson;
 import it.ldsoftware.primavera.entities.security.Group;
 import it.ldsoftware.primavera.entities.security.GroupTranslation;
+import it.ldsoftware.primavera.query.PredicateFactory;
 import it.ldsoftware.primavera.services.interfaces.DatabaseService;
 import it.ldsoftware.primavera.util.ContactType;
 import org.junit.Assert;
@@ -57,21 +57,26 @@ public class DatabaseTest {
         String cVal = "123456";
 
         Person person = new Person();
-        person.addContact(new Contact().withContactType(PHONE).withValue("not my value"));
+        person.addContact(new Contact().withContactType(PHONE).withValue("not cVal"));
         person.addContact(new Contact().withContactType(ContactType.EMAIL).withValue(cVal));
         person.setName("Luca");
         person.setSurname("Di Stefano");
+        person.setFullName("Luca Di Stefano");
 
         svc.save(Person.class, person);
 
-        QPerson qPerson = QPerson.person;
-        QContact qContact = qPerson.contacts.any();
-        qPerson.contacts.contains(qContact);
-        // qContact.contactType.eq(PHONE).and(qContact.contactValue.eq(cVal)))
-        Predicate predicate1 = qPerson.isNotNull()
-                .and(qContact.contactType.eq(PHONE).and(qContact.contactValue.eq(cVal)));
+        QPerson qp = QPerson.person;
+
+        // where contacts contains contact c where c.type == X and c.value == Y ???
+        Predicate predicate1 = qp.isNotNull()
+                .and(qp.contacts.contains(qp.contacts.any())); // FIXME
         List<Person> all = svc.findAll(Person.class, predicate1);
-        Assert.assertNotEquals(all.size(), 0);
+        Assert.assertEquals(all.size(), 0);
+    }
+
+    public void testExample() throws Exception {
+        Person p = new Person();
+        PredicateFactory.getFiltersByEntity(Person.class, p);
     }
 
 }

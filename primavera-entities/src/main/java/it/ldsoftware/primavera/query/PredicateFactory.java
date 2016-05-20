@@ -18,10 +18,11 @@ import static it.ldsoftware.primavera.util.CalendarUtil.fromDate;
 import static it.ldsoftware.primavera.util.ReflectionUtil.getPropertyFromMethod;
 
 /**
- * Created by luca on 11/04/16.
  * This class serves as a dynamic QueryDSL predicate factory.
  * Using reflection and dynamic paths, this class can easily create predicates based on a filter list
  * or on an example entity.
+ *
+ * @author luca
  */
 public class PredicateFactory {
     private static final Logger logger = Logger.getLogger(PredicateFactory.class);
@@ -37,8 +38,7 @@ public class PredicateFactory {
     public static <E extends BaseEntity> BooleanExpression createPredicate(Class<E> eClass, Collection<Filter> filters) {
         String entityName = eClass.getSimpleName();
         entityName = entityName.substring(0, 1).toLowerCase() + entityName.substring(1);
-        if (entityName.equals("group"))
-            entityName += "1";
+        if (entityName.equals("group")) entityName += "1";
         PathBuilder<E> pb = new PathBuilder<>(eClass, entityName);
         BooleanExpression partial = pb.isNotNull();
 
@@ -47,16 +47,7 @@ public class PredicateFactory {
         for (Filter filter : filters) {
             try {
                 Field f = eClass.getDeclaredField(filter.getProperty());
-
-                if (Collection.class.isAssignableFrom(f.getType())) {
-                    partial = handleCollection(pb, partial, filter);
-                } else if (String.class.isAssignableFrom(f.getType())) {
-                    partial = handleString(pb, partial, filter);
-                } else if (BaseEntity.class.isAssignableFrom(f.getType())) {
-                    partial = handleEntity(pb, partial, filter, f);
-                } else {
-                    partial = handleOther(pb, partial, filter);
-                }
+                partial = getBasicExpression(pb, partial, filter, f);
             } catch (NoSuchFieldException ignored) {
                 String fname = filter.getProperty();
                 if (fname.toLowerCase().endsWith("from") || fname.toLowerCase().endsWith("to")) {
@@ -64,16 +55,27 @@ public class PredicateFactory {
                         partial = handleBetween(pb, partial, filter, filters);
                     betweenParsed.add(getBetweenFieldName(fname));
 
-                } else if (fname.contains(".") && !fname.endsWith(".")) {
-                    // TODO handle subproperties
-                    // String[] subProperties = fname.split("\\.");
                 } else {
+                    // TODO try to get a custom filter factory first to see if the field can be inferred
                     logger.debug("The field " + filter.getProperty()
                             + " does not exist in the entity. Remember to add any custom query after the call.");
                 }
             }
         }
 
+        return partial;
+    }
+
+    private static <E extends BaseEntity> BooleanExpression getBasicExpression(PathBuilder<E> pb, BooleanExpression partial, Filter filter, Field f) {
+        if (Collection.class.isAssignableFrom(f.getType())) {
+            partial = handleCollection(pb, partial, filter);
+        } else if (String.class.isAssignableFrom(f.getType())) {
+            partial = handleString(pb, partial, filter);
+        } else if (BaseEntity.class.isAssignableFrom(f.getType())) {
+            partial = handleEntity(pb, partial, filter, f);
+        } else {
+            partial = handleOther(pb, partial, filter);
+        }
         return partial;
     }
 
@@ -173,9 +175,16 @@ public class PredicateFactory {
                 } else {
                     @SuppressWarnings("unchecked")
                     List<Filter> subFilters = getFiltersByEntity((Class<E>) o.getClass(), (E) o);
-                    BooleanExpression partial = pb.get(filter.getProperty()).isNotNull();
-                    for (Filter sf : subFilters) {
-                        partial = partial.and(pb.get(filter.getProperty()).get(sf.getProperty()).eq(sf.getValue()));
+
+                    PathBuilder nested = pb.get(filter.getProperty());
+                    BooleanExpression partial = nested.isNotNull();
+                    for (Filter sf: subFilters) {
+                        try {
+                            partial = getBasicExpression(nested, partial, sf, o.getClass().getDeclaredField(sf.getProperty()));
+                        } catch (NoSuchFieldException e) {
+                            // Should not be thrown as we are building filters from example
+                            e.printStackTrace();
+                        }
                     }
 
                     switch (filter.getOperator()) {

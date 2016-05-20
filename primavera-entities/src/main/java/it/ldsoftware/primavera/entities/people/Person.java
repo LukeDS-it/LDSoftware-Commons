@@ -115,7 +115,6 @@ public class Person extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
-        setFullName(name + " " + surname);
     }
 
     public String getSurname() {
@@ -124,7 +123,6 @@ public class Person extends BaseEntity {
 
     public void setSurname(String surname) {
         this.surname = surname;
-        setFullName(name + " " + surname);
     }
 
     public String getFullName() {
