@@ -1,6 +1,7 @@
 package it.ldsoftware.primavera.query;
 
 
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.CollectionPath;
 import com.mysema.query.types.path.PathBuilder;
@@ -36,10 +37,7 @@ public class PredicateFactory {
      * @return the predicate in the form of a BooleanExpression
      */
     public static <E extends BaseEntity> BooleanExpression createPredicate(Class<E> eClass, Collection<Filter> filters) {
-        String entityName = eClass.getSimpleName();
-        entityName = entityName.substring(0, 1).toLowerCase() + entityName.substring(1);
-        if (entityName.equals("group")) entityName += "1";
-        PathBuilder<E> pb = new PathBuilder<>(eClass, entityName);
+        PathBuilder<E> pb = getPathBuilder(eClass);
         BooleanExpression partial = pb.isNotNull();
 
         Set<String> betweenParsed = new HashSet<>();
@@ -64,6 +62,13 @@ public class PredicateFactory {
         }
 
         return partial;
+    }
+
+    private static <E extends BaseEntity> PathBuilder<E> getPathBuilder(Class<E> eClass) {
+        String entityName = eClass.getSimpleName();
+        entityName = entityName.substring(0, 1).toLowerCase() + entityName.substring(1);
+        if (entityName.equals("group")) entityName += "1";
+        return new PathBuilder<>(eClass, entityName);
     }
 
     private static <E extends BaseEntity> BooleanExpression getBasicExpression(PathBuilder<E> pb, BooleanExpression partial, Filter filter, Field f) {
@@ -112,15 +117,23 @@ public class PredicateFactory {
     }
 
     @SuppressWarnings("unchecked")
-    private static BooleanExpression handleCollection(PathBuilder<?> pb, BooleanExpression base, Filter filter) {
+    private static <E extends BaseEntity> BooleanExpression handleCollection(PathBuilder<E> pb, BooleanExpression base, Filter filter) {
         Object o = filter.getValue();
-        CollectionPath path = pb.getCollection(filter.getProperty(), o.getClass());
+        Class<E> eClass = (Class<E>) o.getClass();
+        CollectionPath path = pb.getCollection(filter.getProperty(), eClass);
+
+        PathBuilder subPb = getPathBuilder(eClass);
+
+        BooleanExpression subClause = subPb.isNotNull();
+        subClause = subClause.and(createPredicate(eClass, (E)o));
+
+        JPASubQuery q = new JPASubQuery().from(subPb).where(subClause);
         switch (filter.getOperator()) {
             case AND:
-                base = base.and(findNegation(path.any().eq(o), filter)); // FIXME
+                base = base.and(findNegation(path.any().in(q.list()), filter));
                 break;
             case OR:
-                base = base.or(findNegation(path.any().eq(o), filter));
+                base = base.or(findNegation(path.any().in(q.list()), filter));
                 break;
         }
         return base;

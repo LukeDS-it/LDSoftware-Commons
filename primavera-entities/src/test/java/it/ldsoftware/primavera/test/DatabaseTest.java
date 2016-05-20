@@ -1,11 +1,14 @@
 package it.ldsoftware.primavera.test;
 
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.types.Predicate;
 import it.ldsoftware.primavera.entities.people.Contact;
 import it.ldsoftware.primavera.entities.people.Person;
+import it.ldsoftware.primavera.entities.people.QContact;
 import it.ldsoftware.primavera.entities.people.QPerson;
 import it.ldsoftware.primavera.entities.security.Group;
 import it.ldsoftware.primavera.entities.security.GroupTranslation;
+import it.ldsoftware.primavera.query.Filter;
 import it.ldsoftware.primavera.query.PredicateFactory;
 import it.ldsoftware.primavera.services.interfaces.DatabaseService;
 import it.ldsoftware.primavera.util.ContactType;
@@ -18,7 +21,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
+import static it.ldsoftware.primavera.query.FilterOperator.AND;
+import static it.ldsoftware.primavera.util.ContactType.EMAIL;
 import static it.ldsoftware.primavera.util.ContactType.PHONE;
+import static java.util.Collections.singletonList;
 
 /**
  * Created by luca on 21/04/16.
@@ -66,12 +72,27 @@ public class DatabaseTest {
         svc.save(Person.class, person);
 
         QPerson qp = QPerson.person;
+        QContact qc = QContact.contact;
 
-        // where contacts contains contact c where c.type == X and c.value == Y ???
         Predicate predicate1 = qp.isNotNull()
-                .and(qp.contacts.contains(qp.contacts.any())); // FIXME
-        List<Person> all = svc.findAll(Person.class, predicate1);
-        Assert.assertEquals(all.size(), 0);
+                .and(qp.contacts.any().in(
+                        new JPASubQuery().from(qc)
+                                .where(qc.contactType.eq(PHONE)
+                                        .and(qc.contactValue.eq(cVal))).list(qc)));
+
+        List<Person> manual = svc.findAll(Person.class, predicate1);
+
+        Contact noResults = new Contact().withContactType(PHONE).withValue(cVal);
+        Predicate predicate2 = PredicateFactory.createPredicate(Person.class, singletonList(new Filter("contacts", noResults, false, AND)));
+
+        List<Person> auto = svc.findAll(Person.class, predicate2);
+
+        Assert.assertEquals(manual.size(), auto.size());
+
+        Contact results = new Contact().withContactType(EMAIL).withValue(cVal);
+        auto = svc.findAll(Person.class, PredicateFactory.createPredicate(Person.class, singletonList(new Filter("contacts", results, false, AND))));
+
+        Assert.assertEquals(1, auto.size());
     }
 
     public void testExample() throws Exception {

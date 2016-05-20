@@ -1,6 +1,7 @@
 package it.ldsoftware.primavera.query;
 
 import com.mysema.query.types.Predicate;
+import it.ldsoftware.primavera.entities.people.Contact;
 import it.ldsoftware.primavera.entities.people.Person;
 import it.ldsoftware.primavera.entities.people.QPerson;
 import org.junit.Assert;
@@ -9,6 +10,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static it.ldsoftware.primavera.query.FilterOperator.AND;
+import static it.ldsoftware.primavera.util.ContactType.PHONE;
 import static java.util.Collections.singletonList;
 
 /**
@@ -33,6 +35,15 @@ public class PredicateFactoryTest {
                 .and(qp.parent.name.startsWithIgnoreCase("Luc")));
 
         Assert.assertEquals(expected, predicate);
+    }
+
+    @Test
+    public void testCollectionPredicate() {
+        Contact contact = new Contact().withContactType(PHONE).withValue("123456");
+        List<Filter> filterList = singletonList(new Filter("contacts", contact, false, AND));
+
+        Predicate p = PredicateFactory.createPredicate(Person.class, filterList);
+        System.out.println(p);
     }
 
     @Test
