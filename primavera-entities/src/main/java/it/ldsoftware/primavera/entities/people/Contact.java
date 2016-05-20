@@ -28,6 +28,33 @@ public class Contact extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     private Person person;
 
+    @Override
+    public String toString() {
+        return super.toString() + ", " + contactType + " - " + contactValue;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Contact contact = (Contact) o;
+
+        if (contactType != contact.contactType) return false;
+        if (!contactValue.equals(contact.contactValue)) return false;
+        return person != null ? person.equals(contact.person) : contact.person == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = contactType.hashCode();
+        result = 31 * result + contactValue.hashCode();
+        result = 31 * result + (person != null ? person.hashCode() : 0);
+        return result;
+    }
+
     public ContactType getContactType() {
         return contactType;
     }

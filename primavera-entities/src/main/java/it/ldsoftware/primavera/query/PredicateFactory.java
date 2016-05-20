@@ -2,6 +2,7 @@ package it.ldsoftware.primavera.query;
 
 
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.path.CollectionPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.StringPath;
 import it.ldsoftware.primavera.entities.base.BaseEntity;
@@ -48,9 +49,7 @@ public class PredicateFactory {
                 Field f = eClass.getDeclaredField(filter.getProperty());
 
                 if (Collection.class.isAssignableFrom(f.getType())) {
-                    logger.debug("The field " + filter.getProperty()
-                            + " is of type Collection. This is not currently supported."
-                            + " Please add manually the filter on this field.");
+                    partial = handleCollection(pb, partial, filter);
                 } else if (String.class.isAssignableFrom(f.getType())) {
                     partial = handleString(pb, partial, filter);
                 } else if (BaseEntity.class.isAssignableFrom(f.getType())) {
@@ -110,6 +109,21 @@ public class PredicateFactory {
         return new Filter(property, value, false, AND);
     }
 
+    @SuppressWarnings("unchecked")
+    private static BooleanExpression handleCollection(PathBuilder<?> pb, BooleanExpression base, Filter filter) {
+        Object o = filter.getValue();
+        CollectionPath path = pb.getCollection(filter.getProperty(), o.getClass());
+        switch (filter.getOperator()) {
+            case AND:
+                base = base.and(findNegation(path.any().eq(o), filter)); // FIXME
+                break;
+            case OR:
+                base = base.or(findNegation(path.any().eq(o), filter));
+                break;
+        }
+        return base;
+    }
+
     private static BooleanExpression handleString(PathBuilder<?> pb, BooleanExpression base, Filter filter) {
         String s = filter.getValue().toString();
         boolean startsWith = s.endsWith("%");
@@ -125,24 +139,24 @@ public class PredicateFactory {
         switch (filter.getOperator()) {
             case AND:
                 if (startsWith && endsWith) {
-                    base = findNegation(base.and(sp.containsIgnoreCase(s)), filter);
+                    base = base.and(findNegation(sp.containsIgnoreCase(s), filter));
                 } else if (startsWith) {
-                    base = findNegation(base.and(sp.startsWithIgnoreCase(s)), filter);
+                    base = base.and(findNegation(sp.startsWithIgnoreCase(s), filter));
                 } else if (endsWith) {
-                    base = findNegation(base.and(sp.endsWithIgnoreCase(s)), filter);
+                    base = base.and(findNegation(sp.endsWithIgnoreCase(s), filter));
                 } else {
-                    base = findNegation(base.and(sp.equalsIgnoreCase(s)), filter);
+                    base = base.and(findNegation(sp.equalsIgnoreCase(s), filter));
                 }
                 break;
             case OR:
                 if (startsWith && endsWith) {
-                    base = findNegation(base.or(sp.containsIgnoreCase(s)), filter);
+                    base = base.or(findNegation(sp.containsIgnoreCase(s), filter));
                 } else if (startsWith) {
-                    base = findNegation(base.or(sp.startsWithIgnoreCase(s)), filter);
+                    base = base.or(findNegation(sp.startsWithIgnoreCase(s), filter));
                 } else if (endsWith) {
-                    base = findNegation(base.or(sp.endsWithIgnoreCase(s)), filter);
+                    base = base.or(findNegation(sp.endsWithIgnoreCase(s), filter));
                 } else {
-                    base = findNegation(base.or(sp.equalsIgnoreCase(s)), filter);
+                    base = base.or(findNegation(sp.equalsIgnoreCase(s), filter));
                 }
                 break;
         }
@@ -166,10 +180,10 @@ public class PredicateFactory {
 
                     switch (filter.getOperator()) {
                         case AND:
-                            base = findNegation(base.and(partial), filter);
+                            base = base.and(findNegation(partial, filter));
                             break;
                         case OR:
-                            base = findNegation(base.or(partial), filter);
+                            base = base.or(findNegation(partial, filter));
                             break;
                     }
                 }
@@ -184,9 +198,9 @@ public class PredicateFactory {
     private static BooleanExpression handleOther(PathBuilder<?> pb, BooleanExpression base, Filter filter) {
         switch (filter.getOperator()) {
             case AND:
-                return findNegation(base.and(pb.get(filter.getProperty()).eq(filter.getValue())), filter);
+                return base.and(findNegation(pb.get(filter.getProperty()).eq(filter.getValue()), filter));
             case OR:
-                return findNegation(base.or(pb.get(filter.getProperty()).eq(filter.getValue())), filter);
+                return base.or(findNegation(pb.get(filter.getProperty()).eq(filter.getValue()), filter));
         }
         return base;
     }
@@ -218,24 +232,25 @@ public class PredicateFactory {
 
         Object fromToValue = (fromValue != null ? fromValue : toValue);
 
+        assert fromToValue != null;
         if (fromToValue.getClass().isAssignableFrom(Calendar.class)
                 || fromToValue.getClass().isAssignableFrom(Date.class)) {
             Calendar f = ensureIsCalendar(fromValue);
             Calendar t = endOfDay(ensureIsCalendar(toValue));
             switch (filter.getOperator()) {
                 case AND:
-                    return findNegation(base.and(pb.getDate(fieldName, Calendar.class).between(f, t)), filter);
+                    return base.and(findNegation(pb.getDate(fieldName, Calendar.class).between(f, t), filter));
                 case OR:
-                    return findNegation(base.or(pb.getDate(fieldName, Calendar.class).between(f, t)), filter);
+                    return base.or(findNegation(pb.getDate(fieldName, Calendar.class).between(f, t), filter));
             }
         } else {
             Comparable<?> f = (Comparable<?>) fromValue;
             Comparable<?> t = (Comparable<?>) toValue;
             switch (filter.getOperator()) {
                 case AND:
-                    return findNegation(base.and(pb.getComparable(fieldName, Comparable.class).between(f, t)), filter);
+                    return base.and(findNegation(pb.getComparable(fieldName, Comparable.class).between(f, t), filter));
                 case OR:
-                    return findNegation(base.or(pb.getComparable(fieldName, Comparable.class).between(f, t)), filter);
+                    return base.or(findNegation(pb.getComparable(fieldName, Comparable.class).between(f, t), filter));
             }
         }
 
