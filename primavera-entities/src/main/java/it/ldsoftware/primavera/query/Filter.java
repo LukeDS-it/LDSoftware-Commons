@@ -4,7 +4,39 @@ import java.io.Serializable;
 
 /**
  * Created by luca on 11/04/16.
- * Simple filter class
+ * Simple filter class. Used in combination with the {@link PredicateFactory}
+ * to create custom queries.<br />
+
+ * Guidelines to filters creation:
+ * <ul>
+ *     <li>
+ *         {@link String} properties will be interpreted as
+ *         full matching, unless you add the % wildcard, to
+ *         specify if the string has to start with, end with
+ *         or contains the string passed as filter value.
+ *     </li>
+ *     <li>
+ *         Numeric types and dates will be confronted as equals.<br/>
+ *         Additionally it is possible to add ranges to this kind of
+ *         data, appending "from" and/or "to" to the field name. The
+ *         filtering supports both {@link java.util.Calendar} and
+ *         {@link java.util.Date}.
+ *     </li>
+ *     <li>
+ *         Entity fields will be interpreted based on the information in them
+ *         contained: if the ID field is valorized, then the query will be
+ *         by ID. If not, the predicate factory will create a query "by example"
+ *         based on the entity passed as value. The rules for the fields in the
+ *         example object are the same as above.
+ *     </li>
+ *     <li>
+ *         Providing as "property" the name of a field of type
+ *         {@link java.util.Collection} will create a query that
+ *         finds all the entities which have in the specified field
+ *         collection an object similar (or equal, depending on the parameters
+ *         provided, see above on Entity) to the one provided.
+ *     </li>
+ * </ul>
  */
 public class Filter implements Serializable {
     private String property;

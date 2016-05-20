@@ -34,7 +34,8 @@ public class PredicateFactory {
      * @param eClass  entity class used to build the dynamic path
      * @param filters collection of filters
      * @param <E>     parameter for type-safe handling
-     * @return the predicate in the form of a BooleanExpression
+     * @return the predicate in the form of a {@link BooleanExpression}
+     * @see Filter How to create filtering parameters
      */
     public static <E extends BaseEntity> BooleanExpression createPredicate(Class<E> eClass, Collection<Filter> filters) {
         PathBuilder<E> pb = getPathBuilder(eClass);
@@ -64,6 +65,32 @@ public class PredicateFactory {
         return partial;
     }
 
+    /**
+     * Creates a predicate based on the entity passed as an example
+     *
+     * @param entityClass the class of the entity we are querying
+     * @param entity the entity to take as an example
+     * @param <E> parameter for type-safe handling
+     * @return the predicate in the form of a {@link BooleanExpression}
+     */
+    public static <E extends BaseEntity> BooleanExpression createPredicate(Class<E> entityClass, E entity) {
+        return createPredicate(entityClass, getFiltersByEntity(entityClass, entity));
+    }
+
+    /**
+     * Creates a list of {@link Filter} based on the entity given as example
+     * @param entityClass the class of the entity we are querying
+     * @param entity the entity to take as an example
+     * @param <E> parameter for type-safe handling
+     * @return the list of {@link Filter} that describe the entity
+     */
+    public static <E extends BaseEntity> List<Filter> getFiltersByEntity(Class<E> entityClass, E entity) {
+        List<Filter> filters = new ArrayList<>();
+        Arrays.stream(entityClass.getDeclaredMethods()).filter(PredicateFactory::isCandidate)
+                .map(m -> filterFromMethod(m, entity)).filter(f -> f != null).forEach(filters::add);
+        return filters;
+    }
+
     private static <E extends BaseEntity> PathBuilder<E> getPathBuilder(Class<E> eClass) {
         String entityName = eClass.getSimpleName();
         entityName = entityName.substring(0, 1).toLowerCase() + entityName.substring(1);
@@ -83,18 +110,6 @@ public class PredicateFactory {
         }
         return partial;
     }
-
-    public static <E extends BaseEntity> BooleanExpression createPredicate(Class<E> entityClass, E entity) {
-        return createPredicate(entityClass, getFiltersByEntity(entityClass, entity));
-    }
-
-    public static <E extends BaseEntity> List<Filter> getFiltersByEntity(Class<E> entityClass, E entity) {
-        List<Filter> filters = new ArrayList<>();
-        Arrays.stream(entityClass.getDeclaredMethods()).filter(PredicateFactory::isCandidate)
-                .map(m -> filterFromMethod(m, entity)).filter(f -> f != null).forEach(filters::add);
-        return filters;
-    }
-
     private static boolean isCandidate(Method method) {
         return (method.getName().startsWith("get") || method.getName().startsWith("is"))
                 && !(method.getName().equals("getId") || method.getName().equals("getVersion")
@@ -118,6 +133,7 @@ public class PredicateFactory {
 
     @SuppressWarnings("unchecked")
     private static <E extends BaseEntity> BooleanExpression handleCollection(PathBuilder<E> pb, BooleanExpression base, Filter filter) {
+        // TODO if the object is a collection the query will state "contains all of the elements in the collection"
         Object o = filter.getValue();
         Class<E> eClass = (Class<E>) o.getClass();
         CollectionPath path = pb.getCollection(filter.getProperty(), eClass);
