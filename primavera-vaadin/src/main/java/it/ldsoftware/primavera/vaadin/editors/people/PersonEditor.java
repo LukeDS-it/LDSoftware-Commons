@@ -2,7 +2,9 @@ package it.ldsoftware.primavera.vaadin.editors.people;
 
 import it.ldsoftware.primavera.dto.people.PersonDTO;
 import it.ldsoftware.primavera.entities.people.Person;
+import it.ldsoftware.primavera.query.factories.PersonFilterProcessor;
 import it.ldsoftware.primavera.util.UserUtil;
+import it.ldsoftware.primavera.vaadin.components.DTOGrid;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractEditor;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractEditorForm;
 
@@ -35,5 +37,11 @@ public class PersonEditor extends AbstractEditor<Person, PersonDTO> {
     @Override
     protected String getBasePermission() {
         return UserUtil.ROLE_PEOPLE_ADMIN;
+    }
+
+    @Override
+    public void customizeGrid(DTOGrid<Person, PersonDTO> grid) {
+        super.customizeGrid(grid);
+        grid.addCustomFilterProcessor(new PersonFilterProcessor());
     }
 }

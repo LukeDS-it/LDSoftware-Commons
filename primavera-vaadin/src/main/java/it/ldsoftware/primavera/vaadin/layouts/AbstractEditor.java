@@ -1,5 +1,6 @@
 package it.ldsoftware.primavera.vaadin.layouts;
 
+import com.vaadin.data.Container.Filter;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -9,10 +10,10 @@ import com.vaadin.ui.VerticalSplitPanel;
 import it.ldsoftware.primavera.dto.base.BaseDTO;
 import it.ldsoftware.primavera.entities.base.BaseEntity;
 import it.ldsoftware.primavera.i18n.LocalizationService;
-import it.ldsoftware.primavera.query.Filter;
 import it.ldsoftware.primavera.services.interfaces.DatabaseService;
 import it.ldsoftware.primavera.vaadin.components.DTOGrid;
 import it.ldsoftware.primavera.vaadin.controllers.ExportController;
+import it.ldsoftware.primavera.vaadin.dialogs.AbstractFilterDialog;
 import it.ldsoftware.primavera.vaadin.util.DownloadSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -55,7 +56,6 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
     private CssLayout menuBar;
     private DTOGrid<E, D> grid;
     private AbstractEditorForm<E> editorForm;
-    private List<Filter> filters = new ArrayList<>();
 
     private Button btnNew, btnSave, btnDelete;
 
@@ -101,7 +101,7 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
         btnDelete = new MButton(TRASH_O).withListener(this::deleteAction);
         Button btnDuplicate = new MButton(COPY).withListener(this::duplicateAction);
         Button btnExport = new MButton(DOWNLOAD).withListener(this::exportAction);
-        Button btnFilter = new MButton(FILTER).withListener(this::filterAction);
+        Button btnFilter = new MButton(FILTER).withListener(this::filterAction); // TODO add remove filter
         Button btnMulti = new MButton(CHECK_SQUARE_O).withListener(this::multiAction);
         btnSave = new MButton(SAVE).withListener(this::saveAction);
 
@@ -173,7 +173,11 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
     }
 
     private void filterAction(ClickEvent event) {
-        // TODO show generic filtering dialog and call customise method
+        getFilterDialog().withFilterConsumer(this::useFilters).popup(TXT_FILTER);
+    }
+
+    private void useFilters(Collection<Filter> filters) {
+        grid.filterBy(filters);
     }
 
     private void multiAction(ClickEvent event) {
@@ -336,5 +340,7 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
     public abstract AbstractEditorForm<E> getEditorInstance();
 
     public abstract E createNewObject();
+
+    public abstract AbstractFilterDialog getFilterDialog();
 
 }

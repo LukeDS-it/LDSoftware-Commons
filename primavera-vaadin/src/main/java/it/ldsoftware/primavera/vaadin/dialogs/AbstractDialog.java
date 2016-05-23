@@ -40,11 +40,11 @@ public abstract class AbstractDialog extends VerticalLayout {
         setWidth(500, PIXELS);
     }
 
-    private void pressOk(ClickEvent event) {
+    public void pressOk(ClickEvent event) {
         closeWindow();
     }
 
-    void pressCancel(ClickEvent event) {
+    public void pressCancel(ClickEvent event) {
         closeWindow();
     }
 
@@ -73,6 +73,13 @@ public abstract class AbstractDialog extends VerticalLayout {
         this.btnCancel = btnCancel;
     }
 
+    /**
+     * Opens the dialog as a popup with the given title.
+     * If the title is a label contained in the properties bundle
+     * it will be translated
+     * @param title the title string
+     * @return the window of the popup
+     */
     public Window popup(String title) {
         popup = new Window(translator.translate(title), this);
         popup.setModal(true);

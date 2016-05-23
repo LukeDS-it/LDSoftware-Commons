@@ -15,7 +15,7 @@ import static it.ldsoftware.primavera.util.ContactType.PHONE;
  * Created by luca on 20/05/16.
  * Filter factory for people
  */
-public class PersonFilterFactory extends AbstractFilterFactory {
+public class PersonFilterProcessor extends FilterProcessor {
     @Override
     public Filter createFilterFor(String property, Object strVal) {
         Object value = null;

@@ -4,6 +4,7 @@ import com.vaadin.data.Container.Filterable;
 import com.vaadin.data.Container.Sortable;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.data.util.filter.UnsupportedFilterException;
+import it.ldsoftware.primavera.query.factories.FilterProcessor;
 import org.vaadin.viritin.ListContainer;
 
 import java.util.Collection;
@@ -22,6 +23,7 @@ public class FilterableLazyListContainer<T> extends ListContainer<T> implements 
     private static final long serialVersionUID = 1L;
 
     private final Set<Filter> filters = new HashSet<>();
+    private final Set<FilterProcessor> processors = new HashSet<>();
 
     public FilterableLazyListContainer(FilterableLazyList<T> backingList) {
         super(backingList);
@@ -66,6 +68,10 @@ public class FilterableLazyListContainer<T> extends ListContainer<T> implements 
         applyFilters();
     }
 
+    public void addCustomFilterProcessor(FilterProcessor processor) {
+        processors.add(processor);
+    }
+
     private void applyFilters() {
         ((FilterableLazyList<T>) getBackingList()).reset();
         super.fireItemSetChange();
@@ -78,6 +84,12 @@ public class FilterableLazyListContainer<T> extends ListContainer<T> implements 
     }
 
     private it.ldsoftware.primavera.query.Filter convertFilter(SimpleStringFilter filter) {
+        it.ldsoftware.primavera.query.Filter f;
+        for (FilterProcessor processor: processors) {
+            f = processor.createFilterFor(filter.getPropertyId().toString(), filter.getFilterString() + "%");
+            if (f != null)
+                return f;
+        }
         return new it.ldsoftware.primavera.query.Filter(filter.getPropertyId().toString(), filter.getFilterString() + "%", false, AND);
     }
 

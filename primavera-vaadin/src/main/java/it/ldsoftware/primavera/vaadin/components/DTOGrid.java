@@ -1,5 +1,6 @@
 package it.ldsoftware.primavera.vaadin.components;
 
+import com.vaadin.data.Container.Filter;
 import com.vaadin.data.Container.Filterable;
 import com.vaadin.data.Container.Indexed;
 import com.vaadin.data.Item;
@@ -22,6 +23,7 @@ import it.ldsoftware.primavera.dto.base.BaseDTO;
 import it.ldsoftware.primavera.entities.base.BaseEntity;
 import it.ldsoftware.primavera.i18n.LocalizationService;
 import it.ldsoftware.primavera.query.Request;
+import it.ldsoftware.primavera.query.factories.FilterProcessor;
 import it.ldsoftware.primavera.services.interfaces.DatabaseService;
 import it.ldsoftware.primavera.vaadin.data.FilterableLazyList;
 import it.ldsoftware.primavera.vaadin.data.FilterableLazyListContainer;
@@ -37,10 +39,7 @@ import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static com.vaadin.server.Sizeable.Unit.PERCENTAGE;
 import static com.vaadin.ui.AbstractSelect.ItemCaptionMode.EXPLICIT_DEFAULTS_ID;
@@ -248,6 +247,24 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
     }
 
     /**
+     * This function adds to the grid a custom filter processor. This
+     * is useful in cases where the default filtering property can not
+     * be found in the database table, for example because it is a
+     * property of a sub-element contained in a collection.
+     * An example would be filtering people for telephone number or email,
+     * which are fields that are not directly found in the person.
+     *
+     * This function will fail if the grid was not initialized as a lazy
+     * container.
+     * @param processor the processor that has to be added to the item container
+     * @throws ClassCastException if the function is called on a non-lazy grid
+     */
+    @SuppressWarnings("unchecked")
+    public void addCustomFilterProcessor(FilterProcessor processor) throws ClassCastException {
+        ((FilterableLazyListContainer<D>) getContainerDataSource()).addCustomFilterProcessor(processor);
+    }
+
+    /**
      * Adds a column with the delete button.
      *
      * @param l the action that the delete button will perform
@@ -340,6 +357,21 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
 
     public void setMultiSelection(boolean multiSelection) {
         this.multiSelection = multiSelection;
+    }
+
+    /**
+     * Adds the filters to the grid and triggers the filtering
+     * @param filters a list of {@link Filter}
+     */
+    public void filterBy(Collection<Filter> filters) {
+        Filterable f = (Filterable) getContainerDataSource();
+        f.removeAllContainerFilters();
+        filters.forEach(f::addContainerFilter);
+    }
+
+    public void removeAllFilters() {
+        Filterable f = (Filterable) getContainerDataSource();
+        f.removeAllContainerFilters();
     }
 
     private PageRequest getPageRequest(Request request, Class<E> eClass) {

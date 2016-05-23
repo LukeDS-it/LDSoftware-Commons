@@ -55,7 +55,6 @@ public class PredicateFactory {
                     betweenParsed.add(getBetweenFieldName(fname));
 
                 } else {
-                    // TODO try to get a custom filter factory first to see if the field can be inferred
                     logger.debug("The field " + filter.getProperty()
                             + " does not exist in the entity. Remember to add any custom query after the call.");
                 }

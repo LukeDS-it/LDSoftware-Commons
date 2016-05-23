@@ -13,7 +13,7 @@ import it.ldsoftware.primavera.query.Filter;
  * which are all nested into the same collection of contacts.
  *
  */
-public abstract class AbstractFilterFactory {
+public abstract class FilterProcessor {
 
     public abstract Filter createFilterFor(String property, Object value);
 
