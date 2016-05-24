@@ -78,6 +78,13 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
 
         generalTab.addComponent(code);
         generalTab.addComponent(ownLocale);
+
+        setStyles();
+    }
+
+    private void setStyles() {
+        code.setStyleName(TEXTFIELD_TINY);
+        ownLocale.setStyleName(TEXTFIELD_TINY);
     }
 
     private void createTranslationsTab() {
@@ -183,23 +190,6 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
     }
 
     @Override
-    public void setBean(L bean) {
-        super.setBean(bean);
-        Locale loc = UI.getCurrent().getLocale();
-
-        T desc = bean.getTranslationForced(loc.getLanguage());
-        if (desc == null) {
-            desc = createTranslation(null, loc.getLanguage());
-            bean.addTranslation(loc.getLanguage(), desc);
-        }
-
-        ownLocale.setValue(desc.getDescription());
-
-        bic.removeAllItems();
-        bic.addAll(bean.getTranslations().values());
-    }
-
-    @Override
     public L getBean() {
         Locale loc = UI.getCurrent().getLocale();
 
@@ -215,6 +205,23 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
         bean.setDefaultLang(loc.getLanguage());
 
         return bean;
+    }
+
+    @Override
+    public void setBean(L bean) {
+        super.setBean(bean);
+        Locale loc = UI.getCurrent().getLocale();
+
+        T desc = bean.getTranslationForced(loc.getLanguage());
+        if (desc == null) {
+            desc = createTranslation(null, loc.getLanguage());
+            bean.addTranslation(loc.getLanguage(), desc);
+        }
+
+        ownLocale.setValue(desc.getDescription());
+
+        bic.removeAllItems();
+        bic.addAll(bean.getTranslations().values());
     }
 
     @Override

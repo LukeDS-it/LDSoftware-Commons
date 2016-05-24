@@ -3,6 +3,7 @@ package it.ldsoftware.primavera.vaadin.editors.people;
 import com.vaadin.ui.Button.ClickEvent;
 import it.ldsoftware.primavera.dto.people.UserDTO;
 import it.ldsoftware.primavera.entities.people.User;
+import it.ldsoftware.primavera.vaadin.dialogs.AbstractFilterDialog;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractEditor;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractEditorForm;
 import it.ldsoftware.primavera.validation.groups.NewUserValidationGroup;
@@ -16,6 +17,9 @@ import static it.ldsoftware.primavera.util.UserUtil.ROLE_USER_ADMIN;
  * Editor view for users
  */
 public class UserEditor extends AbstractEditor<User, UserDTO> {
+
+    private String oldPW;
+    private String oldConf;
 
     @Override
     public Class<User> getEntityClass() {
@@ -43,9 +47,6 @@ public class UserEditor extends AbstractEditor<User, UserDTO> {
             return new Class<?>[]{UserValidationGroup.class, NewUserValidationGroup.class};
         return new Class<?>[]{UserValidationGroup.class};
     }
-
-    private String oldPW;
-    private String oldConf;
 
     @Override
     public void preSaveAction() {
@@ -82,5 +83,10 @@ public class UserEditor extends AbstractEditor<User, UserDTO> {
     @Override
     protected String getBasePermission() {
         return ROLE_USER_ADMIN;
+    }
+
+    @Override
+    public AbstractFilterDialog getFilterDialog() {
+        return null; // TODO
     }
 }

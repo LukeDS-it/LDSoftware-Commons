@@ -11,4 +11,7 @@ public abstract class CommonLabels {
     TAB_CONTACTS = "tab.contacts", TAB_GENERAL = "tab.general";
 
     public final static String TXT_CONTACT = "txt.contact";
+
+    public final static String LABEL_FILTER = "label.filter",
+            LABEL_REM_FILTERS = "label.rem.filters";
 }

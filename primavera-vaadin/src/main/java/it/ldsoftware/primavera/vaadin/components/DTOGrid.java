@@ -65,10 +65,9 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
  */
 public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
 
-    private static final int PAGESIZE = 15;
     public static final String COLUMN_DELETE = "delete", COLUMN_EDIT = "edit",
             PREFIX_COLUMN = "column.";
-
+    private static final int PAGESIZE = 15;
     private boolean multiSelection = false;
 
     private GeneratedPropertyContainer gpc;
@@ -261,7 +260,7 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
      */
     @SuppressWarnings("unchecked")
     public void addCustomFilterProcessor(FilterProcessor processor) throws ClassCastException {
-        ((FilterableLazyListContainer<D>) getContainerDataSource()).addCustomFilterProcessor(processor);
+        ((FilterableLazyListContainer<D>) gpc.getWrappedContainer()).addCustomFilterProcessor(processor);
     }
 
     /**

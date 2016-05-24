@@ -2,11 +2,8 @@ package it.ldsoftware.primavera.vaadin.layouts;
 
 import com.vaadin.data.Container.Filter;
 import com.vaadin.event.SelectionEvent;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalSplitPanel;
 import it.ldsoftware.primavera.dto.base.BaseDTO;
 import it.ldsoftware.primavera.entities.base.BaseEntity;
 import it.ldsoftware.primavera.i18n.LocalizationService;
@@ -35,6 +32,8 @@ import static it.ldsoftware.primavera.i18n.CommonErrors.*;
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
 import static it.ldsoftware.primavera.i18n.CommonMessages.*;
 import static it.ldsoftware.primavera.util.UserUtil.*;
+import static it.ldsoftware.primavera.vaadin.i18n.CommonLabels.LABEL_FILTER;
+import static it.ldsoftware.primavera.vaadin.i18n.CommonLabels.LABEL_REM_FILTERS;
 import static it.ldsoftware.primavera.vaadin.util.NotificationBuilder.showNotification;
 
 /**
@@ -101,12 +100,21 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
         btnDelete = new MButton(TRASH_O).withListener(this::deleteAction);
         Button btnDuplicate = new MButton(COPY).withListener(this::duplicateAction);
         Button btnExport = new MButton(DOWNLOAD).withListener(this::exportAction);
-        Button btnFilter = new MButton(FILTER).withListener(this::filterAction); // TODO add remove filter
+
         Button btnMulti = new MButton(CHECK_SQUARE_O).withListener(this::multiAction);
         btnSave = new MButton(SAVE).withListener(this::saveAction);
 
-        menuBar.addComponents(btnNew, btnSave, btnDuplicate, btnDelete, btnFilter, btnMulti, btnExport);
+        menuBar.addComponents(btnNew, btnSave, btnDuplicate, btnDelete, createFilterMenu(), btnMulti, btnExport);
         customizeMenu(menuBar);
+    }
+
+    private Component createFilterMenu() {
+        MenuBar mnuFilter = new MenuBar();
+        MenuBar.MenuItem dropDown = mnuFilter.addItem("", FILTER, null);
+        dropDown.addItem(translator.translate(LABEL_FILTER), this::filterAction);
+        dropDown.addItem(translator.translate(LABEL_REM_FILTERS), this::removeFilters);
+
+        return mnuFilter;
     }
 
     private void newAction(ClickEvent event) {
@@ -172,8 +180,12 @@ public abstract class AbstractEditor<E extends BaseEntity, D extends BaseDTO<E>>
         }
     }
 
-    private void filterAction(ClickEvent event) {
+    private void filterAction(MenuBar.MenuItem item) {
         getFilterDialog().withFilterConsumer(this::useFilters).popup(TXT_FILTER);
+    }
+
+    private void removeFilters(MenuBar.MenuItem item) {
+        grid.removeAllFilters();
     }
 
     private void useFilters(Collection<Filter> filters) {

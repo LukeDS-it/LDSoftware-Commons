@@ -3,6 +3,7 @@ package it.ldsoftware.primavera.vaadin.editors.security;
 import it.ldsoftware.primavera.dto.security.RoleDTO;
 import it.ldsoftware.primavera.entities.security.Role;
 import it.ldsoftware.primavera.vaadin.components.DTOGrid;
+import it.ldsoftware.primavera.vaadin.dialogs.AbstractFilterDialog;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractEditorForm;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractLookupEditor;
 
@@ -44,5 +45,10 @@ public class RoleEditor extends AbstractLookupEditor<Role, RoleDTO> {
     public void customizeGrid(DTOGrid<Role, RoleDTO> grid) {
         super.customizeGrid(grid);
         grid.getColumn(FIELD_CODE).setWidth(200);
+    }
+
+    @Override
+    public AbstractFilterDialog getFilterDialog() {
+        return null; // TODO
     }
 }

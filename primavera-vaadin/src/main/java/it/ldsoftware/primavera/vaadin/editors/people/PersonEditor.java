@@ -5,6 +5,7 @@ import it.ldsoftware.primavera.entities.people.Person;
 import it.ldsoftware.primavera.query.factories.PersonFilterProcessor;
 import it.ldsoftware.primavera.util.UserUtil;
 import it.ldsoftware.primavera.vaadin.components.DTOGrid;
+import it.ldsoftware.primavera.vaadin.dialogs.AbstractFilterDialog;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractEditor;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractEditorForm;
 
@@ -43,5 +44,10 @@ public class PersonEditor extends AbstractEditor<Person, PersonDTO> {
     public void customizeGrid(DTOGrid<Person, PersonDTO> grid) {
         super.customizeGrid(grid);
         grid.addCustomFilterProcessor(new PersonFilterProcessor());
+    }
+
+    @Override
+    public AbstractFilterDialog getFilterDialog() {
+        return null; // TODO
     }
 }

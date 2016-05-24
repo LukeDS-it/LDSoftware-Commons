@@ -9,7 +9,6 @@ import it.ldsoftware.primavera.util.ContactType;
 import it.ldsoftware.primavera.util.PersonType;
 import it.ldsoftware.primavera.vaadin.components.DTOGrid;
 import it.ldsoftware.primavera.vaadin.data.util.converters.ContactTypeConverter;
-import it.ldsoftware.primavera.vaadin.theme.MetricConstants;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.layouts.MVerticalLayout;
@@ -23,12 +22,14 @@ import static com.vaadin.server.FontAwesome.PLUS;
 import static com.vaadin.server.Sizeable.Unit.PERCENTAGE;
 import static com.vaadin.server.Sizeable.Unit.PIXELS;
 import static com.vaadin.ui.AbstractSelect.ItemCaptionMode.EXPLICIT_DEFAULTS_ID;
+import static com.vaadin.ui.themes.ValoTheme.*;
 import static it.ldsoftware.primavera.dto.people.ContactDTO.FIELD_CONTACT_TYPE;
 import static it.ldsoftware.primavera.dto.people.PersonDTO.*;
-import static it.ldsoftware.primavera.i18n.CommonLabels.*;
+import static it.ldsoftware.primavera.i18n.CommonLabels.ADD;
 import static it.ldsoftware.primavera.i18n.LanguageUtils.*;
 import static it.ldsoftware.primavera.vaadin.i18n.CommonLabels.TAB_CONTACTS;
 import static it.ldsoftware.primavera.vaadin.i18n.CommonLabels.TXT_CONTACT;
+import static it.ldsoftware.primavera.vaadin.theme.MetricConstants.FIELD_WIDTH;
 import static java.util.stream.Collectors.toList;
 
 
@@ -72,8 +73,10 @@ public abstract class AbstractPersonForm<T extends Person> extends TabbedForm<T>
                 .withColumnRenderer(FIELD_CONTACT_TYPE, new HtmlRenderer(), new ContactTypeConverter());
 
         Label label = new Label(getTranslator().translate(TXT_CONTACT));
-        TextField contact = new MTextField().withWidth(MetricConstants.FIELD_WIDTH);
+        TextField contact = new MTextField().withWidth(FIELD_WIDTH).withStyleName(TEXTFIELD_TINY);
         ComboBox contactType = new ComboBox();
+        contactType.setWidth(FIELD_WIDTH);
+        contactType.setStyleName(COMBOBOX_TINY);
         Collection<ContactType> types = Arrays.stream(ContactType.values()).collect(toList());
         contactType.addItems(types);
         contactType.setItemCaptionMode(EXPLICIT_DEFAULTS_ID);
@@ -121,8 +124,8 @@ public abstract class AbstractPersonForm<T extends Person> extends TabbedForm<T>
     }
 
     private void createFields() {
-        name = new MTextField(getTranslator().translate(getTextFieldName(FIELD_NAME))).withWidth(MetricConstants.FIELD_WIDTH);
-        surname = new MTextField(getTranslator().translate(getTextFieldName(FIELD_SURNAME))).withWidth(MetricConstants.FIELD_WIDTH);
+        name = new MTextField(getTranslator().translate(getTextFieldName(FIELD_NAME))).withWidth(FIELD_WIDTH);
+        surname = new MTextField(getTranslator().translate(getTextFieldName(FIELD_SURNAME))).withWidth(FIELD_WIDTH);
         fullName = new MTextField(getTranslator().translate(getTextFieldName(FIELD_FULL_NAME)));
         uniqueId = new MTextField(getTranslator().translate(getTextFieldName(FIELD_UNIQUE_ID)));
         vatInfo = new MTextField(getTranslator().translate(getTextFieldName(FIELD_VAT_INFO)));
@@ -134,6 +137,24 @@ public abstract class AbstractPersonForm<T extends Person> extends TabbedForm<T>
         sex.setItemCaption(sex.getItem("M"), getTranslator().translate("sex.m"));
         sex.setItemCaption(sex.getItem("F"), getTranslator().translate("sex.f"));
         personType = new ComboBox(getTranslator().translate(getComboName(FIELD_RECORD_TYPE)));
+
+        setStyles();
+    }
+
+    private void setStyles() {
+        name.setStyleName(TEXTFIELD_TINY);
+        surname.setStyleName(TEXTFIELD_TINY);
+        fullName.setStyleName(TEXTFIELD_TINY);
+        uniqueId.setStyleName(TEXTFIELD_TINY);
+        vatInfo.setStyleName(TEXTFIELD_TINY);
+        birthDate.setStyleName(DATEFIELD_TINY);
+        sex.setStyleName(COMBOBOX_TINY);
+        personType.setStyleName(COMBOBOX_TINY);
+        sex.setWidth(FIELD_WIDTH);
+        personType.setWidth(FIELD_WIDTH);
+        birthDate.setWidth(FIELD_WIDTH);
+        vatInfo.setWidth(FIELD_WIDTH);
+        uniqueId.setWidth(FIELD_WIDTH);
     }
 
     private void wireEvents() {
