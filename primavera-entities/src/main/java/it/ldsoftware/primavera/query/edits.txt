@@ -1,0 +1,11 @@
+use this when looking for the field, or the subclasses will throw error:
+
+private static Field getField(Class<?> eClass, String property) throws NoSuchFieldException {
+		if (eClass == null)
+			throw new NoSuchFieldException(property);
+		try {
+			return eClass.getDeclaredField(property);
+		} catch (NoSuchFieldException e) {
+			return getField(eClass.getSuperclass(), property);
+		}
+}
