@@ -14,7 +14,7 @@ import java.util.Set;
  * This entity represents a group of users
  */
 @Entity
-@Table(name = "sw_group")
+@Table(name = "fw_groups")
 public class Group extends Lookup<GroupTranslation> {
 
     @OneToMany

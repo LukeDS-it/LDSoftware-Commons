@@ -19,37 +19,31 @@ import java.util.Set;
  *         An User is a @{link Person} that can log in to the program
  */
 @Entity
-@Table(name = "sw_user")
+@Table(name = "fw_users")
 @PrimaryKeyJoinColumn(name = "id")
 public class User extends Person {
-
-    public User() {
-        setPersonType(PersonType.REAL);
-    }
 
     @NotNull
     @Column(nullable = false)
     private String username;
-
     @Column(length = 60, nullable = false)
     @NotNull(groups = NewUserValidationGroup.class)
     private String password;
-
     @Transient
     @NotNull(groups = NewUserValidationGroup.class)
     private String confirmPassword;
-
     @Column(nullable = false)
     @NotNull
     private String primaryEmail;
-
     private boolean enabled = false;
-
     @OneToMany
     private Set<UserRole> userRoles = new HashSet<>();
-
     @ManyToMany
     private Set<Group> groups = new HashSet<>();
+
+    public User() {
+        setPersonType(PersonType.REAL);
+    }
 
     @Override
     public String toString() {

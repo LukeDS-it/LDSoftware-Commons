@@ -12,6 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @IdClass(GroupRoleID.class)
+@Table(name = "fw_group_roles")
 public class GroupRole implements RoleCollector {
 
     @Id

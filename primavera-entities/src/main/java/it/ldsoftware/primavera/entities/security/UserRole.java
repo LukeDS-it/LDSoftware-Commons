@@ -13,18 +13,17 @@ import javax.persistence.*;
  */
 @Entity
 @IdClass(UserRoleID.class)
+@Table(name = "fw_user_roles")
 public class UserRole implements RoleCollector {
-
-    @Id
-    @ManyToOne
-    private User user;
-
-    @Id
-    @ManyToOne
-    private Role role;
 
     @Embedded
     RoleModifiers modifiers;
+    @Id
+    @ManyToOne
+    private User user;
+    @Id
+    @ManyToOne
+    private Role role;
 
     public UserRole fromRoleCollector(RoleCollector rc) {
         role = rc.getRole();

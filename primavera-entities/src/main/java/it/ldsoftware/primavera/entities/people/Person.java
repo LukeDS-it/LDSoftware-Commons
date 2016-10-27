@@ -28,7 +28,7 @@ import static javax.persistence.TemporalType.DATE;
  *         A "person" can be a real person or an abstract person, i.e. a company.
  */
 @Entity
-@Table(name = "people")
+@Table(name = "fw_people")
 @Inheritance(strategy = JOINED)
 public class Person extends BaseEntity {
 

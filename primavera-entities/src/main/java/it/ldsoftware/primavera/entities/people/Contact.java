@@ -6,6 +6,7 @@ import it.ldsoftware.primavera.util.ContactType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import static javax.persistence.FetchType.LAZY;
@@ -15,6 +16,7 @@ import static javax.persistence.FetchType.LAZY;
  * defines the contact for a person
  */
 @Entity
+@Table(name = "fw_contacts")
 public class Contact extends BaseEntity {
 
     @NotNull
