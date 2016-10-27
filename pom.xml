@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -192,11 +192,11 @@
     <distributionManagement>
         <repository>
             <id>ldsoftware-releases</id>
-            <url>http://ldsoftware.it:8081/nexus/description/repositories/releases</url>
+            <url>http://ldsoftware.it:8081/nexus/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
             <id>ldsoftware-snapshots</id>
-            <url>http://ldsoftware.it:8081/nexus/description/repositories/snapshots</url>
+            <url>http://ldsoftware.it:8081/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
