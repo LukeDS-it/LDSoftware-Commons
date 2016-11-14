@@ -2,7 +2,6 @@ package it.ldsoftware.primavera.dto.base;
 
 import it.ldsoftware.primavera.dto.lang.TranslatableDTO;
 import it.ldsoftware.primavera.entities.base.Lookup;
-import it.ldsoftware.primavera.entities.base.LookupTranslation;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.Locale;
  * DTO that flattens Lookups. Just extend this for your lookups and add
  * other properties if any.
  */
-public abstract class LookupDTO<E extends Lookup<? extends LookupTranslation>> extends TranslatableDTO<E> {
+public abstract class LookupDTO<E extends Lookup> extends TranslatableDTO<E> {
     public static final String FIELD_CODE = "code", FIELD_DESCRIPTION = "description";
 
     private String code, description;

@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "fw_groups")
-public class Group extends Lookup<GroupTranslation> {
+public class Group extends Lookup {
 
     @OneToMany
     private Set<GroupRole> groupRoles = new HashSet<>();

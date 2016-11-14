@@ -1,5 +1,6 @@
 package it.ldsoftware.primavera.entities.base;
 
+import it.ldsoftware.primavera.entities.lang.ShortTranslation;
 import it.ldsoftware.primavera.entities.lang.Translatable;
 
 import javax.persistence.MappedSuperclass;
@@ -13,7 +14,7 @@ import javax.persistence.MappedSuperclass;
  * definition (en = metres, it = metri)
  */
 @MappedSuperclass
-public abstract class Lookup<T extends LookupTranslation> extends Translatable<T> {
+public abstract class Lookup extends Translatable<ShortTranslation> {
 
     private String code;
 

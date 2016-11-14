@@ -3,14 +3,13 @@ package it.ldsoftware.primavera.entities.lang;
 import it.ldsoftware.primavera.entities.base.BaseEntity;
 
 import javax.persistence.Column;
-import javax.persistence.MapKey;
+import javax.persistence.ElementCollection;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
 
 
@@ -20,19 +19,19 @@ import static javax.persistence.FetchType.EAGER;
  * another language, and is parametrized for its own translation.
  * Implementing this class means creating a translatable and a translation
  * for your objects, this will automatically create
- * the tables for the object, the translation and the relationship between
- * translations (even if this is not optimal DB-wise)
+ * the tables for the object and the translations
+ * (normally goes under object_translations)
+ *
+ * Note that the translation is NOT a {@link BaseEntity}.
  */
 @MappedSuperclass
-@SuppressWarnings("unchecked")
 public abstract class Translatable<T extends Translation> extends BaseEntity {
 
+    @ElementCollection(fetch = EAGER)
+    @MapKeyColumn(name = "lang", length = 2)
+    private final Map<String, T> translations = new HashMap<>();
     @Column(length = 2)
     private String defaultLang;
-
-    @MapKey(name = "lang")
-    @OneToMany(fetch = EAGER, cascade = ALL, orphanRemoval = true, mappedBy = "master")
-    private final Map<String, T> translations = new HashMap<>();
 
     public Map<String, T> getTranslations() {
         return translations;
@@ -44,9 +43,8 @@ public abstract class Translatable<T extends Translation> extends BaseEntity {
         if (hasLanguage(lang))
             throw new IllegalArgumentException("warning.duplicate.translation");
 
-        translation.setMaster(this);
         if (translations.size() == 0 && defaultLang == null)
-            defaultLang = translation.getLang();
+            defaultLang = lang;
 
         translations.put(lang, translation);
     }

@@ -11,5 +11,5 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "fw_roles")
-public class Role extends Lookup<RoleTranslation> {
+public class Role extends Lookup {
 }
