@@ -1,7 +1,5 @@
 package it.ldsoftware.primavera.entities.lang;
 
-import it.ldsoftware.primavera.entities.base.BaseEntity;
-
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 
@@ -13,6 +11,6 @@ import javax.persistence.MappedSuperclass;
  */
 @Embeddable
 @MappedSuperclass
-public abstract class Translation extends BaseEntity {
+public abstract class Translation {
 
 }

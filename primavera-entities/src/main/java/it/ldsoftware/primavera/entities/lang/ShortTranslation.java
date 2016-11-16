@@ -2,7 +2,6 @@ package it.ldsoftware.primavera.entities.lang;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -11,8 +10,7 @@ import javax.validation.constraints.NotNull;
  * extend this if you need a translation with max 255 characters length
  */
 @Embeddable
-@MappedSuperclass
-public abstract class ShortTranslation<E extends Translatable> extends Translation {
+public class ShortTranslation extends Translation {
 
     @NotNull
     @Column(nullable = false)
@@ -31,7 +29,7 @@ public abstract class ShortTranslation<E extends Translatable> extends Translati
         return getDescription();
     }
 
-    public ShortTranslation<E> withContent(String content) {
+    public ShortTranslation withContent(String content) {
         setDescription(content);
         return this;
     }

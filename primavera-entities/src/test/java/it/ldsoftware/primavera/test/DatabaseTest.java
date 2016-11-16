@@ -2,12 +2,12 @@ package it.ldsoftware.primavera.test;
 
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.types.Predicate;
+import it.ldsoftware.primavera.entities.lang.ShortTranslation;
 import it.ldsoftware.primavera.entities.people.Contact;
 import it.ldsoftware.primavera.entities.people.Person;
 import it.ldsoftware.primavera.entities.people.QContact;
 import it.ldsoftware.primavera.entities.people.QPerson;
 import it.ldsoftware.primavera.entities.security.Group;
-import it.ldsoftware.primavera.entities.security.GroupTranslation;
 import it.ldsoftware.primavera.query.Filter;
 import it.ldsoftware.primavera.query.PredicateFactory;
 import it.ldsoftware.primavera.services.interfaces.DatabaseService;
@@ -35,6 +35,7 @@ import static java.util.Collections.singletonList;
 @SpringApplicationConfiguration(classes = TestApplication.class)
 public class DatabaseTest {
 
+    private static final String CAPTION_1 = "Caption 1", CAPTION_2 = "Caption 2";
     @Autowired
     DatabaseService svc;
 
@@ -43,13 +44,11 @@ public class DatabaseTest {
 
     }
 
-    private static final String CAPTION_1 = "Caption 1", CAPTION_2 = "Caption 2";
-
     @Test
     public void languageTest() {
         Group g = new Group();
-        g.addTranslation("it", (GroupTranslation) new GroupTranslation().withContent(CAPTION_1).withLang("it"));
-        g.addTranslation("en", (GroupTranslation) new GroupTranslation().withContent(CAPTION_2).withLang("en"));
+        g.addTranslation("it", new ShortTranslation().withContent(CAPTION_1));
+        g.addTranslation("en", new ShortTranslation().withContent(CAPTION_2));
         svc.save(Group.class, g);
 
         Group up = svc.findOne(Group.class, 1);
