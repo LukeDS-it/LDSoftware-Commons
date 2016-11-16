@@ -3,9 +3,7 @@ package it.ldsoftware.primavera.entities.security;
 import it.ldsoftware.primavera.entities.base.Lookup;
 import it.ldsoftware.primavera.util.RoleCollector;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +13,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "fw_groups")
+@AssociationOverride(name = "translations", joinTable = @JoinTable(name = "fw_groups_translations"))
 public class Group extends Lookup {
 
     @OneToMany

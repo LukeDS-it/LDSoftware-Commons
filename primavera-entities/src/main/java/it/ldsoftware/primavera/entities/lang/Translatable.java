@@ -30,6 +30,7 @@ public abstract class Translatable<T extends Translation> extends BaseEntity {
     @ElementCollection(fetch = EAGER)
     @MapKeyColumn(name = "lang", length = 2)
     private final Map<String, T> translations = new HashMap<>();
+
     @Column(length = 2)
     private String defaultLang;
 
