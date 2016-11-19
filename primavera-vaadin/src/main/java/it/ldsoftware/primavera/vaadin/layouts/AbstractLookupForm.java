@@ -3,16 +3,14 @@ package it.ldsoftware.primavera.vaadin.layouts;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.GeneratedPropertyContainer;
+import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.data.util.PropertyValueGenerator;
 import com.vaadin.data.validator.NullValidator;
 import com.vaadin.ui.*;
-import com.vaadin.ui.renderers.ImageRenderer;
 import de.datenhahn.vaadin.componentrenderer.ComponentRenderer;
 import it.ldsoftware.primavera.entities.base.Lookup;
-import it.ldsoftware.primavera.entities.base.LookupTranslation;
-import it.ldsoftware.primavera.entities.lang.Translation;
+import it.ldsoftware.primavera.entities.lang.ShortTranslation;
 import it.ldsoftware.primavera.i18n.CommonLabels;
-import it.ldsoftware.primavera.vaadin.data.util.converters.FlagConverter;
 import it.ldsoftware.primavera.vaadin.util.SupportedLanguage;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
@@ -20,7 +18,6 @@ import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import javax.validation.Validator;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -30,12 +27,9 @@ import static com.vaadin.server.Sizeable.Unit.PERCENTAGE;
 import static com.vaadin.ui.AbstractSelect.ItemCaptionMode.PROPERTY;
 import static com.vaadin.ui.Alignment.MIDDLE_LEFT;
 import static com.vaadin.ui.themes.ValoTheme.*;
-import static it.ldsoftware.primavera.dto.base.BaseDTO.FIELD_ID;
-import static it.ldsoftware.primavera.dto.base.BaseDTO.FIELD_VERSION;
 import static it.ldsoftware.primavera.dto.base.LookupDTO.FIELD_CODE;
 import static it.ldsoftware.primavera.dto.base.LookupDTO.FIELD_DESCRIPTION;
 import static it.ldsoftware.primavera.dto.lang.TranslatableDTO.FIELD_LANG;
-import static it.ldsoftware.primavera.dto.lang.TranslatableDTO.FIELD_MASTER;
 import static it.ldsoftware.primavera.i18n.CommonErrors.MSG_INS_ERROR;
 import static it.ldsoftware.primavera.i18n.CommonErrors.MSG_SAVE_ERROR;
 import static it.ldsoftware.primavera.i18n.CommonLabels.*;
@@ -55,9 +49,9 @@ import static java.util.stream.Collectors.toList;
  * Can be used as-is for simple lookups or extended for more complex
  * lookups
  */
-public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTranslation> extends TabbedForm<L> {
+public abstract class AbstractLookupForm<L extends Lookup> extends TabbedForm<L> {
     private TextField code, ownLocale;
-    private BeanItemContainer<T> bic;
+    private IndexedContainer container;
 
     public AbstractLookupForm(AbstractEditor parent) {
         super(parent);
@@ -90,40 +84,7 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
     private void createTranslationsTab() {
         VerticalLayout tTab = new MVerticalLayout().withFullWidth().withMargin(true);
 
-        Grid tGrid = new Grid();
-        tGrid.setWidth(100, PERCENTAGE);
-        tGrid.setHeight("200px");
-
-        bic = new BeanItemContainer<>(LookupTranslation.class, new ArrayList<>());
-        GeneratedPropertyContainer gpc = new GeneratedPropertyContainer(bic);
-
-        gpc.addGeneratedProperty(COLUMN_DELETE, new PropertyValueGenerator<Component>() {
-
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Component getValue(Item item, Object itemId, Object propertyId) {
-                return new MButton(TRASH_O).withListener(l -> deleteTranslation(itemId))
-                        .withStyleName(BUTTON_BORDERLESS);
-            }
-
-            @Override
-            public Class<Component> getType() {
-                return Component.class;
-            }
-        });
-
-        tGrid.setContainerDataSource(gpc);
-        tGrid.setColumnOrder(COLUMN_DELETE, FIELD_LANG, FIELD_DESCRIPTION);
-        tGrid.getColumn(COLUMN_DELETE).setRenderer(new ComponentRenderer()).setWidth(COLUMN_XS).setHeaderCaption("");
-        tGrid.getColumn(FIELD_LANG).setHeaderCaption(getTranslator().translate(LABEL_LANGUAGE)).setWidth(70)
-                .setRenderer(new ImageRenderer(), new FlagConverter());
-
-        tGrid.getColumn(FIELD_DESCRIPTION).setHeaderCaption(getTranslator().translate(LABEL_DESCRIPTION));
-        tGrid.removeColumn(FIELD_ID);
-        tGrid.removeColumn(FIELD_VERSION);
-        tGrid.removeColumn(FIELD_MASTER);
-        tGrid.setCellStyleGenerator(cell -> FIELD_LANG.equals(cell.getPropertyId()) ? "" : null);
+        Grid tGrid = createGrid();
 
         tTab.addComponent(tGrid);
 
@@ -152,7 +113,7 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
 
             try {
                 String lang = language.getValue().toString();
-                getBean().addTranslation(lang, createTranslation(transl, lang));
+                getBean().addTranslation(lang, createTranslation(transl));
                 if (defaultLang.getValue())
                     getBean().setDefaultLang(lang);
                 signalChange();
@@ -179,13 +140,49 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
         addTab(tTab, getTranslator().translate(TAB_TRANSLATIONS));
     }
 
+    private Grid createGrid() {
+        Grid tGrid = new Grid();
+        tGrid.setWidth(100, PERCENTAGE);
+        tGrid.setHeight("200px");
+
+        container = new IndexedContainer();
+        container.addContainerProperty(FIELD_LANG, String.class, null);
+        container.addContainerProperty(FIELD_DESCRIPTION, String.class, null);
+
+        GeneratedPropertyContainer gpc = new GeneratedPropertyContainer(container);
+
+        gpc.addGeneratedProperty(COLUMN_DELETE, new PropertyValueGenerator<Component>() {
+
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public Component getValue(Item item, Object itemId, Object propertyId) {
+                return new MButton(TRASH_O).withListener(l -> deleteTranslation(itemId))
+                        .withStyleName(BUTTON_BORDERLESS);
+            }
+
+            @Override
+            public Class<Component> getType() {
+                return Component.class;
+            }
+        });
+
+        tGrid.setContainerDataSource(gpc);
+        tGrid.setColumnOrder(COLUMN_DELETE, FIELD_LANG, FIELD_DESCRIPTION);
+        tGrid.getColumn(COLUMN_DELETE).setRenderer(new ComponentRenderer()).setWidth(COLUMN_XS).setHeaderCaption("");
+
+        tGrid.getColumn(FIELD_DESCRIPTION).setHeaderCaption(getTranslator().translate(LABEL_DESCRIPTION));
+        return tGrid;
+    }
+
     @Override
     public void selectFirstField() {
         code.focus();
     }
 
-    private void deleteTranslation(Object itemId) {
-        getBean().removeTranslation(((Translation) itemId).getLang());
+    private void deleteTranslation(Object item) {
+        getBean().removeTranslation(container.getItem(item)
+                .getItemProperty(FIELD_LANG).getValue().toString());
         getEditor().saveAction(null);
     }
 
@@ -195,9 +192,9 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
 
         L bean = super.getBean();
 
-        T desc = bean.getTranslationForced(loc.getLanguage());
+        ShortTranslation desc = bean.getTranslationForced(loc.getLanguage());
         if (desc == null) {
-            desc = createTranslation(null, loc.getLanguage());
+            desc = createTranslation(null);
             bean.addTranslation(loc.getLanguage(), desc);
         }
 
@@ -208,20 +205,25 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void setBean(L bean) {
         super.setBean(bean);
         Locale loc = UI.getCurrent().getLocale();
 
-        T desc = bean.getTranslationForced(loc.getLanguage());
+        ShortTranslation desc = bean.getTranslationForced(loc.getLanguage());
         if (desc == null) {
-            desc = createTranslation(null, loc.getLanguage());
+            desc = createTranslation(null);
             bean.addTranslation(loc.getLanguage(), desc);
         }
 
         ownLocale.setValue(desc.getDescription());
 
-        bic.removeAllItems();
-        bic.addAll(bean.getTranslations().values());
+        container.removeAllItems();
+        bean.getTranslations().forEach((k, v) -> {
+            Item newItem = container.getItem(container.addItem());
+            newItem.getItemProperty(FIELD_LANG).setValue(k);
+            newItem.getItemProperty(FIELD_DESCRIPTION).setValue(v.getDescription());
+        });
     }
 
     @Override
@@ -238,5 +240,7 @@ public abstract class AbstractLookupForm<L extends Lookup<T>, T extends LookupTr
         return partial;
     }
 
-    public abstract T createTranslation(String text, String lang);
+    private ShortTranslation createTranslation(String text) {
+        return new ShortTranslation().withContent(text);
+    }
 }

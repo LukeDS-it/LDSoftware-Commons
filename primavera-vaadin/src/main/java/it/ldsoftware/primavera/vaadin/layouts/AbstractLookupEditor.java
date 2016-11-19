@@ -13,7 +13,7 @@ import static it.ldsoftware.primavera.vaadin.theme.MetricConstants.COLUMN_SMALL;
  * Abstract lookup editor. Can be extended and used as-is or modified
  * to match more complex lookups
  */
-public abstract class AbstractLookupEditor<L extends Lookup<?>, D extends LookupDTO<L>> extends AbstractEditor<L, D> {
+public abstract class AbstractLookupEditor<L extends Lookup, D extends LookupDTO<L>> extends AbstractEditor<L, D> {
 
     @Override
     public void customizeGrid(DTOGrid<L, D> grid) {

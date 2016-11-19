@@ -15,7 +15,7 @@ import static javax.persistence.InheritanceType.SINGLE_TABLE;
 @Table(name = "zz_model_translation")
 @Inheritance(strategy = SINGLE_TABLE)
 @DiscriminatorColumn(name = "text_type")
-public class AbstractModelTranslation extends Translation<AbstractModel> {
+public class AbstractModelTranslation extends Translation {
 
     private String title;
 
