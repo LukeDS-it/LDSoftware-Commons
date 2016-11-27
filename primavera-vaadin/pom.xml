@@ -20,14 +20,9 @@
             <groupId>it.ldsoftware</groupId>
             <artifactId>primavera-language</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>org.vaadin</groupId>
-            <artifactId>viritin</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.datenhahn.vaadin</groupId>
-            <artifactId>componentrenderer</artifactId>
+            <groupId>it.ldsoftware</groupId>
+            <artifactId>primavera-vaadin-widgetset</artifactId>
         </dependency>
 
         <dependency>
@@ -87,32 +82,5 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-maven-plugin</artifactId>
-
-                <configuration>
-                    <webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
-                    <modules>
-                        <module>it.ldsoftware.primavera.vaadin.widgetset.PrimaveraWidgetset</module>
-                        <module>com.vaadin.DefaultWidgetSet</module>
-                    </modules>
-                </configuration>
-
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile-theme</goal>
-                            <goal>update-widgetset</goal>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

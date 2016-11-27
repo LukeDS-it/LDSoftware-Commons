@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>primavera-framework</artifactId>
+        <groupId>it.ldsoftware</groupId>
+        <version>0.0.2-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>primavera-vaadin-widgetset</artifactId>
+    <version>1.0.0-RELEASE</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.vaadin</groupId>
+            <artifactId>viritin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.datenhahn.vaadin</groupId>
+            <artifactId>componentrenderer</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-maven-plugin</artifactId>
+
+                <configuration>
+                    <webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
+                    <modules>
+                        <module>it.ldsoftware.primavera.vaadin.widgetset.PrimaveraWidgetset</module>
+                        <module>com.vaadin.DefaultWidgetSet</module>
+                    </modules>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile-theme</goal>
+                            <goal>update-widgetset</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

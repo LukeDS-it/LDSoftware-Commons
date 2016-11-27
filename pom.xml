@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.3.0.RELEASE</version>
+        <version>1.4.2.RELEASE</version>
     </parent>
 
     <description>
@@ -25,6 +25,7 @@
         <lds.vaadin.version>0.0.2-SNAPSHOT</lds.vaadin.version>
         <lds.language.version>0.0.1-SNAPSHOT</lds.language.version>
         <lds.text.compiler.version>0.0.1-SNAPSHOT</lds.text.compiler.version>
+        <lds.vaadin.widgetset.version>1.0.0-RELEASE</lds.vaadin.widgetset.version>
         <querydsl.version>3.7.2</querydsl.version>
         <commons.version>3.4</commons.version>
         <vaadin.version>7.6.5</vaadin.version>
@@ -48,6 +49,11 @@
                 <groupId>it.ldsoftware</groupId>
                 <artifactId>primavera-language</artifactId>
                 <version>${lds.language.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.ldsoftware</groupId>
+                <artifactId>primavera-vaadin-widgetset</artifactId>
+                <version>${lds.vaadin.widgetset.version}</version>
             </dependency>
 
             <dependency>
@@ -144,6 +150,14 @@
             <id>vaadin-addons</id>
             <url>http://maven.vaadin.com/vaadin-addons</url>
         </repository>
+        <repository>
+            <id>ldsoftware-releases</id>
+            <url>http://ldsoftware.it:8081/nexus/content/repositories/releases</url>
+        </repository>
+        <repository>
+            <id>ldsoftware-snapshots</id>
+            <url>http://ldsoftware.it:8081/nexus/content/repositories/snapshots</url>
+        </repository>
     </repositories>
 
     <build>
@@ -175,6 +189,7 @@
         <module>primavera-vaadin</module>
         <module>primavera-language</module>
         <module>primavera-text-compiler</module>
+        <module>primavera-vaadin-widgetset</module>
     </modules>
 
     <developers>
