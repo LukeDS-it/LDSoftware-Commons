@@ -1,7 +1,9 @@
 package it.ldsoftware.primavera.test;
 
-import com.mysema.query.jpa.JPASubQuery;
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 import it.ldsoftware.primavera.entities.lang.ShortTranslation;
 import it.ldsoftware.primavera.entities.people.Contact;
 import it.ldsoftware.primavera.entities.people.Person;
@@ -16,7 +18,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
@@ -32,12 +34,12 @@ import static java.util.Collections.singletonList;
  * Manual inspection of the database is suggested for optimal results.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = TestApplication.class)
+@SpringBootTest(classes = TestApplication.class)
 public class DatabaseTest {
 
     private static final String CAPTION_1 = "Caption 1", CAPTION_2 = "Caption 2";
     @Autowired
-    DatabaseService svc;
+    private DatabaseService svc;
 
     @Test
     public void contextLoads() {
@@ -63,7 +65,7 @@ public class DatabaseTest {
 
         Person person = new Person();
         person.addContact(new Contact().withContactType(PHONE).withValue("not cVal"));
-        person.addContact(new Contact().withContactType(ContactType.EMAIL).withValue(cVal));
+        person.addContact(new Contact().withContactType(EMAIL).withValue(cVal));
         person.setName("Luca");
         person.setSurname("Di Stefano");
         person.setFullName("Luca Di Stefano");
@@ -75,9 +77,9 @@ public class DatabaseTest {
 
         Predicate predicate1 = qp.isNotNull()
                 .and(qp.contacts.any().in(
-                        new JPASubQuery().from(qc)
+                        JPAExpressions.selectFrom(qc)
                                 .where(qc.contactType.eq(PHONE)
-                                        .and(qc.contactValue.eq(cVal))).list(qc)));
+                                        .and(qc.contactValue.eq(cVal)))));
 
         List<Person> manual = svc.findAll(Person.class, predicate1);
 

@@ -1,6 +1,6 @@
 package it.ldsoftware.primavera.services;
 
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
 import it.ldsoftware.primavera.dal.base.AppPropertyDAL;
 import it.ldsoftware.primavera.dal.base.BaseDAL;
 import it.ldsoftware.primavera.dal.base.LogEntryDAL;

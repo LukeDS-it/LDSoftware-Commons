@@ -5,12 +5,16 @@
     <parent>
         <artifactId>primavera-framework</artifactId>
         <groupId>it.ldsoftware</groupId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>primavera-vaadin-widgetset</artifactId>
     <version>1.0.0-RELEASE</version>
+
+    <properties>
+        <vaadin.theme>ldsmetro</vaadin.theme>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -20,6 +24,16 @@
         <dependency>
             <groupId>de.datenhahn.vaadin</groupId>
             <artifactId>componentrenderer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-client</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-client-compiler</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -33,7 +47,6 @@
                     <webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
                     <modules>
                         <module>it.ldsoftware.primavera.vaadin.widgetset.PrimaveraWidgetset</module>
-                        <module>com.vaadin.DefaultWidgetSet</module>
                     </modules>
                 </configuration>
 

@@ -1,11 +1,11 @@
 package it.ldsoftware.primavera.query;
 
 
-import com.mysema.query.jpa.JPASubQuery;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.path.CollectionPath;
-import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.StringPath;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.*;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import it.ldsoftware.primavera.entities.base.BaseEntity;
 import org.apache.log4j.Logger;
 
@@ -34,24 +34,24 @@ public class PredicateFactory {
      * @param eClass  entity class used to build the dynamic path
      * @param filters collection of filters
      * @param <E>     parameter for type-safe handling
-     * @return the predicate in the form of a {@link BooleanExpression}
+     * @return the predicate in the form of a {@link Predicate}
      * @see Filter How to create filtering parameters
      */
-    public static <E extends BaseEntity> BooleanExpression createPredicate(Class<E> eClass, Collection<Filter> filters) {
+    public static <E extends BaseEntity> Predicate createPredicate(Class<E> eClass, Collection<Filter> filters) {
         PathBuilder<E> pb = getPathBuilder(eClass);
-        BooleanExpression partial = pb.isNotNull();
+        BooleanBuilder builder = new BooleanBuilder();
 
         Set<String> betweenParsed = new HashSet<>();
 
         for (Filter filter : filters) {
             try {
                 Field f = eClass.getDeclaredField(filter.getProperty());
-                partial = getBasicExpression(pb, partial, filter, f);
+                getBasicExpression(pb, builder, filter, f);
             } catch (NoSuchFieldException ignored) {
                 String fname = filter.getProperty();
                 if (fname.toLowerCase().endsWith("from") || fname.toLowerCase().endsWith("to")) {
                     if (!betweenParsed.contains(getBetweenFieldName(fname)))
-                        partial = handleBetween(pb, partial, filter, filters);
+                        handleBetween(pb, builder, filter, filters);
                     betweenParsed.add(getBetweenFieldName(fname));
 
                 } else {
@@ -61,7 +61,7 @@ public class PredicateFactory {
             }
         }
 
-        return partial;
+        return builder.getValue();
     }
 
     /**
@@ -72,7 +72,7 @@ public class PredicateFactory {
      * @param <E> parameter for type-safe handling
      * @return the predicate in the form of a {@link BooleanExpression}
      */
-    public static <E extends BaseEntity> BooleanExpression createPredicate(Class<E> entityClass, E entity) {
+    public static <E extends BaseEntity> Predicate createPredicate(Class<E> entityClass, E entity) {
         return createPredicate(entityClass, getFiltersByEntity(entityClass, entity));
     }
 
@@ -86,28 +86,31 @@ public class PredicateFactory {
     public static <E extends BaseEntity> List<Filter> getFiltersByEntity(Class<E> entityClass, E entity) {
         List<Filter> filters = new ArrayList<>();
         Arrays.stream(entityClass.getDeclaredMethods()).filter(PredicateFactory::isCandidate)
-                .map(m -> filterFromMethod(m, entity)).filter(f -> f != null).forEach(filters::add);
+                .map(m -> filterFromMethod(m, entity)).filter(Objects::nonNull).forEach(filters::add);
         return filters;
     }
 
     private static <E extends BaseEntity> PathBuilder<E> getPathBuilder(Class<E> eClass) {
+        return new PathBuilder<>(eClass, getEntityName(eClass));
+    }
+
+    private static <E extends BaseEntity> String getEntityName(Class<E> eClass) {
         String entityName = eClass.getSimpleName();
         entityName = entityName.substring(0, 1).toLowerCase() + entityName.substring(1);
         if (entityName.equals("group")) entityName += "1";
-        return new PathBuilder<>(eClass, entityName);
+        return entityName;
     }
 
-    private static <E extends BaseEntity> BooleanExpression getBasicExpression(PathBuilder<E> pb, BooleanExpression partial, Filter filter, Field f) {
+    private static <E extends BaseEntity> void getBasicExpression(PathBuilder<E> pb, BooleanBuilder builder, Filter filter, Field f) {
         if (Collection.class.isAssignableFrom(f.getType())) {
-            partial = handleCollection(pb, partial, filter);
+            handleCollection(pb, builder, filter);
         } else if (String.class.isAssignableFrom(f.getType())) {
-            partial = handleString(pb, partial, filter);
+            handleString(pb, builder, filter);
         } else if (BaseEntity.class.isAssignableFrom(f.getType())) {
-            partial = handleEntity(pb, partial, filter, f);
+            handleEntity(pb, builder, filter, f);
         } else {
-            partial = handleOther(pb, partial, filter);
+            handleOther(pb, builder, filter);
         }
-        return partial;
     }
     private static boolean isCandidate(Method method) {
         return (method.getName().startsWith("get") || method.getName().startsWith("is"))
@@ -131,30 +134,31 @@ public class PredicateFactory {
     }
 
     @SuppressWarnings("unchecked")
-    private static <E extends BaseEntity> BooleanExpression handleCollection(PathBuilder<E> pb, BooleanExpression base, Filter filter) {
+    private static <E extends BaseEntity> void handleCollection(PathBuilder<E> pb, BooleanBuilder base, Filter filter) {
         // TODO if the object is a collection the query will state "contains all of the elements in the collection"
         Object o = filter.getValue();
         Class<E> eClass = (Class<E>) o.getClass();
         CollectionPath path = pb.getCollection(filter.getProperty(), eClass);
 
         PathBuilder subPb = getPathBuilder(eClass);
+        EntityPathBase<E> pathBase = new EntityPathBase<>(eClass, getEntityName(eClass));
 
         BooleanExpression subClause = subPb.isNotNull();
         subClause = subClause.and(createPredicate(eClass, (E)o));
 
-        JPASubQuery q = new JPASubQuery().from(subPb).where(subClause);
+        JPQLQuery<E> q = JPAExpressions.selectFrom(pathBase).where(subClause);
+
         switch (filter.getOperator()) {
             case AND:
-                base = base.and(findNegation(path.any().in(q.list()), filter));
+                base.and(findNegation(path.any().in(q), filter));
                 break;
             case OR:
-                base = base.or(findNegation(path.any().in(q.list()), filter));
+                base.or(findNegation(path.any().in(q), filter));
                 break;
         }
-        return base;
     }
 
-    private static BooleanExpression handleString(PathBuilder<?> pb, BooleanExpression base, Filter filter) {
+    private static void handleString(PathBuilder<?> pb, BooleanBuilder base, Filter filter) {
         String s = filter.getValue().toString();
         boolean startsWith = s.endsWith("%");
         boolean endsWith = s.startsWith("%");
@@ -169,46 +173,46 @@ public class PredicateFactory {
         switch (filter.getOperator()) {
             case AND:
                 if (startsWith && endsWith) {
-                    base = base.and(findNegation(sp.containsIgnoreCase(s), filter));
+                    base.and(findNegation(sp.containsIgnoreCase(s), filter));
                 } else if (startsWith) {
-                    base = base.and(findNegation(sp.startsWithIgnoreCase(s), filter));
+                    base.and(findNegation(sp.startsWithIgnoreCase(s), filter));
                 } else if (endsWith) {
-                    base = base.and(findNegation(sp.endsWithIgnoreCase(s), filter));
+                    base.and(findNegation(sp.endsWithIgnoreCase(s), filter));
                 } else {
-                    base = base.and(findNegation(sp.equalsIgnoreCase(s), filter));
+                    base.and(findNegation(sp.equalsIgnoreCase(s), filter));
                 }
                 break;
             case OR:
                 if (startsWith && endsWith) {
-                    base = base.or(findNegation(sp.containsIgnoreCase(s), filter));
+                    base.or(findNegation(sp.containsIgnoreCase(s), filter));
                 } else if (startsWith) {
-                    base = base.or(findNegation(sp.startsWithIgnoreCase(s), filter));
+                    base.or(findNegation(sp.startsWithIgnoreCase(s), filter));
                 } else if (endsWith) {
-                    base = base.or(findNegation(sp.endsWithIgnoreCase(s), filter));
+                    base.or(findNegation(sp.endsWithIgnoreCase(s), filter));
                 } else {
-                    base = base.or(findNegation(sp.equalsIgnoreCase(s), filter));
+                    base.or(findNegation(sp.equalsIgnoreCase(s), filter));
                 }
                 break;
         }
-        return base;
     }
 
-    private static <E extends BaseEntity> BooleanExpression handleEntity(PathBuilder<?> pb, BooleanExpression base,
+    @SuppressWarnings("unchecked")
+    private static <E extends BaseEntity> void handleEntity(PathBuilder<?> pb, BooleanBuilder base,
                                                                          Filter filter, Field field) {
         Object o = filter.getValue();
         if (o instanceof BaseEntity) {
             if (o.getClass().equals(field.getType())) {
                 if (((BaseEntity) o).getId() != 0) {
-                    base = handleOther(pb, base, filter);
+                    handleOther(pb, base, filter);
                 } else {
-                    @SuppressWarnings("unchecked")
                     List<Filter> subFilters = getFiltersByEntity((Class<E>) o.getClass(), (E) o);
 
                     PathBuilder nested = pb.get(filter.getProperty());
-                    BooleanExpression partial = nested.isNotNull();
+                    BooleanBuilder partial = new BooleanBuilder();
+
                     for (Filter sf: subFilters) {
                         try {
-                            partial = getBasicExpression(nested, partial, sf, o.getClass().getDeclaredField(sf.getProperty()));
+                            getBasicExpression(nested, partial, sf, o.getClass().getDeclaredField(sf.getProperty()));
                         } catch (NoSuchFieldException e) {
                             // Should not be thrown as we are building filters from example
                             e.printStackTrace();
@@ -217,10 +221,10 @@ public class PredicateFactory {
 
                     switch (filter.getOperator()) {
                         case AND:
-                            base = base.and(findNegation(partial, filter));
+                            base.and(findNegation(partial, filter));
                             break;
                         case OR:
-                            base = base.or(findNegation(partial, filter));
+                            base.or(findNegation(partial, filter));
                             break;
                     }
                 }
@@ -229,20 +233,20 @@ public class PredicateFactory {
                         + field.getType().getName() + ", got " + filter.getValue().getClass().getName());
             }
         }
-        return base;
     }
 
-    private static BooleanExpression handleOther(PathBuilder<?> pb, BooleanExpression base, Filter filter) {
+    private static void handleOther(PathBuilder<?> pb, BooleanBuilder base, Filter filter) {
         switch (filter.getOperator()) {
             case AND:
-                return base.and(findNegation(pb.get(filter.getProperty()).eq(filter.getValue()), filter));
+                base.and(findNegation(pb.get(filter.getProperty()).eq(filter.getValue()), filter));
+                break;
             case OR:
-                return base.or(findNegation(pb.get(filter.getProperty()).eq(filter.getValue()), filter));
+                base.or(findNegation(pb.get(filter.getProperty()).eq(filter.getValue()), filter));
+                break;
         }
-        return base;
     }
 
-    private static BooleanExpression handleBetween(PathBuilder<?> pb, BooleanExpression base, Filter filter,
+    private static void handleBetween(PathBuilder<?> pb, BooleanBuilder base, Filter filter,
                                                    Collection<Filter> filters) {
 
         String fromToField = filter.getProperty();
@@ -276,22 +280,25 @@ public class PredicateFactory {
             Calendar t = endOfDay(ensureIsCalendar(toValue));
             switch (filter.getOperator()) {
                 case AND:
-                    return base.and(findNegation(pb.getDate(fieldName, Calendar.class).between(f, t), filter));
+                    base.and(findNegation(pb.getDate(fieldName, Calendar.class).between(f, t), filter));
+                    break;
                 case OR:
-                    return base.or(findNegation(pb.getDate(fieldName, Calendar.class).between(f, t), filter));
+                    base.or(findNegation(pb.getDate(fieldName, Calendar.class).between(f, t), filter));
+                    break;
             }
         } else {
             Comparable<?> f = (Comparable<?>) fromValue;
             Comparable<?> t = (Comparable<?>) toValue;
             switch (filter.getOperator()) {
                 case AND:
-                    return base.and(findNegation(pb.getComparable(fieldName, Comparable.class).between(f, t), filter));
+                    base.and(findNegation(pb.getComparable(fieldName, Comparable.class).between(f, t), filter));
+                    break;
                 case OR:
-                    return base.or(findNegation(pb.getComparable(fieldName, Comparable.class).between(f, t), filter));
+                    base.or(findNegation(pb.getComparable(fieldName, Comparable.class).between(f, t), filter));
+                    break;
             }
         }
 
-        return base;
     }
 
     private static Calendar ensureIsCalendar(Object object) {
@@ -311,6 +318,12 @@ public class PredicateFactory {
     }
 
     private static BooleanExpression findNegation(BooleanExpression expr, Filter filter) {
+        if (filter.isNegative())
+            return expr.not();
+        return expr;
+    }
+
+    private static BooleanBuilder findNegation(BooleanBuilder expr, Filter filter) {
         if (filter.isNegative())
             return expr.not();
         return expr;

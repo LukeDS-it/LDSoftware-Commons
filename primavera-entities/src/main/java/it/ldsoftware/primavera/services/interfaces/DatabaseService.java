@@ -1,6 +1,6 @@
 package it.ldsoftware.primavera.services.interfaces;
 
-import com.mysema.query.types.Predicate;
+import com.querydsl.core.types.Predicate;
 import it.ldsoftware.primavera.dto.base.BaseDTO;
 import it.ldsoftware.primavera.entities.base.BaseEntity;
 import org.springframework.data.domain.Page;
