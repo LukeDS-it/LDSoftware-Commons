@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>primavera-vaadin-widgetset</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <version>${lds.vaadin.widgetset.version}</version>
 
     <properties>
         <vaadin.theme>ldsmetro</vaadin.theme>
@@ -20,20 +20,27 @@
         <dependency>
             <groupId>org.vaadin</groupId>
             <artifactId>viritin</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>de.datenhahn.vaadin</groupId>
             <artifactId>componentrenderer</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client</artifactId>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client-compiler</artifactId>
-            <scope>provided</scope>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-themes</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

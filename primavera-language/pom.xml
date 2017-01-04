@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>primavera-language</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${lds.language.version}</version>
 
     <dependencies>
         <dependency>

@@ -25,7 +25,7 @@
         <lds.vaadin.version>0.0.3-SNAPSHOT</lds.vaadin.version>
         <lds.language.version>0.0.1-SNAPSHOT</lds.language.version>
         <lds.text.compiler.version>0.0.1-SNAPSHOT</lds.text.compiler.version>
-        <lds.vaadin.widgetset.version>1.0.0-RELEASE</lds.vaadin.widgetset.version>
+        <lds.vaadin.widgetset.version>1.0.1-RELEASE</lds.vaadin.widgetset.version>
         <querydsl.version>4.1.4</querydsl.version>
         <commons.version>3.4</commons.version>
         <vaadin.version>7.7.6</vaadin.version>
