@@ -57,10 +57,7 @@ public class Person extends BaseEntity {
     @Enumerated(STRING)
     private PersonType personType;
 
-    @ManyToOne(cascade = ALL, fetch = LAZY)
-    private Person parent;
-
-    @OneToMany(cascade = ALL, fetch = LAZY, orphanRemoval = true, mappedBy = "parent")
+    @ManyToMany(cascade = ALL, fetch = LAZY)
     private Set<Person> children = new HashSet<>();
 
     @OneToMany(cascade = ALL, fetch = EAGER, orphanRemoval = true, mappedBy = "person")
@@ -87,7 +84,6 @@ public class Person extends BaseEntity {
             for (Person p : people) {
                 if (!p.equals(this)) {
                     children.add(p);
-                    p.setParent(this);
                 }
             }
         }
@@ -98,7 +94,6 @@ public class Person extends BaseEntity {
             for (Person p : people) {
                 if (!p.equals(this)) {
                     children.remove(p);
-                    p.setParent(null);
                 }
             }
         }
@@ -163,14 +158,6 @@ public class Person extends BaseEntity {
 
     public void setPersonType(PersonType personType) {
         this.personType = personType;
-    }
-
-    public Person getParent() {
-        return parent;
-    }
-
-    public void setParent(Person parent) {
-        this.parent = parent;
     }
 
     public Set<Person> getChildren() {

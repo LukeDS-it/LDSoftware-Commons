@@ -6,7 +6,7 @@
 
     <groupId>it.ldsoftware</groupId>
     <artifactId>primavera-framework</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.5.0-SNAPSHOT</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -21,11 +21,13 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <entities.version>0.0.3-SNAPSHOT</entities.version>
+        <entities.version>0.5.0-SNAPSHOT</entities.version>
         <lds.vaadin.version>0.0.3-SNAPSHOT</lds.vaadin.version>
-        <lds.language.version>0.0.1-SNAPSHOT</lds.language.version>
+        <lds.language.version>1.0.0-RELEASE</lds.language.version>
         <lds.text.compiler.version>0.0.1-SNAPSHOT</lds.text.compiler.version>
         <lds.vaadin.widgetset.version>1.0.1-RELEASE</lds.vaadin.widgetset.version>
+        <lds.rest.version>0.5.0-SNAPSHOT</lds.rest.version>
+        <lds.payload.version>1.0.0-RELEASE</lds.payload.version>
         <querydsl.version>4.1.4</querydsl.version>
         <commons.version>3.4</commons.version>
         <vaadin.version>7.7.6</vaadin.version>
@@ -54,6 +56,16 @@
                 <groupId>it.ldsoftware</groupId>
                 <artifactId>primavera-vaadin-widgetset</artifactId>
                 <version>${lds.vaadin.widgetset.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.ldsoftware</groupId>
+                <artifactId>primavera-rest</artifactId>
+                <version>${lds.rest.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>it.ldsoftware</groupId>
+                <artifactId>primavera-rest-payload</artifactId>
+                <version>${lds.payload.version}</version>
             </dependency>
 
             <dependency>
@@ -190,6 +202,8 @@
         <module>primavera-language</module>
         <module>primavera-text-compiler</module>
         <module>primavera-vaadin-widgetset</module>
+        <module>primavera-rest</module>
+        <module>primavera-rest-payload</module>
     </modules>
 
     <developers>
@@ -214,4 +228,42 @@
             <url>http://ldsoftware.it:8081/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>final-version</id>
+            <properties>
+                <entities.version>0.5.0-SNAPSHOT</entities.version>
+                <lds.vaadin.version>0.0.3-SNAPSHOT</lds.vaadin.version>
+                <lds.language.version>1.0.0-RELEASE</lds.language.version>
+                <lds.text.compiler.version>0.0.1-SNAPSHOT</lds.text.compiler.version>
+                <lds.vaadin.widgetset.version>1.0.1-RELEASE</lds.vaadin.widgetset.version>
+                <lds.rest.version>0.5.0-SNAPSHOT</lds.rest.version>
+                <lds.payload.version>1.0.0-RELEASE</lds.payload.version>
+            </properties>
+            <modules>
+                <module>primavera-entities</module>
+                <module>primavera-language</module>
+                <module>primavera-text-compiler</module>
+                <module>primavera-rest</module>
+                <module>primavera-rest-payload</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>primavera-entities</module>
+                <module>primavera-vaadin</module>
+                <module>primavera-language</module>
+                <module>primavera-text-compiler</module>
+                <module>primavera-vaadin-widgetset</module>
+                <module>primavera-rest</module>
+                <module>primavera-rest-payload</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

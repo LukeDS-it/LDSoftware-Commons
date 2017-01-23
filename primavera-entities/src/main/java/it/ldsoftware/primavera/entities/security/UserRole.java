@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class UserRole implements RoleCollector {
 
     @Embedded
-    RoleModifiers modifiers;
+    private RoleModifiers modifiers;
     @Id
     @ManyToOne
     private User user;
