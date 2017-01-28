@@ -58,7 +58,7 @@ public class Person extends BaseEntity {
     private PersonType personType;
 
     @ManyToMany(cascade = ALL, fetch = LAZY)
-    private Set<Person> children = new HashSet<>();
+    private Set<Person> people = new HashSet<>();
 
     @OneToMany(cascade = ALL, fetch = EAGER, orphanRemoval = true, mappedBy = "person")
     private Set<Contact> contacts = new HashSet<>();
@@ -83,7 +83,7 @@ public class Person extends BaseEntity {
         if (people != null) {
             for (Person p : people) {
                 if (!p.equals(this)) {
-                    children.add(p);
+                    this.people.add(p);
                 }
             }
         }
@@ -93,7 +93,7 @@ public class Person extends BaseEntity {
         if (people != null) {
             for (Person p : people) {
                 if (!p.equals(this)) {
-                    children.remove(p);
+                    this.people.remove(p);
                 }
             }
         }
@@ -160,12 +160,12 @@ public class Person extends BaseEntity {
         this.personType = personType;
     }
 
-    public Set<Person> getChildren() {
-        return children;
+    public Set<Person> getPeople() {
+        return people;
     }
 
-    public void setChildren(Set<Person> children) {
-        this.children = children;
+    public void setPeople(Set<Person> people) {
+        this.people = people;
     }
 
     public Set<Contact> getContacts() {

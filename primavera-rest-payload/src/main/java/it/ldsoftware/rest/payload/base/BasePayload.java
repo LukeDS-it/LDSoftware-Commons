@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class BasePayload implements Serializable {
 
     private long id;
-    private int version;
+    private long version;
 
     public long getId() {
         return id;
@@ -21,11 +21,11 @@ public class BasePayload implements Serializable {
         this.id = id;
     }
 
-    public int getVersion() {
+    public long getVersion() {
         return version;
     }
 
-    public void setVersion(int version) {
+    public void setVersion(long version) {
         this.version = version;
     }
 
@@ -36,13 +36,11 @@ public class BasePayload implements Serializable {
 
         BasePayload that = (BasePayload) o;
 
-        return id == that.id && version == that.version;
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + version;
-        return result;
+        return (int) (id ^ (id >>> 32));
     }
 }
