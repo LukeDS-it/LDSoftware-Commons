@@ -1,8 +1,8 @@
 package it.ldsoftware.primavera.vaadin.security;
 
-import it.ldsoftware.primavera.dto.people.UserDTO;
-import it.ldsoftware.primavera.entities.people.QUser;
-import it.ldsoftware.primavera.entities.people.User;
+import it.ldsoftware.primavera.presentation.people.UserDTO;
+import it.ldsoftware.primavera.model.people.QUser;
+import it.ldsoftware.primavera.model.people.User;
 import it.ldsoftware.primavera.services.interfaces.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

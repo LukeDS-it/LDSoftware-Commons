@@ -1,7 +1,7 @@
 package it.ldsoftware.primavera.vaadin.editors.people;
 
-import it.ldsoftware.primavera.dto.people.PersonDTO;
-import it.ldsoftware.primavera.entities.people.Person;
+import it.ldsoftware.primavera.presentation.people.PersonDTO;
+import it.ldsoftware.primavera.model.people.Person;
 import it.ldsoftware.primavera.query.factories.PersonFilterProcessor;
 import it.ldsoftware.primavera.util.UserUtil;
 import it.ldsoftware.primavera.vaadin.components.DTOGrid;

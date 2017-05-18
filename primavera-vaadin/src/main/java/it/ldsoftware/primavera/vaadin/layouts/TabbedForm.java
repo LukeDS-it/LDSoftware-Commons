@@ -3,7 +3,7 @@ package it.ldsoftware.primavera.vaadin.layouts;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
-import it.ldsoftware.primavera.entities.base.BaseEntity;
+import it.ldsoftware.primavera.model.base.BaseEntity;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import static com.vaadin.ui.themes.ValoTheme.TABSHEET_FRAMED;

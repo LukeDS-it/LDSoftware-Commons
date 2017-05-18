@@ -1,6 +1,6 @@
 package it.ldsoftware.primavera.vaadin.layouts;
 
-import it.ldsoftware.primavera.entities.base.BaseEntity;
+import it.ldsoftware.primavera.model.base.BaseEntity;
 import it.ldsoftware.primavera.i18n.LocalizationService;
 import it.ldsoftware.primavera.services.interfaces.DatabaseService;
 import org.vaadin.viritin.BeanBinder;

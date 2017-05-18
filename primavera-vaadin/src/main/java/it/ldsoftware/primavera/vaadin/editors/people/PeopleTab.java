@@ -1,8 +1,8 @@
 package it.ldsoftware.primavera.vaadin.editors.people;
 
 import com.vaadin.ui.Button;
-import it.ldsoftware.primavera.dto.people.PersonDTO;
-import it.ldsoftware.primavera.entities.people.Person;
+import it.ldsoftware.primavera.presentation.people.PersonDTO;
+import it.ldsoftware.primavera.model.people.Person;
 import it.ldsoftware.primavera.i18n.LocalizationService;
 import it.ldsoftware.primavera.services.interfaces.DatabaseService;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractDetailTab;

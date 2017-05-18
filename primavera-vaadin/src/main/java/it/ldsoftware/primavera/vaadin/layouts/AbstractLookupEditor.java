@@ -1,11 +1,11 @@
 package it.ldsoftware.primavera.vaadin.layouts;
 
-import it.ldsoftware.primavera.dto.base.LookupDTO;
-import it.ldsoftware.primavera.entities.base.Lookup;
+import it.ldsoftware.primavera.presentation.base.LookupDTO;
+import it.ldsoftware.primavera.model.base.Lookup;
 import it.ldsoftware.primavera.vaadin.components.DTOGrid;
 
-import static it.ldsoftware.primavera.dto.base.LookupDTO.FIELD_CODE;
-import static it.ldsoftware.primavera.dto.lang.TranslatableDTO.FIELD_LANG;
+import static it.ldsoftware.primavera.presentation.base.LookupDTO.FIELD_CODE;
+import static it.ldsoftware.primavera.presentation.lang.TranslatableDTO.FIELD_LANG;
 import static it.ldsoftware.primavera.vaadin.theme.MetricConstants.COLUMN_SMALL;
 
 /**

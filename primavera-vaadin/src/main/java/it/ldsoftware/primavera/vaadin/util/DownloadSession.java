@@ -1,6 +1,6 @@
 package it.ldsoftware.primavera.vaadin.util;
 
-import it.ldsoftware.primavera.dto.base.BaseDTO;
+import it.ldsoftware.primavera.presentation.base.BaseDTO;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.HashMap;

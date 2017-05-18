@@ -1,8 +1,8 @@
 package it.ldsoftware.primavera.vaadin.editors.people;
 
 import com.vaadin.ui.Button.ClickEvent;
-import it.ldsoftware.primavera.dto.people.UserDTO;
-import it.ldsoftware.primavera.entities.people.User;
+import it.ldsoftware.primavera.presentation.people.UserDTO;
+import it.ldsoftware.primavera.model.people.User;
 import it.ldsoftware.primavera.vaadin.dialogs.AbstractFilterDialog;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractEditor;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractEditorForm;

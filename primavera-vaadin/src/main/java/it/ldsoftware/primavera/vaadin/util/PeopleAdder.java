@@ -1,6 +1,6 @@
 package it.ldsoftware.primavera.vaadin.util;
 
-import it.ldsoftware.primavera.dto.people.PersonDTO;
+import it.ldsoftware.primavera.presentation.people.PersonDTO;
 
 import java.util.List;
 

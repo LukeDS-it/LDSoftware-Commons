@@ -1,6 +1,6 @@
 package it.ldsoftware.primavera.vaadin.controllers;
 
-import it.ldsoftware.primavera.dto.base.BaseDTO;
+import it.ldsoftware.primavera.presentation.base.BaseDTO;
 import it.ldsoftware.primavera.i18n.LocalizationService;
 import it.ldsoftware.primavera.vaadin.util.DownloadSession;
 import org.apache.commons.lang3.StringUtils;

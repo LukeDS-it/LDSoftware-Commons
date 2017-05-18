@@ -1,8 +1,8 @@
 package it.ldsoftware.primavera.vaadin.controllers;
 
 import com.google.gson.Gson;
-import it.ldsoftware.primavera.entities.base.AppProperty;
-import it.ldsoftware.primavera.entities.base.QAppProperty;
+import it.ldsoftware.primavera.model.base.AppProperty;
+import it.ldsoftware.primavera.model.base.QAppProperty;
 import it.ldsoftware.primavera.services.interfaces.DatabaseService;
 import it.ldsoftware.primavera.vaadin.exceptions.GAuthConfigurationException;
 import it.ldsoftware.primavera.vaadin.security.GoogleResponse;

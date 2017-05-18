@@ -1,1 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=it.ldsoftware.primavera.configuration.EntitiesConfiguration

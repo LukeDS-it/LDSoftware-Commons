@@ -1,8 +1,8 @@
 package it.ldsoftware.primavera.vaadin.editors.security;
 
 import com.vaadin.ui.Button;
-import it.ldsoftware.primavera.dto.security.GroupDTO;
-import it.ldsoftware.primavera.entities.security.Group;
+import it.ldsoftware.primavera.presentation.security.GroupDTO;
+import it.ldsoftware.primavera.model.security.Group;
 import it.ldsoftware.primavera.i18n.LocalizationService;
 import it.ldsoftware.primavera.services.interfaces.DatabaseService;
 import it.ldsoftware.primavera.util.UserUtil;

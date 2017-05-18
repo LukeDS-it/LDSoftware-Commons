@@ -1,7 +1,7 @@
 package it.ldsoftware.primavera.vaadin.editors.security;
 
-import it.ldsoftware.primavera.dto.security.GroupDTO;
-import it.ldsoftware.primavera.entities.security.Group;
+import it.ldsoftware.primavera.presentation.security.GroupDTO;
+import it.ldsoftware.primavera.model.security.Group;
 import it.ldsoftware.primavera.vaadin.dialogs.AbstractFilterDialog;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractEditorForm;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractLookupEditor;

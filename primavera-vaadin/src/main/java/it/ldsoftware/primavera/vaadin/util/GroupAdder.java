@@ -1,6 +1,6 @@
 package it.ldsoftware.primavera.vaadin.util;
 
-import it.ldsoftware.primavera.entities.security.Group;
+import it.ldsoftware.primavera.model.security.Group;
 
 /**
  * Created by luca on 22/04/16.

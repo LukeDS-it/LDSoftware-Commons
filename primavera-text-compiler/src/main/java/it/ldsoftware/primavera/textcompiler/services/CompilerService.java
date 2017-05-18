@@ -1,9 +1,7 @@
 package it.ldsoftware.primavera.textcompiler.services;
 
-import it.ldsoftware.primavera.services.interfaces.DatabaseService;
+import it.ldsoftware.primavera.textcompiler.dto.AbstractModelDTO;
 import it.ldsoftware.primavera.textcompiler.dto.CompiledModel;
-import it.ldsoftware.primavera.textcompiler.entities.AbstractModel;
-import it.ldsoftware.primavera.textcompiler.entities.AbstractModelTranslation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +27,12 @@ import java.util.regex.Pattern;
 @Service
 public class CompilerService {
 
+    private final ModelService svc;
+
     @Autowired
-    private DatabaseService svc;
+    public CompilerService(ModelService svc) {
+        this.svc = svc;
+    }
 
     /**
      * This function takes a string and compiles the placeholders over the fields of the elements
@@ -55,7 +57,7 @@ public class CompilerService {
      * @return a compiled model object that contains title and body of the model, compiled in the
      *           desired language
      */
-    public CompiledModel compileModel(AbstractModel model, Locale locale, Object... objects) {
+    public CompiledModel compileModel(AbstractModelDTO model, Locale locale, Object... objects) {
         return compileModel(model, "?", locale, objects);
     }
 
@@ -88,12 +90,13 @@ public class CompilerService {
      * @return a compiled model object that contains title and body of the model, ompiled in the
      *          desired language
      */
-    public CompiledModel compileModel(AbstractModel model, String defaultReplacement, Locale locale, Object... objects) {
-        AbstractModelTranslation translation = model.getTranslation(locale);
-        return new CompiledModel(
-                compileStringAgainst(translation.getTitle(), defaultReplacement, locale, objects),
-                compileStringAgainst(translation.getBody(), defaultReplacement, locale, objects)
-        );
+    public CompiledModel compileModel(AbstractModelDTO model, String defaultReplacement, Locale locale, Object... objects) {
+//        AbstractModelTranslation translation = model.getTranslation(locale);
+//        return new CompiledModel(
+//                compileStringAgainst(translation.getTitle(), defaultReplacement, locale, objects),
+//                compileStringAgainst(translation.getBody(), defaultReplacement, locale, objects)
+//        );
+        return null; // TODO
     }
 
     /**
@@ -210,7 +213,7 @@ public class CompilerService {
         matcher = modelPattern.matcher(string);
         while (matcher.find()) {
             String modelNo = matcher.group(1).trim();
-            CompiledModel cm = compileModel(svc.findOne(AbstractModel.class, Long.parseLong(modelNo)),
+            CompiledModel cm = compileModel(svc.findOne(Long.parseLong(modelNo)),
                     locale, defaultReplacement, objects);
             String replacement = cm.getBody();
             string = matcher.replaceFirst(replacement);

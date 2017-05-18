@@ -1,6 +1,6 @@
 package it.ldsoftware.primavera.textcompiler.entities;
 
-import it.ldsoftware.primavera.entities.lang.Translatable;
+import it.ldsoftware.primavera.model.lang.Translatable;
 
 import javax.persistence.*;
 

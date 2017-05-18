@@ -1,6 +1,6 @@
 package it.ldsoftware.primavera.vaadin.listeners;
 
-import it.ldsoftware.primavera.dto.base.BaseDTO;
+import it.ldsoftware.primavera.presentation.base.BaseDTO;
 
 import java.util.List;
 

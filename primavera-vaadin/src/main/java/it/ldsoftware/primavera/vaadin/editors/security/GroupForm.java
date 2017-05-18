@@ -1,6 +1,6 @@
 package it.ldsoftware.primavera.vaadin.editors.security;
 
-import it.ldsoftware.primavera.entities.security.Group;
+import it.ldsoftware.primavera.model.security.Group;
 import it.ldsoftware.primavera.util.RoleCollector;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractEditor;
 import it.ldsoftware.primavera.vaadin.layouts.AbstractLookupForm;
