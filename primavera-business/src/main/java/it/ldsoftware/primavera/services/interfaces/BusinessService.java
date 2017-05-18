@@ -1,13 +1,15 @@
 package it.ldsoftware.primavera.services.interfaces;
 
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import it.ldsoftware.primavera.model.people.User;
 import it.ldsoftware.primavera.presentation.base.BaseDTO;
-import it.ldsoftware.primavera.model.base.BaseEntity;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
-import java.awt.print.Pageable;
 import java.util.List;
 
 /**
@@ -24,9 +26,12 @@ import java.util.List;
  *
  * @author Luca Di Stefano
  */
+@Service
 public interface BusinessService<D extends BaseDTO> {
 
     D findOne(@NotNull Long id);
+
+    D findOne(Predicate predicate);
 
     List<D> findAll();
 

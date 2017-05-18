@@ -1,7 +1,9 @@
 package it.ldsoftware.primavera.services.interfaces;
 
+import it.ldsoftware.primavera.presentation.people.PersonDTO;
+
 /**
- * Created by luca on 18/05/17.
+ * @author Luca Di Stefano
  */
-public interface PeopleService {
+public interface PeopleService extends BusinessService<PersonDTO> {
 }

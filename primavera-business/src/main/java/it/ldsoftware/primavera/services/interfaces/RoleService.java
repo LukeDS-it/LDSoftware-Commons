@@ -1,7 +1,9 @@
 package it.ldsoftware.primavera.services.interfaces;
 
+import it.ldsoftware.primavera.presentation.security.RoleDTO;
+
 /**
- * Created by luca on 18/05/17.
+ * @author Luca Di Stefano
  */
-public interface RoleService {
+public interface RoleService extends BusinessService<RoleDTO> {
 }

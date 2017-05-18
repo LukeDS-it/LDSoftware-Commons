@@ -1,5 +1,9 @@
 package it.ldsoftware.primavera.services;
 
+import it.ldsoftware.primavera.model.people.QUser;
+import it.ldsoftware.primavera.presentation.people.UserDTO;
+import it.ldsoftware.primavera.services.interfaces.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,15 +15,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  */
 public class DatabaseUserDetailService implements UserDetailsService {
 
-//    @Autowired
-//    DatabaseService svc;
+    private final UserService svc;
+
+    @Autowired
+    public DatabaseUserDetailService(UserService svc) {
+        this.svc = svc;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        User user = svc.findOne(User.class, QUser.user.username.eq(username));
-//        if (user == null)
-//            throw new UsernameNotFoundException("");
-//
+        UserDTO user = svc.findOne(QUser.user.username.eq(username));
+        if (user == null)
+            throw new UsernameNotFoundException("");
+
 //        return new UserDTO(user);
         return null;
     }
