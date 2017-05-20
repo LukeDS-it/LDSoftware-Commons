@@ -1,5 +1,6 @@
 package it.ldsoftware.primavera.presentation.base;
 
+import it.ldsoftware.primavera.presentation.lang.ShortTranslationDTO;
 import it.ldsoftware.primavera.presentation.lang.TranslatableDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import java.util.List;
  * other properties if any.
  */
 @Getter @Setter
-public abstract class LookupDTO extends TranslatableDTO {
+public abstract class LookupDTO extends TranslatableDTO<ShortTranslationDTO> {
     public static final String FIELD_CODE = "code", FIELD_DESCRIPTION = "description";
 
     private String code, description;

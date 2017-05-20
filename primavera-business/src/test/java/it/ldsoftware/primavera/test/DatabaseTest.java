@@ -3,15 +3,15 @@ package it.ldsoftware.primavera.test;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.JPAExpressions;
 import it.ldsoftware.primavera.dal.people.PersonDAL;
-import it.ldsoftware.primavera.dal.security.GroupDAL;
-import it.ldsoftware.primavera.model.lang.ShortTranslation;
 import it.ldsoftware.primavera.model.people.Contact;
 import it.ldsoftware.primavera.model.people.Person;
 import it.ldsoftware.primavera.model.people.QContact;
 import it.ldsoftware.primavera.model.people.QPerson;
-import it.ldsoftware.primavera.model.security.Group;
+import it.ldsoftware.primavera.presentation.lang.ShortTranslationDTO;
+import it.ldsoftware.primavera.presentation.security.GroupDTO;
 import it.ldsoftware.primavera.query.Filter;
 import it.ldsoftware.primavera.query.PredicateFactory;
+import it.ldsoftware.primavera.services.interfaces.GroupService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +28,8 @@ import static it.ldsoftware.primavera.query.PredicateFactory.createPredicate;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by luca on 21/04/16.
@@ -41,7 +43,7 @@ public class DatabaseTest {
     private static final String CAPTION_1 = "Caption 1", CAPTION_2 = "Caption 2";
 
     @Autowired
-    private GroupDAL groupDAL;
+    private GroupService gService;
 
     @Autowired
     private PersonDAL personDAL;
@@ -53,19 +55,17 @@ public class DatabaseTest {
 
     @Test
     public void languageTest() {
-        Group g = new Group();
-        g.addTranslation("it", new ShortTranslation().withContent(CAPTION_1));
-        g.addTranslation("en", new ShortTranslation().withContent(CAPTION_2));
-        groupDAL.save(g);
+        GroupDTO saved = new GroupDTO();
+        saved.addTranslation("it", new ShortTranslationDTO().withContent(CAPTION_1));
+        saved.addTranslation("en", new ShortTranslationDTO().withContent(CAPTION_2));
+        gService.save(saved);
 
-        Group up = groupDAL.findOne(1L);
-        assert up.getTranslations().size() == 2;
-        assert up.getTranslation("it").getDescription().equals(CAPTION_1);
-        assert up.getTranslation("en").getDescription().equals(CAPTION_2);
+        GroupDTO retrieved = gService.findOne(1L);
+        assertThat(retrieved.getTranslations(), samePropertyValuesAs(saved.getTranslations()));
     }
 
     @Test
-    public void findPredicate() throws Exception {
+    public void predicateTest() throws Exception {
         String cVal = "123456";
 
         Person person = new Person();
