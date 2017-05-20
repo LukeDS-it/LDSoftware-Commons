@@ -14,11 +14,7 @@ import java.util.List;
 public class TranslatableDTO extends BaseDTO {
     public static final String FIELD_LANG = "lang", FIELD_MASTER = "master";
 
-    private String lang;
-
-    public TranslatableDTO() {
-
-    }
+    private String lang, defaultLang;
 
     @Override
     public List<String> _fields() {

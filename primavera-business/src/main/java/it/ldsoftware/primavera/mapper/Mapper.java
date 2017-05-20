@@ -2,14 +2,12 @@ package it.ldsoftware.primavera.mapper;
 
 import it.ldsoftware.primavera.model.base.BaseEntity;
 import it.ldsoftware.primavera.presentation.base.BaseDTO;
-import org.springframework.stereotype.Service;
 
 /**
  * A mapper is a service that translates model and view back and forth.
  *
  * @author Luca Di Stefano
  */
-@Service
 public interface Mapper<E extends BaseEntity, D extends BaseDTO> {
 
     /**

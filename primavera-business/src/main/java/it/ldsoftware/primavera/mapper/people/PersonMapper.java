@@ -3,12 +3,14 @@ package it.ldsoftware.primavera.mapper.people;
 import it.ldsoftware.primavera.mapper.base.BaseMapper;
 import it.ldsoftware.primavera.model.people.Person;
 import it.ldsoftware.primavera.presentation.people.PersonDTO;
+import org.springframework.stereotype.Service;
 
 import static java.util.stream.Collectors.toSet;
 
 /**
  * @author Luca Di Stefano
  */
+@Service
 @SuppressWarnings("Duplicates")
 public class PersonMapper extends BaseMapper<Person, PersonDTO> {
 

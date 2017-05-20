@@ -1,6 +1,8 @@
 package it.ldsoftware.primavera.services;
 
 import it.ldsoftware.primavera.presentation.people.UserDTO;
+import it.ldsoftware.primavera.util.SecuredUser;
+import it.ldsoftware.primavera.util.UserUtil;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,24 +15,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * password expired, login or password incorrect, etc.
  */
 public class DummyUserDetailService implements UserDetailsService {
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username.equals("nonexisting"))
             throw new UsernameNotFoundException("nonexisting");
-        UserDTO dto = new UserDTO();
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        dto.setUsername(username);
-        dto.setPassword(encoder.encode(username));
+        String password = encoder.encode(username);
 
+        SecuredUser dto = SecuredUser.dummy(username, password);
         switch (username) {
             case "superadmin":
-//                dto.addAuthority(UserUtil.ROLE_SUPERADMIN);
-                enableUser(dto);
-                break;
+                dto.addAuthority(UserUtil.ROLE_SUPERADMIN);
             case "user":
-                enableUser(dto);
+                dto.enable();
                 break;
             case "disabled":
                 break;
@@ -38,11 +38,7 @@ public class DummyUserDetailService implements UserDetailsService {
                 break;
         }
 
-//        return dto;
-        return null;
+        return dto;
     }
 
-    private void enableUser(UserDTO dto) {
-        dto.setEnabled(true);
-    }
 }

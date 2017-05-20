@@ -1,9 +1,12 @@
 package it.ldsoftware.primavera.presentation.people;
 
 import it.ldsoftware.primavera.presentation.base.BaseDTO;
+import it.ldsoftware.primavera.presentation.security.GroupDTO;
+import it.ldsoftware.primavera.presentation.security.RoleDTO;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.management.relation.Role;
 import java.util.*;
 
 /**
@@ -23,7 +26,8 @@ public class UserDTO extends PersonDTO {
 
     private boolean enabled;
 
-    private List<String> roles = new ArrayList<>();
+    private List<RoleDTO> roles = new ArrayList<>();
+    private List<GroupDTO> groups = new ArrayList<>();
 
     @Override
     public List<String> _fields() {

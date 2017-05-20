@@ -1,15 +1,20 @@
 package it.ldsoftware.primavera.mapper.people;
 
 import it.ldsoftware.primavera.mapper.base.BaseMapper;
+import it.ldsoftware.primavera.mapper.security.GroupMapper;
+import it.ldsoftware.primavera.mapper.security.RoleMapper;
 import it.ldsoftware.primavera.model.people.User;
+import it.ldsoftware.primavera.model.security.UserRole;
 import it.ldsoftware.primavera.presentation.people.UserDTO;
+import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * @author Luca Di Stefano
  */
+@Service
 public class UserMapper extends BaseMapper<User, UserDTO> {
 
     @Override
@@ -22,6 +27,9 @@ public class UserMapper extends BaseMapper<User, UserDTO> {
         model.setPassword(view.getPassword());
         model.setPrimaryEmail(view.getPrimaryEmail());
         model.setUsername(view.getUsername());
+
+        // TODO roles
+        model.setGroups(view.getGroups().stream().map(new GroupMapper()::convertToModel).collect(toSet()));
 
         return model;
     }
@@ -37,14 +45,9 @@ public class UserMapper extends BaseMapper<User, UserDTO> {
         view.setPrimaryEmail(model.getPrimaryEmail());
         view.setUsername(model.getUsername());
 
-        view.setRoles(Stream.concat(model.getGroups()
-                        .stream()
-                        .flatMap(group -> group.getGroupRoles().stream())
-                        .flatMap(groupRole -> groupRole.getActualRoles().stream()),
-                model.getUserRoles()
-                        .stream()
-                        .flatMap(userRole -> userRole.getActualRoles().stream()))
-                .collect(Collectors.toList()));
+        view.setRoles(model.getUserRoles().stream().map(UserRole::getRole).map(new RoleMapper()::convertToView)
+                .collect(toList()));
+        view.setGroups(model.getGroups().stream().map(new GroupMapper()::convertToView).collect(toList()));
 
         return view;
     }

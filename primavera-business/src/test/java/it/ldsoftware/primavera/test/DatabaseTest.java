@@ -1,28 +1,11 @@
 package it.ldsoftware.primavera.test;
 
-import com.querydsl.core.types.Predicate;
-import com.querydsl.jpa.JPAExpressions;
-import it.ldsoftware.primavera.model.lang.ShortTranslation;
-import it.ldsoftware.primavera.model.people.Contact;
-import it.ldsoftware.primavera.model.people.Person;
-import it.ldsoftware.primavera.model.people.QContact;
-import it.ldsoftware.primavera.model.people.QPerson;
-import it.ldsoftware.primavera.model.security.Group;
-import it.ldsoftware.primavera.query.Filter;
-import it.ldsoftware.primavera.query.PredicateFactory;
-import org.junit.Assert;
+import it.ldsoftware.primavera.services.interfaces.GroupService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.List;
-
-import static it.ldsoftware.primavera.presentation.enums.ContactType.EMAIL;
-import static it.ldsoftware.primavera.presentation.enums.ContactType.PHONE;
-import static it.ldsoftware.primavera.query.FilterOperator.AND;
-import static java.util.Collections.singletonList;
 
 /**
  * Created by luca on 21/04/16.
@@ -35,6 +18,9 @@ public class DatabaseTest {
 
     private static final String CAPTION_1 = "Caption 1", CAPTION_2 = "Caption 2";
 
+    @Autowired
+    GroupService groupService;
+
     @Test
     public void contextLoads() {
 
@@ -45,7 +31,7 @@ public class DatabaseTest {
         Group g = new Group();
         g.addTranslation("it", new ShortTranslation().withContent(CAPTION_1));
         g.addTranslation("en", new ShortTranslation().withContent(CAPTION_2));
-        svc.save(Group.class, g);
+        svc.save(g);
 
         Group up = svc.findOne(Group.class, 1);
         assert up.getTranslations().size() == 2;
@@ -64,7 +50,7 @@ public class DatabaseTest {
         person.setSurname("Di Stefano");
         person.setFullName("Luca Di Stefano");
 
-        svc.save(Person.class, person);
+        svc.save(person);
 
         QPerson qp = QPerson.person;
         QContact qc = QContact.contact;
@@ -85,7 +71,7 @@ public class DatabaseTest {
         Assert.assertEquals(manual.size(), auto.size());
 
         Contact results = new Contact().withContactType(EMAIL).withValue(cVal);
-        auto = svc.findAll(Person.class, PredicateFactory.createPredicate(Person.class, singletonList(new Filter("contacts", results, false, AND))));
+        auto = svc.findAll(PredicateFactory.createPredicate(Person.class, singletonList(new Filter("contacts", results, false, AND))));
 
         Assert.assertEquals(1, auto.size());
     }
@@ -93,6 +79,6 @@ public class DatabaseTest {
     public void testExample() throws Exception {
         Person p = new Person();
         PredicateFactory.getFiltersByEntity(Person.class, p);
-    }
-*/
+    }*/
+
 }

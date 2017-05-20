@@ -15,7 +15,7 @@ public abstract class TranslatableMapper<E extends Translatable<T>, T extends Tr
     @Override
     public E getModelInstance(D view) {
         E model = getTranslatableInstance(view);
-        model.setDefaultLang(view.getLang());
+        model.setDefaultLang(view.getDefaultLang());
         return model;
     }
 
@@ -27,7 +27,20 @@ public abstract class TranslatableMapper<E extends Translatable<T>, T extends Tr
         return view;
     }
 
+    /**
+     * Must return a {@link Translatable} instance with own fields already set
+     *
+     * @param view view (presentation) object
+     * @return model (database) object
+     */
     public abstract E getTranslatableInstance(D view);
 
+    /**
+     * Must return a {@link TranslatableDTO} instance with own fields already set
+     *
+     * @param model       model (database) instance
+     * @param translation the current translation that is being taken into account
+     * @return view (presentation) object
+     */
     public abstract D getTranslatableView(E model, T translation);
 }

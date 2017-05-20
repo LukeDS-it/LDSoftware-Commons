@@ -24,6 +24,10 @@ public class SecuredUser implements UserDetails {
     private String username, password;
     private List<GrantedAuthority> authorities = new ArrayList<>();
 
+    private SecuredUser() {
+
+    }
+
     private SecuredUser(User user) {
         authorities = Stream.concat(user.getGroups()
                         .stream()
@@ -42,6 +46,13 @@ public class SecuredUser implements UserDetails {
 
     public static UserDetails fromUser(User user) {
         return new SecuredUser(user);
+    }
+
+    public static SecuredUser dummy(String username, String password) {
+        SecuredUser user = new SecuredUser();
+        user.username = username;
+        user.password = password;
+        return user;
     }
 
     @Override
@@ -77,5 +88,13 @@ public class SecuredUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public void enable() {
+        this.enabled = true;
+    }
+
+    public void addAuthority(String role) {
+        this.authorities.add(new SimpleGrantedAuthority(role));
     }
 }
