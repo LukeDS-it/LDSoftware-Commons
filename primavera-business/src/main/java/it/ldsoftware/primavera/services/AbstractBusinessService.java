@@ -2,7 +2,7 @@ package it.ldsoftware.primavera.services;
 
 import com.querydsl.core.types.Predicate;
 import it.ldsoftware.primavera.dal.base.BaseDAL;
-import it.ldsoftware.primavera.mapper.base.Mapper;
+import it.ldsoftware.primavera.mapper.Mapper;
 import it.ldsoftware.primavera.model.base.BaseEntity;
 import it.ldsoftware.primavera.presentation.base.BaseDTO;
 import it.ldsoftware.primavera.services.interfaces.BusinessService;

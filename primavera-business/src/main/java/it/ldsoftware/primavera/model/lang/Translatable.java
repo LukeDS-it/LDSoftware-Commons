@@ -79,8 +79,11 @@ public abstract class Translatable<T extends Translation> extends BaseEntity {
         T translation = translations.get(lang);
         if (translation != null)
             return translation;
+        else
+            translation = translations.get(defaultLang);
 
-        return translations.get(defaultLang);
+        translation.setLanguage(lang);
+        return translation;
     }
 
     /**
@@ -101,7 +104,9 @@ public abstract class Translatable<T extends Translation> extends BaseEntity {
      * @return the translation object in the selected language, or null if not found
      */
     public T getTranslationForced(String lang) {
-        return translations.get(lang);
+        T translation = translations.get(lang);
+        translation.setLanguage(lang);
+        return translation;
     }
 
     @Override

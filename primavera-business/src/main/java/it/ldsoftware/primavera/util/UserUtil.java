@@ -1,6 +1,7 @@
 package it.ldsoftware.primavera.util;
 
 import it.ldsoftware.primavera.model.security.Role;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -66,13 +67,13 @@ public class UserUtil {
      * @return the current user or null
      */
     public static UserDetails getCurrentUser() {
-//        UserDTO user = null; TODO
-//        try {
-//            user = (UserDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        } catch (Exception ignored) {
-//
-//        }
-        return null;
+        SecuredUser user = null;
+        try {
+            user = (SecuredUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception ignored) {
+
+        }
+        return user;
     }
 
     /**

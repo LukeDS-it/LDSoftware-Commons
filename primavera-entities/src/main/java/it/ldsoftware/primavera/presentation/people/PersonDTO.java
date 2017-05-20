@@ -1,13 +1,12 @@
 package it.ldsoftware.primavera.presentation.people;
 
 import it.ldsoftware.primavera.presentation.base.BaseDTO;
+import it.ldsoftware.primavera.presentation.enums.PersonType;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * DTO that represents a person
@@ -22,36 +21,13 @@ public class PersonDTO extends BaseDTO {
             FIELD_RECORD_TYPE = "recordType", FIELD_UNIQUE_ID = "uniqueId",
             FIELD_VAT_INFO = "vatInfo", FIELD_SEX = "sex", FIELD_BIRTH_DATE = "birthDate";
 
-    private String fullName, telephone, mobile, email, recordType, uniqueId, vatInfo, sex;
+    private String fullName, name, surname, uniqueId, vatInfo, sex;
 
     private LocalDate birthDate;
 
-    // TODO move to a mapper
-//    public PersonDTO(Person person) {
-//        super(person);
-//        fullName = person.getFullName();
-//
-//        Contact ph = person.getContact(ContactType.PHONE);
-//        Contact mo = person.getContact(ContactType.MOBILE_PHONE);
-//        Contact ma = person.getContact(ContactType.EMAIL);
-//
-//        telephone = (ph != null ? ph.getContactValue() : "");
-//        mobile = (mo != null ? mo.getContactValue() : "");
-//        email = (ma != null ? ma.getContactValue() : "");
-//        uniqueId = person.getUniqueId();
-//        vatInfo = person.getVatInfo();
-//        sex = person.getSex();
-//        birthDate = person.getBirthDate();
-//
-//        switch (person.getPersonType()) {
-//            case REAL:
-//                recordType = "J";
-//                break;
-//            case ABSTRACT:
-//                recordType = "P";
-//                break;
-//        }
-//    }
+    private PersonType personType;
+
+    private Set<ContactDTO> contacts = new HashSet<>();
 
     @Override
     public List<String> _fields() {

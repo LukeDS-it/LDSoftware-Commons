@@ -2,7 +2,7 @@ package it.ldsoftware.primavera.model.people;
 
 import it.ldsoftware.primavera.model.security.Group;
 import it.ldsoftware.primavera.model.security.UserRole;
-import it.ldsoftware.primavera.util.PersonType;
+import it.ldsoftware.primavera.presentation.enums.PersonType;
 import it.ldsoftware.primavera.util.RoleCollector;
 import it.ldsoftware.primavera.validation.groups.NewUserValidationGroup;
 import lombok.Getter;

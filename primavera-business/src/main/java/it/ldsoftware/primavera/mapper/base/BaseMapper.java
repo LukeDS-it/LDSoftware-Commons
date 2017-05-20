@@ -1,5 +1,6 @@
 package it.ldsoftware.primavera.mapper.base;
 
+import it.ldsoftware.primavera.mapper.Mapper;
 import it.ldsoftware.primavera.model.base.BaseEntity;
 import it.ldsoftware.primavera.presentation.base.BaseDTO;
 
@@ -29,7 +30,7 @@ public abstract class BaseMapper<E extends BaseEntity, D extends BaseDTO> implem
      * @param view the view object from which take the custom fields.
      * @return new E() with fields
      */
-    abstract E getModelInstance(D view);
+    public abstract E getModelInstance(D view);
 
     /**
      * Must return a view (presentation) instance with custom fields
@@ -38,5 +39,5 @@ public abstract class BaseMapper<E extends BaseEntity, D extends BaseDTO> implem
      * @param model the model object from which to take the custom fields.
      * @return new D() with fields
      */
-    abstract D getViewInstance(E model);
+    public abstract D getViewInstance(E model);
 }

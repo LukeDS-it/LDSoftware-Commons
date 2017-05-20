@@ -1,4 +1,4 @@
-package it.ldsoftware.primavera.util;
+package it.ldsoftware.primavera.presentation.enums;
 
 /**
  * Created by luca on 19/04/16.

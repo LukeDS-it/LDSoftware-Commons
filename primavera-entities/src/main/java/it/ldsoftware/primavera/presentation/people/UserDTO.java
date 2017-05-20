@@ -4,8 +4,7 @@ import it.ldsoftware.primavera.presentation.base.BaseDTO;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * DTO that represents an user
@@ -21,20 +20,10 @@ public class UserDTO extends PersonDTO {
             FIELD_GROUPS = "groups", FIELD_ENABLED = "enabled";
 
     private String username, password, primaryEmail;
+
     private boolean enabled;
 
-    // TODO move to business in an implementation of UserDetails
-//    private void parseAuthorities(User entity) {
-//        Stream.concat(entity.getGroups()
-//                        .stream()
-//                        .flatMap(group -> group.getGroupRoles().stream())
-//                        .flatMap(groupRole -> groupRole.getActualRoles().stream()),
-//                entity.getUserRoles()
-//                        .stream()
-//                        .flatMap(userRole -> userRole.getActualRoles().stream()))
-//                .map(SimpleGrantedAuthority::new)
-//                .forEach(authorities::add);
-//    }
+    private List<String> roles = new ArrayList<>();
 
     @Override
     public List<String> _fields() {

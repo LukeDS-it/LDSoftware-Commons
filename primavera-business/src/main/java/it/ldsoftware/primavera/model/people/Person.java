@@ -2,14 +2,14 @@ package it.ldsoftware.primavera.model.people;
 
 import it.ldsoftware.primavera.model.base.BaseEntity;
 import it.ldsoftware.primavera.presentation.enums.ContactType;
-import it.ldsoftware.primavera.util.PersonType;
+import it.ldsoftware.primavera.presentation.enums.PersonType;
 import it.ldsoftware.primavera.validation.groups.PersonValidationGroup;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,7 +19,6 @@ import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.InheritanceType.JOINED;
-import static javax.persistence.TemporalType.DATE;
 
 /**
  * Created by luca on 11/04/16.
@@ -54,8 +53,7 @@ public class Person extends BaseEntity {
     @Column(length = 1)
     private String sex;
 
-    @Temporal(DATE)
-    private Calendar birthDate;
+    private LocalDate birthDate;
 
     @Enumerated(STRING)
     private PersonType personType;
