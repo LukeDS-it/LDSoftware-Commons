@@ -1,4 +1,7 @@
 .idea
-.iml
-.properties
-!.properties_example
+target
+*.iml
+*.properties
+!*.properties_example
+primavera-vaadin-widgetset/src/main/webapp/VAADIN/themes/ldsmetro/styles.css
+widgetsets
