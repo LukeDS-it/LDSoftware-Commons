@@ -19,6 +19,8 @@ public class PropertyMapper extends BaseMapper<AppProperty, AppPropertyDTO> {
         switch (view.getPropertyType()) {
 
             case JSON:
+                model.setJsonVal(view.getValue().toString());
+                break;
             case STRING:
                 model.setStringVal(view.getValue().toString());
                 break;

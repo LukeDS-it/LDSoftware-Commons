@@ -28,7 +28,6 @@ public class UserMapper extends BaseMapper<User, UserDTO> {
         model.setPrimaryEmail(view.getPrimaryEmail());
         model.setUsername(view.getUsername());
 
-        // TODO roles
         model.setGroups(view.getGroups().stream().map(new GroupMapper()::convertToModel).collect(toSet()));
 
         return model;

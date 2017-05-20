@@ -15,8 +15,9 @@ import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 
 /**
- * Created by luca on 11/05/16.
  * This entity groups properties
+ *
+ * @author Luca Di Stefano
  */
 @Entity
 @Getter @Setter

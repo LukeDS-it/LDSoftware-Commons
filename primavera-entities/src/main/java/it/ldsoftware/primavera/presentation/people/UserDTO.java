@@ -1,16 +1,18 @@
 package it.ldsoftware.primavera.presentation.people;
 
-import it.ldsoftware.primavera.presentation.base.BaseDTO;
 import it.ldsoftware.primavera.presentation.security.GroupDTO;
 import it.ldsoftware.primavera.presentation.security.RoleDTO;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.management.relation.Role;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * DTO that represents an user
+ *
+ * TODO must be split between the user that has to be viewed during editing and the user for front-end usage
  *
  * @author luca
  */

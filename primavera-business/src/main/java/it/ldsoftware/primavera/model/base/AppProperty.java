@@ -11,12 +11,12 @@ import javax.persistence.*;
 import static javax.persistence.EnumType.STRING;
 
 /**
- * Created by luca on 12/04/16.
+ * <p>
+ * This class is used to save on the database
+ * some configurations that can be modified by the application users
+ * and don't belong to a configuration file.
  *
- * @author luca
- *         This class is used to save on the database
- *         some configurations that can be modified by the application users
- *         and don't belong to a configuration file.
+ * @author Luca Di Stefano
  */
 @Entity
 @Getter @Setter

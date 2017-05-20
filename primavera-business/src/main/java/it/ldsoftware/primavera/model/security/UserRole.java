@@ -69,6 +69,22 @@ public class UserRole implements RoleCollector {
         return this;
     }
 
+    public boolean isInsertAllowed() {
+        return modifiers.isInsert();
+    }
+
+    public boolean isEditAllowed() {
+        return modifiers.isEdit();
+    }
+
+    public boolean isExecuteAllowed() {
+        return modifiers.isExecute();
+    }
+
+    public boolean isDeleteAllowed() {
+        return modifiers.isDelete();
+    }
+
     public UserRole withUser(User user) {
         this.user = user;
         return this;
