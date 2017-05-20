@@ -3,6 +3,7 @@ package it.ldsoftware.primavera.presentation.base;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -19,7 +20,7 @@ public class LogEntryDTO extends BaseDTO {
             FIELD_LOG_DATE = "logDate", FIELD_LEVEL = "level";
 
     private String username, fullName, message, stackTrace, logger, loggingLevel;
-    private Calendar logDate;
+    private LocalDateTime logDate;
 
     @Override
     public List<String> _fields() {
