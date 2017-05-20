@@ -167,9 +167,9 @@ public class CompilerService {
 
     /**
      * Replace all the single placeholders in the model.
-     * Placeholder is marked as ${ClassName.property[.subProperty[...]]}.
+     * Placeholder is marked as ${ClassName.key[.subProperty[...]]}.
      * <p>
-     * Caveat: do not use before list replacement or every sub-property in the list
+     * Caveat: do not use before list replacement or every sub-key in the list
      * will be substituted with the default replacement string.
      *
      * @param string             model
@@ -223,11 +223,11 @@ public class CompilerService {
     }
 
     /**
-     * Gets the object that matches a certain property from an array of objects
+     * Gets the object that matches a certain key from an array of objects
      *
-     * @param propertyName the property path (should be ClassName.property1[.property2[...]])
-     * @param objects      all the objects that might contain the property
-     * @return the object that responds to the property, or null if not found.
+     * @param propertyName the key path (should be ClassName.property1[.property2[...]])
+     * @param objects      all the objects that might contain the key
+     * @return the object that responds to the key, or null if not found.
      */
     private Object getPropertyFromObjects(String propertyName, Object... objects) {
         String[] propertyPath = propertyName.split("\\.");

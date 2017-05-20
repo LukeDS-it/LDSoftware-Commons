@@ -14,7 +14,27 @@ public class PropertyMapper extends BaseMapper<AppProperty, AppPropertyDTO> {
     public AppProperty getModelInstance(AppPropertyDTO view) {
         AppProperty model = new AppProperty();
 
+        model.setKey(view.getKey());
+        model.setType(view.getPropertyType());
+        switch (view.getPropertyType()) {
 
+            case JSON:
+            case STRING:
+                model.setStringVal(view.getValue().toString());
+                break;
+            case FLOAT:
+                model.setFloatVal((Float) view.getValue());
+                break;
+            case INTEGER:
+                model.setIntVal((Integer) view.getValue());
+                break;
+            case LONG:
+                model.setLongVal((Long) view.getValue());
+                break;
+            case BOOLEAN:
+                model.setBoolVal((Boolean) view.getValue());
+                break;
+        }
 
         return model;
     }
@@ -22,6 +42,10 @@ public class PropertyMapper extends BaseMapper<AppProperty, AppPropertyDTO> {
     @Override
     public AppPropertyDTO getViewInstance(AppProperty model) {
         AppPropertyDTO view = new AppPropertyDTO();
+
+        view.setKey(model.getKey());
+        view.setPropertyType(model.getType());
+        view.setValue(model.getRealValue());
 
         return view;
     }

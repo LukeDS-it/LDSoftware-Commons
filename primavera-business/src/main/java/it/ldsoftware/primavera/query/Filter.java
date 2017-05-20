@@ -30,7 +30,7 @@ import java.io.Serializable;
  *         example object are the same as above.
  *     </li>
  *     <li>
- *         Providing as "property" the name of a field of type
+ *         Providing as "key" the name of a field of type
  *         {@link java.util.Collection} will create a query that
  *         finds all the entities which have in the specified field
  *         collection an object similar (or equal, depending on the parameters

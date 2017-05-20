@@ -247,9 +247,9 @@ public class DTOGrid<E extends BaseEntity, D extends BaseDTO<E>> extends Grid {
 
     /**
      * This function adds to the grid a custom filter processor. This
-     * is useful in cases where the default filtering property can not
+     * is useful in cases where the default filtering key can not
      * be found in the database table, for example because it is a
-     * property of a sub-element contained in a collection.
+     * key of a sub-element contained in a collection.
      * An example would be filtering people for telephone number or email,
      * which are fields that are not directly found in the person.
      *

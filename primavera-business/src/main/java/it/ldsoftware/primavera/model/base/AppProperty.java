@@ -1,8 +1,8 @@
 package it.ldsoftware.primavera.model.base;
 
+import it.ldsoftware.primavera.presentation.enums.PropertyType;
 import it.ldsoftware.primavera.util.EntityWithParent;
 import it.ldsoftware.primavera.util.ParentEntity;
-import it.ldsoftware.primavera.util.PropertyType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -49,5 +49,23 @@ public class AppProperty extends BaseEntity implements EntityWithParent {
     @Override
     public void setParent(ParentEntity parent) {
         group = (PropertyGroup) parent;
+    }
+
+    public Object getRealValue() {
+        switch (type) {
+            case JSON:
+                return jsonVal;
+            case STRING:
+                return stringVal;
+            case FLOAT:
+                return floatVal;
+            case INTEGER:
+                return intVal;
+            case LONG:
+                return longVal;
+            case BOOLEAN:
+                return boolVal;
+        }
+        return null;
     }
 }
