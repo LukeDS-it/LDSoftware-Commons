@@ -10,11 +10,12 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * DTO that represents an user
+ * DTO that represents the details that an application can send to the back-end
+ * in order to save or modify an user. If you need to receive the data of the
+ * user in order to perform actions within the authentication realm, please see
+ * {@link UserVM}.
  *
- * TODO must be split between the user that has to be viewed during editing and the user for front-end usage
- *
- * @author luca
+ * @author Luca Di Stefano
  */
 @Getter @Setter
 public class UserDTO extends PersonDTO {
