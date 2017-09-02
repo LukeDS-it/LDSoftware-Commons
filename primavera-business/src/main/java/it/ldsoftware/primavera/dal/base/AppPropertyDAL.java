@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface AppPropertyDAL extends BaseDAL<AppProperty> {
+    AppProperty findByKey(String key);
 }

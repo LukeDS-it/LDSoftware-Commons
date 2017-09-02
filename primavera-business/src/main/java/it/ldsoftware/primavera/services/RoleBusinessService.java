@@ -5,6 +5,7 @@ import it.ldsoftware.primavera.mapper.Mapper;
 import it.ldsoftware.primavera.model.security.Role;
 import it.ldsoftware.primavera.presentation.security.RoleDTO;
 import it.ldsoftware.primavera.services.interfaces.BusinessService;
+import it.ldsoftware.primavera.services.interfaces.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @author Luca Di Stefano
  */
 @Service
-public class RoleBusinessService extends AbstractBusinessService<RoleDTO, Role> implements BusinessService<RoleDTO> {
+public class RoleBusinessService extends AbstractBusinessService<RoleDTO, Role> implements RoleService {
 
     @Autowired
     public RoleBusinessService(BaseDAL<Role> dal, Mapper<Role, RoleDTO> mapper) {
