@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.annotation.Nullable;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -41,37 +42,44 @@ public abstract class AbstractBusinessService<D extends BaseDTO, E extends BaseE
     }
 
     @Override
+    @Transactional
     public D findOne(Long id) {
         return mapper.convertToView(dal.findOne(id));
     }
 
     @Override
+    @Transactional
     public D findOne(Predicate predicate) {
         return mapper.convertToView(dal.findOne(predicate));
     }
 
     @Override
+    @Transactional
     public List<D> findAll() {
         return dal.findAll().stream().map(mapper::convertToView).collect(Collectors.toList());
     }
 
     @Override
+    @Transactional
     public List<D> findBy(Predicate predicate) {
         return StreamSupport.stream(dal.findAll(predicate).spliterator(), false)
                 .map(mapper::convertToView).collect(Collectors.toList());
     }
 
     @Override
+    @Transactional
     public Page<D> findBy(Predicate predicate, @Nullable Pageable pageable) {
         return dal.findAll(predicate, pageable).map(mapper::convertToView);
     }
 
     @Override
+    @Transactional
     public D save(D toSave) {
         return mapper.convertToView(dal.save(mapper.convertToModel(toSave)));
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         dal.delete(id);
     }
