@@ -1,6 +1,7 @@
 package it.ldsoftware.primavera.util;
 
 import it.ldsoftware.primavera.model.security.Role;
+import it.ldsoftware.primavera.model.security.RoleModifiers;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -119,5 +120,24 @@ public class UserUtil {
         UserDetails user = getCurrentUser();
         return (user != null && (user.getAuthorities().size() > 0
                 && user.getAuthorities().stream().filter(r -> r.getAuthority().equals(role)).count() > 0));
+    }
+
+    public static RoleModifiers fromModifier(String modifier) {
+        RoleModifiers rm = new RoleModifiers();
+        switch (modifier) {
+            case EDIT:
+                rm.setEdit(true);
+                break;
+            case INSERT:
+                rm.setInsert(true);
+                break;
+            case DELETE:
+                rm.setDelete(true);
+                break;
+            case EXECUTE:
+                rm.setExecute(true);
+                break;
+        }
+        return rm;
     }
 }

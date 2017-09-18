@@ -6,6 +6,7 @@ import it.ldsoftware.primavera.mapper.security.RoleMapper;
 import it.ldsoftware.primavera.model.people.User;
 import it.ldsoftware.primavera.model.security.UserRole;
 import it.ldsoftware.primavera.presentation.people.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static java.util.stream.Collectors.toList;
@@ -16,6 +17,15 @@ import static java.util.stream.Collectors.toSet;
  */
 @Service
 public class UserMapper extends BaseMapper<User, UserDTO> {
+
+    private final RoleMapper roleMapper;
+    private final GroupMapper groupMapper;
+
+    @Autowired
+    public UserMapper(RoleMapper roleMapper, GroupMapper groupMapper) {
+        this.roleMapper = roleMapper;
+        this.groupMapper = groupMapper;
+    }
 
     @Override
     public User getModelInstance(UserDTO view) {
@@ -44,9 +54,17 @@ public class UserMapper extends BaseMapper<User, UserDTO> {
         view.setPrimaryEmail(model.getPrimaryEmail());
         view.setUsername(model.getUsername());
 
-        view.setRoles(model.getUserRoles().stream().map(UserRole::getRole).map(new RoleMapper()::convertToView)
-                .collect(toList()));
-        view.setGroups(model.getGroups().stream().map(new GroupMapper()::convertToView).collect(toList()));
+        view.setRoles(model.getUserRoles()
+                .stream()
+                .map(UserRole::getRole)
+                .map(roleMapper::convertToView)
+                .collect(toList())
+        );
+        view.setGroups(model.getGroups()
+                .stream()
+                .map(groupMapper::convertToView)
+                .collect(toList())
+        );
 
         return view;
     }

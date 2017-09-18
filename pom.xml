@@ -6,7 +6,7 @@
 
     <groupId>it.ldsoftware</groupId>
     <artifactId>primavera-framework</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -21,10 +21,13 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <lds.entities.version>1.0.0-RELEASE</lds.entities.version>
-        <lds.business.version>0.6.0-SNAPSHOT</lds.business.version>
-        <lds.rest.version>0.6.0-SNAPSHOT</lds.rest.version>
-        <lds.language.version>1.0.1-RELEASE</lds.language.version>
+
+        <primavera.version>1.0.2-SNAPSHOT</primavera.version>
+
+        <lds.entities.version>${primavera.version}</lds.entities.version>
+        <lds.business.version>${primavera.version}</lds.business.version>
+        <lds.rest.version>${primavera.version}</lds.rest.version>
+        <lds.language.version>${primavera.version}</lds.language.version>
         <lds.text.compiler.version>0.0.1-SNAPSHOT</lds.text.compiler.version>
         <lds.vaadin.version>0.0.3-SNAPSHOT</lds.vaadin.version>
         <lds.vaadin.widgetset.version>1.0.1-RELEASE</lds.vaadin.widgetset.version>

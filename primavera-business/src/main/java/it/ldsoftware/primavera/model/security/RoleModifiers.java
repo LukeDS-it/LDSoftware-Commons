@@ -1,6 +1,8 @@
 package it.ldsoftware.primavera.model.security;
 
 import it.ldsoftware.primavera.util.UserUtil;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Embeddable;
 import java.util.ArrayList;
@@ -19,40 +21,9 @@ import java.util.List;
  * and e(X)ecute complex actions inside that "something".
  */
 @Embeddable
+@Getter @Setter
 public class RoleModifiers {
     private boolean insert, edit, delete, execute;
-
-    public boolean isInsert() {
-        return insert;
-    }
-
-    public void setInsert(boolean insert) {
-        this.insert = insert;
-    }
-
-    public boolean isEdit() {
-        return edit;
-    }
-
-    public void setEdit(boolean edit) {
-        this.edit = edit;
-    }
-
-    public boolean isDelete() {
-        return delete;
-    }
-
-    public void setDelete(boolean delete) {
-        this.delete = delete;
-    }
-
-    public boolean isExecute() {
-        return execute;
-    }
-
-    public void setExecute(boolean execute) {
-        this.execute = execute;
-    }
 
     public List<String> getRoleWithModifiers(String role) {
         List<String> tmp = new ArrayList<>();
@@ -64,6 +35,18 @@ public class RoleModifiers {
             tmp.add(UserUtil.executeVariant(role));
         if (isInsert())
             tmp.add(UserUtil.insertVariant(role));
+        return tmp;
+    }
+
+    /**
+     * This function is used to merge role modifiers in role recreation from strings.
+     */
+    public static RoleModifiers merge(RoleModifiers mod1, RoleModifiers mod2) {
+        RoleModifiers tmp = new RoleModifiers();
+        tmp.insert = mod1.insert || mod2.insert;
+        tmp.edit = mod1.edit || mod2.edit;
+        tmp.delete = mod1.delete || mod2.delete;
+        tmp.execute = mod1.execute || mod2.execute;
         return tmp;
     }
 }
