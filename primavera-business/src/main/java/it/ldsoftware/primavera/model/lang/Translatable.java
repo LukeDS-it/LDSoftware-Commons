@@ -34,7 +34,7 @@ public abstract class Translatable<T extends Translation> extends BaseEntity {
     private final Map<String, T> translations = new HashMap<>();
 
     @Getter @Setter
-    @Column(length = 2)
+    @Column(name="default_lang", length = 2)
     private String defaultLang;
 
     public Map<String, T> getTranslations() {

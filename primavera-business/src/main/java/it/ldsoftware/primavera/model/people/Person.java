@@ -43,19 +43,23 @@ public class Person extends BaseEntity {
     private String surname;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, name = "full_name")
     private String fullName;
 
+    @Column(name = "unique_id")
     private String uniqueId;
 
+    @Column(name = "vat_info")
     private String vatInfo;
 
     @Column(length = 1)
     private String sex;
 
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
     @Enumerated(STRING)
+    @Column(name = "person_type")
     private PersonType personType;
 
     @ManyToMany(cascade = ALL, fetch = LAZY)

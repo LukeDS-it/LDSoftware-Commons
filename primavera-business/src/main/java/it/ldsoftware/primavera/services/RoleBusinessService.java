@@ -27,6 +27,6 @@ public class RoleBusinessService extends AbstractBusinessService<RoleDTO, Role> 
 
     @Override
     public boolean existsByRoleName(String roleName) {
-        return ((RoleDAL) getDal()).countBy(roleName) != 0;
+        return ((RoleDAL) getDal()).countByCode(roleName) != 0;
     }
 }

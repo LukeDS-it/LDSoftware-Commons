@@ -23,11 +23,11 @@ import static javax.persistence.FetchType.LAZY;
 public class Contact extends BaseEntity {
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, name = "contact_type")
     private ContactType contactType;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, name = "contact_value")
     private String contactValue;
 
     @ManyToOne(fetch = LAZY)

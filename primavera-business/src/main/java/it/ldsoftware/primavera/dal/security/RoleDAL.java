@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface RoleDAL extends BaseDAL<Role> {
     Role findByCode(String code);
 
-    long countBy(String code);
+    long countByCode(String code);
 }

@@ -24,15 +24,23 @@ import static javax.persistence.EnumType.STRING;
 public class AppProperty extends BaseEntity implements EntityWithParent {
 
     private String key;
+
+    @Column(name = "long_val")
     private Long longVal;
+
+    @Column(name = "bool_val")
     private Boolean boolVal;
+
+    @Column(name = "float_val")
     private Float floatVal;
+
+    @Column(name = "int_val")
     private Integer intVal;
 
-    @Column(length = 4096)
+    @Column(length = 4096, name = "json_val")
     private String jsonVal;
 
-    @Column(length = 512)
+    @Column(length = 512, name = "string_val")
     private String stringVal;
 
     @Enumerated(STRING)

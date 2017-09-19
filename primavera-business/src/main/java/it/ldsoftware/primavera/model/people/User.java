@@ -38,8 +38,8 @@ public class User extends Person {
     @NotNull(groups = NewUserValidationGroup.class)
     private String confirmPassword;
 
-    @Column(nullable = false)
     @NotNull
+    @Column(nullable = false, name = "primary_email")
     private String primaryEmail;
 
     private boolean enabled = false;
