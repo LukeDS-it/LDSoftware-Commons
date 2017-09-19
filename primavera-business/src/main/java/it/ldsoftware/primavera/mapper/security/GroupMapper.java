@@ -3,7 +3,6 @@ package it.ldsoftware.primavera.mapper.security;
 import it.ldsoftware.primavera.mapper.base.LookupMapper;
 import it.ldsoftware.primavera.model.security.Group;
 import it.ldsoftware.primavera.model.security.GroupRole;
-import it.ldsoftware.primavera.model.security.Role;
 import it.ldsoftware.primavera.model.security.RoleModifiers;
 import it.ldsoftware.primavera.presentation.security.GroupDTO;
 import it.ldsoftware.primavera.presentation.security.RoleDTO;
@@ -47,19 +46,21 @@ public class GroupMapper extends LookupMapper<Group, GroupDTO> {
 
     private GroupRole groupRole(RoleDTO roleDTO) {
         GroupRole gr = new GroupRole();
-        gr.setRole(new RoleMapper().getModelInstance(roleDTO));
+        gr.setRole(new RoleMapper().convertToModel(roleDTO));
         String roleName = roleDTO.getCode();
         if (roleName.matches(".*(_E|_I|_D|_X)")) {
             gr.getRole().setCode(roleName.substring(0, roleName.length() - 2));
             String modifier = roleName.substring(roleName.length() - 2);
             gr.setModifiers(UserUtil.fromModifier(modifier));
+        } else {
+            gr.setModifiers(new RoleModifiers());
         }
         return gr;
     }
 
     private Stream<RoleDTO> expandRoles(GroupRole groupRole) {
         return groupRole.getActualRoles().stream().map(s -> {
-            RoleDTO dto = new RoleMapper().getViewInstance(groupRole.getRole());
+            RoleDTO dto = new RoleMapper().convertToView(groupRole.getRole());
             dto.setCode(s);
             return dto;
         });

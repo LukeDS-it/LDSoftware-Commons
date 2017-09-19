@@ -11,6 +11,8 @@ public abstract class BaseMapper<E extends BaseEntity, D extends BaseDTO> implem
 
     @Override
     public E convertToModel(D view) {
+        if (view == null)
+            return null;
         E model = getModelInstance(view);
         model.setId(view.getId());
         return model;
@@ -18,6 +20,8 @@ public abstract class BaseMapper<E extends BaseEntity, D extends BaseDTO> implem
 
     @Override
     public D convertToView(E model) {
+        if (model == null)
+            return null;
         D view = getViewInstance(model);
         view.setId(model.getId());
         return view;

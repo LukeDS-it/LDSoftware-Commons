@@ -19,7 +19,7 @@ import java.util.Set;
 @AssociationOverride(name = "translations", joinTable = @JoinTable(name = "fw_groups_translations"))
 public class Group extends Lookup {
 
-    @OneToMany
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private Set<GroupRole> groupRoles = new HashSet<>();
 
     public void addRole(RoleCollector roleCollector) {

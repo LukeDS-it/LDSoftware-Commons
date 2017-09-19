@@ -44,7 +44,7 @@ public class User extends Person {
 
     private boolean enabled = false;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserRole> userRoles = new HashSet<>();
 
     @ManyToMany
