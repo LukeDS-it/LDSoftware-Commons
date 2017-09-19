@@ -1,6 +1,7 @@
 package it.ldsoftware.primavera.services;
 
 import it.ldsoftware.primavera.dal.base.BaseDAL;
+import it.ldsoftware.primavera.dal.security.GroupDAL;
 import it.ldsoftware.primavera.mapper.Mapper;
 import it.ldsoftware.primavera.model.security.Group;
 import it.ldsoftware.primavera.presentation.security.GroupDTO;
@@ -19,4 +20,8 @@ public class GroupBusinessService extends AbstractBusinessService<GroupDTO, Grou
         super(dal, mapper);
     }
 
+    @Override
+    public boolean existsByCode(String code) {
+        return ((GroupDAL) getDal()).countByCode(code) != 0;
+    }
 }

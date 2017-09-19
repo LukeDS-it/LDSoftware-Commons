@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface GroupDAL extends BaseDAL<Group> {
+    long countByCode(String code);
 }
