@@ -8,4 +8,9 @@ import it.ldsoftware.primavera.presentation.security.RoleDTO;
 public interface RoleService extends BusinessService<RoleDTO> {
     RoleDTO findByRoleName(String roleName);
     boolean existsByRoleName(String roleName);
+
+    /**
+     * Initializes the basic roles
+     */
+    void initRoles();
 }

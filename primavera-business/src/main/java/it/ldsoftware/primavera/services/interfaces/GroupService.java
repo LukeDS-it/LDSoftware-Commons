@@ -7,4 +7,9 @@ import it.ldsoftware.primavera.presentation.security.GroupDTO;
  */
 public interface GroupService extends BusinessService<GroupDTO> {
     boolean existsByCode(String code);
+
+    /**
+     * Initializes the basic groups
+     */
+    void initGroups();
 }

@@ -6,6 +6,7 @@ import it.ldsoftware.primavera.mapper.Mapper;
 import it.ldsoftware.primavera.model.security.Role;
 import it.ldsoftware.primavera.presentation.security.RoleDTO;
 import it.ldsoftware.primavera.services.interfaces.RoleService;
+import it.ldsoftware.primavera.util.PrimaveraConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,12 @@ public class RoleBusinessService extends AbstractBusinessService<RoleDTO, Role> 
     @Override
     public boolean existsByRoleName(String roleName) {
         return ((RoleDAL) getDal()).countByCode(roleName) != 0;
+    }
+
+    @Override
+    public void initRoles() {
+        PrimaveraConstants.BASE_ROLES.stream()
+                .filter(r -> !existsByRoleName(r.getCode()))
+                .forEach(this::save);
     }
 }
